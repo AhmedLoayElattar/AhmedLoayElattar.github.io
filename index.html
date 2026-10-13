@@ -186,7 +186,8 @@ img{display:block}
 .mailrow{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;margin-top:32px}
 .mail{font-family:var(--fd);font-size:clamp(1.375rem,3vw,1.875rem);font-weight:600;letter-spacing:-.02em;user-select:all;overflow-wrap:anywhere}
 .elsewhere{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
-.elsewhere a{font-size:0.9375rem;color:var(--ink);background:var(--surf);padding:9px 16px;border-radius:980px}
+.elsewhere a{display:inline-flex;align-items:center;gap:8px;font-size:0.9375rem;color:var(--ink);background:var(--surf);padding:9px 16px;border-radius:980px}
+.elsewhere a svg{width:17px;height:17px;fill:currentColor;flex:none}
 .elsewhere a:hover{text-decoration:none;background:var(--surf2)}
 
 footer{margin-inline:-20px;padding:22px 20px calc(28px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--hair);font-size:0.75rem;color:var(--ink3)}
@@ -331,6 +332,10 @@ dialog.lb[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto}
 .sub .sub-d{font-size:0.8125rem;color:var(--ink2)}
 .sub.acc{border-color:color-mix(in srgb,var(--cu) 55%,transparent)}
 .sub.acc .sub-t{color:var(--cu)}
+/* inline cross-link between related projects */
+.inlink{background:none;border:0;padding:0;font:inherit;font-size:inherit;color:var(--link);cursor:pointer;letter-spacing:inherit}
+.inlink:hover{text-decoration:underline}
+.sheet-body p.links{font-size:0.9375rem;color:var(--ink2)}
 /* sheet back button */
 .sbk{pointer-events:auto;margin-right:auto;background:var(--surf2);color:var(--ink);border:0;border-radius:980px;font:inherit;font-size:0.8125rem;font-weight:600;padding:7px 14px;cursor:pointer}
 .sbk:hover{background:var(--hair)}
@@ -627,8 +632,8 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
       </div>
       <div class="more">
         <p>This moved the club from underwater 3D control to autonomous driving on the ground. I built the Nav2 stack on a Pioneer 3-DX base with SLAM Toolbox for mapping, AMCL for localization, and sensor fusion of lidar, wheel odometry and IMU.</p>
-        <p>Most of the work was tuning: costmaps, the controller and planner servers, recovery behaviors and behavior trees, until live mapping and loop closure were dependable. On top of navigation I added an OpenCV loop that detects, decides and acts.</p>
-        <p>I also wrote <a href="https://github.com/AhmedLoayElattar/ROS2Aria" target="_blank" rel="noopener">ROS2Aria</a>, an open-source C++ package that brings the Pioneer 3-DX to ROS 2.</p>
+        <p>Most of the work was tuning: costmaps, the controller and planner servers, recovery behaviors and behavior trees, until live mapping and loop closure were dependable. A ZED stereo camera adds depth perception for object tasks, and custom udev rules keep the hardware mapping stable across machines.</p>
+        <p>To bring the robot into ROS 2 at all, I rewrote the legacy <code>rosaria</code> ROS 1 driver from scratch as <a href="https://github.com/AhmedLoayElattar/ROS2Aria" target="_blank" rel="noopener">ROS2Aria</a>, now open source.</p>
         <table class="spec">
           <tr><th>Stack</th><td>ROS 2, Nav2, behavior trees</td></tr>
           <tr><th>Mapping</th><td>SLAM Toolbox</td></tr>
@@ -711,17 +716,18 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
       <div class="body">
         <h3>Competition quadcopter</h3>
         <p class="org">UAVC Drone Challenge, ICMTC 2024</p>
-        <p class="sum">A 225 mm, 102 g acrylic frame I designed and laser-cut. Second of 11 teams and a <b class="n" data-count="30000">30,000</b> EGP prize.</p>
+        <p class="sum">A 225 mm, 102 g acrylic frame I designed and laser-cut. Second place and the Innovation Prize, a <b class="n" data-count="30000">30,000</b> EGP award.</p>
         <button class="open" type="button">Read more</button>
       </div>
       <div class="more">
-        <p>For the UAVC Drone Challenge at the Military Technical College, I designed the frame in CorelDRAW and laser-cut it from clear acrylic: 225 mm wheelbase, 102 grams. With the team I selected and assembled the electronics and tuned the controller in Betaflight on a SpeedyBee F7.</p>
-        <p>When ESCs failed during the event, we diagnosed and repaired them on site. The team placed second of 11 and won a 30,000 EGP prize.</p>
+        <p>For the UAVC Drone Challenge at the 8th ICMTC, held at the Military Technical College in Cairo, I designed the frame from scratch in CorelDRAW and laser-cut it from clear acrylic: 225 mm wheelbase, 102 grams, with the propeller guards built into the frame rather than bolted on. The course was gates, arches and keyhole loops, judging the vehicle and the pilot together.</p>
+        <p>In a team of ten I designed the frame, selected and wired the full electronics stack, tuned the controller, and flew it myself on competition day. When ESCs failed during the event, we diagnosed and repaired them on site. It took <b>second place and the Innovation Prize</b>, a 30,000 EGP award.</p>
         <table class="spec">
-          <tr><th>Frame</th><td>Laser-cut acrylic, 225 mm, 102 g</td></tr>
-          <tr><th>Flight controller</th><td>SpeedyBee F7, Betaflight</td></tr>
-          <tr><th>Power</th><td>2207 1800 KV motors, 6S battery</td></tr>
-          <tr><th>Result</th><td>2nd of 11 teams, 30,000 EGP</td></tr>
+          <tr><th>Frame</th><td>Laser-cut acrylic, 225 mm, 102 g, integrated guards</td></tr>
+          <tr><th>Flight controller</th><td>SpeedyBee F7 V3, 4-in-1 50A ESC</td></tr>
+          <tr><th>Power</th><td>2207 1800 KV motors, 6S 1300 mAh</td></tr>
+          <tr><th>My role</th><td>Frame design, electronics, tuning, pilot</td></tr>
+          <tr><th>Result</th><td>2nd place + Innovation Prize, 30,000 EGP</td></tr>
         </table>
       </div>
     </article>
@@ -746,22 +752,46 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
       </div>
     </article>
 
-    <article class="tile c4" data-id="spitfire" data-extra>
+    <article class="tile c6" data-id="spitfire" data-extra>
       <div class="cover" hidden></div>
       <div class="slot">Photos go in <b>photos/spitfire/</b></div>
       <div class="body">
         <h3>Project SPITFIRE, where it all started</h3>
-        <p class="org">Personal project, 2015 to now</p>
-        <p class="sum">Six fixed-wing airframes and three custom PCB revisions, from MultiWii stabilization to ArduPilot compiled for a Raspberry Pi Zero.</p>
+        <p class="org">Personal project, high school to now</p>
+        <p class="sum">Six foam airframes and three custom flight-controller PCBs, built from a Flite Test Spitfire because no flight controller was sold in Egypt. Almost everything else here grew out of it.</p>
         <button class="open" type="button">Read more</button>
       </div>
       <div class="more">
-        <p>A scale Supermarine Spitfire that I have rebuilt six times since 2015. Each airframe pushed a new skill: designing PCBs, CNC machining, fabrication and control systems.</p>
-        <p>The electronics moved from MultiWii stabilization to a custom autopilot, and then to ArduPilot compiled for a Raspberry Pi Zero on a carrier board I designed, with an NRF24 radio link and a custom transmitter with hall-effect gimbals. Nearly every other project on this page grew out of something learned here. It placed second in the JAC-ECC project competition run by the IEEE E‑JUST Student Branch.</p>
+        <p>It began in high school with a Flite Test foam-board Spitfire Mk.VII. I needed a flight controller, but ArduPilot and Pixhawk weren't sold in Egypt at the time, so I designed my own, and rebuilt the airframe six times as I learned what each change did to lift, drag, control-surface sizing and balance.</p>
+        <p>Three PCB revisions carried it. <b>V1</b> was the first board I ever made, an NRF24 radio receiver: traces too thin, a connector reversed, no decoupling caps, and it worked anyway. <b>V2</b> was a proper revision with ground planes and bypass caps, running my own MultiWii-based receiver code. <b>V3</b> went hybrid through-hole and SMD, compact enough to sit cleanly inside the fuselage. Around it I built retractable, servo-actuated landing gear, laser-cut internal formers, and a custom RC transmitter with hall-effect gimbals, so I understood every part of the link.</p>
+        <p>It placed <b>second at the JAC-ECC Project-Based Learning competition</b>, run by the IEEE E‑JUST Student Branch.</p>
+        <p class="links">Links: <a href="https://www.behance.net/gallery/115489245/Airplane-Controller-V3-SMT-Version" target="_blank" rel="noopener">the V3 controller PCB on Behance</a> · the autopilot it led to became <button class="inlink" type="button" data-goto="autopilot">Pi AutoPilot →</button></p>
       </div>
     </article>
 
-    <article class="tile c4" data-id="cnc" data-extra>
+    <article class="tile c6" data-id="autopilot" data-extra>
+      <div class="cover" hidden></div>
+      <div class="slot">Photos go in <b>photos/autopilot/</b></div>
+      <div class="body">
+        <h3>A homemade autopilot and ground station</h3>
+        <p class="org">Personal project · grew out of Project SPITFIRE</p>
+        <p class="sum">ArduPilot compiled from source onto a Raspberry Pi Zero with a carrier board I designed, flying waypoint missions with a Nextion ground station over HC-12.</p>
+        <button class="open" type="button">Read more</button>
+      </div>
+      <div class="more">
+        <p>When the SPITFIRE airframe needed real autonomy, I built the autopilot for it. ArduPilot's ArduPlane was compiled from source to run on a <b>Raspberry Pi Zero</b> through OBAL, an open Linux autopilot layer, on a carrier board I designed to break out the sensors and radios.</p>
+        <p>It flies pre-planned <b>waypoint missions</b>, streams live telemetry back over an <b>HC-12</b> long-range radio link, and is commanded from a ground station I built into a hard case: a <b>Nextion touchscreen</b> HMI with my own aircraft graphics, a DIY multiprotocol transmitter and the mission uplink. I wrote the ground-station interface and the PPM/SBUS signal path that ties the radio to the flight controller.</p>
+        <table class="spec">
+          <tr><th>Flight controller</th><td>ArduPilot (ArduPlane) on a Raspberry Pi Zero, via OBAL, on my carrier board</td></tr>
+          <tr><th>Navigation</th><td>Waypoint missions, Mission Planner</td></tr>
+          <tr><th>Telemetry</th><td>HC-12 long-range radio</td></tr>
+          <tr><th>Ground station</th><td>Nextion HMI in a hard case, DIY multiprotocol transmitter</td></tr>
+          <tr><th>Grew from</th><td><button class="inlink" type="button" data-goto="spitfire">Project SPITFIRE →</button></td></tr>
+        </table>
+      </div>
+    </article>
+
+    <article class="tile c6" data-id="cnc" data-extra>
       <div class="cover" hidden></div>
       <div class="slot">Photos go in <b>photos/cnc/</b></div>
       <div class="body">
@@ -776,7 +806,7 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
       </div>
     </article>
 
-    <article class="tile c4" data-id="ev" data-extra>
+    <article class="tile c6" data-id="ev" data-extra>
       <div class="cover" hidden></div>
       <div class="slot">Photos go in <b>photos/ev/</b></div>
       <div class="body">
@@ -796,7 +826,7 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
   <div class="grid-more">
     <button class="morebtn" id="more-btn" type="button" aria-expanded="false" aria-controls="pgrid">
       <span class="mb-t">Show all projects</span>
-      <span class="mb-n">7 more</span>
+      <span class="mb-n">8 more</span>
       <svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
     </button>
   </div>
@@ -946,9 +976,9 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
     <button class="btn" id="copy" type="button"><span class="lbl">Copy email</span></button>
   </div>
   <div class="elsewhere">
-    <a href="https://www.linkedin.com/in/aloayelattar" target="_blank" rel="noopener">LinkedIn</a>
-    <a href="https://github.com/AhmedLoayElattar" target="_blank" rel="noopener">GitHub</a>
-    <a href="https://www.behance.net/ahmedelattar10" target="_blank" rel="noopener">Behance</a>
+    <a href="https://www.linkedin.com/in/aloayelattar" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a>
+    <a href="https://github.com/AhmedLoayElattar" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23a11.5 11.5 0 0 1 3-.405c1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>GitHub</a>
+    <a href="https://www.behance.net/ahmedelattar10" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029h3.168zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219zm-9.574 6.988H0V5.021h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061zM3 11h3.584c2.508 0 2.906-3-.312-3H3v3zm3.391 3H3v3.016h3.341c3.055 0 2.868-3.016.05-3.016z"/></svg>Behance</a>
   </div>
 </section>
 </main>
@@ -1081,15 +1111,15 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
       btn.setAttribute('aria-expanded',open?'true':'false');
       $('.mb-t',btn).textContent=open?'Show fewer projects':'Show all projects';
       $('.mb-n',btn).textContent=open?'':extras.length+' more';
-      if(open){
-        if(window.gsap&&!reduce){
-          gsap.set(extras,{autoAlpha:1});
-          gsap.from(extras,{autoAlpha:0,y:24,duration:.5,stagger:.06,ease:'power2.out'});
-        }
-        if(window.ScrollTrigger) ScrollTrigger.refresh();
-      } else {
-        try{ $('#work').scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'}); }catch(e){}
+      if(open&&window.gsap&&!reduce){
+        gsap.set(extras,{autoAlpha:1});
+        gsap.from(extras,{autoAlpha:0,y:24,duration:.5,stagger:.06,ease:'power2.out'});
       }
+      // The grid height just changed, so every pinned/scroll trigger below it
+      // (the five-generations board section) has stale start/end positions.
+      // Re-measure them BEFORE moving the scroll, in both directions.
+      if(window.ScrollTrigger) ScrollTrigger.refresh();
+      if(!open){ try{ $('#work').scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'}); }catch(e){} }
     });
   })();
 
@@ -1115,6 +1145,8 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
   if(sbk===null) sbk=$('.sbk',sheet);
   if(sbk) sbk.addEventListener('click',function(){ if(backFn) backFn(); });
   $('#sh-body').addEventListener('click',function(e){
+    var link=e.target.closest('.inlink');
+    if(link){ var tgt=$('.tile[data-id="'+link.dataset.goto+'"]'); if(tgt){ openSheet(tgt); var si=$('.sheet-in'); if(si) si.scrollTop=0; } return; }
     var b=e.target.closest('.sub'); if(!b) return;
     var key=b.dataset.sub, d=SUBS[key]; if(!d) return;
     openData({ title:d.title, org:d.org||'', html:d.html||'', photos:PH[d.photos]||[],

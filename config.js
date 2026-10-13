@@ -141,10 +141,12 @@ window.SITE = {
       // ["photos/agv/chassis.jpg", "AGV chassis with both lidars mounted"],
     ],
     nav2: [
-      ["photos/nav2/nav2-robot-flag.jpg", "With the Pioneer 3-DX I built the Nav2 stack on, RoboCup@Home Egypt 2026"],
-      ["photos/nav2/nav2-rviz.jpg", "The Nav2 stack live in RViz: costmaps, the planned path and the SLAM map"],
-      ["photos/nav2/nav2-team.jpg", "Bringing up the navigation stack with the team"],
-      ["photos/nav2/nav2-award.jpg", "At the RoboCup@Home Egypt competition, April 2026"],
+      ["photos/nav2/nav2-robot.jpg", "The Pioneer 3-DX I brought back to life in ROS 2 for RoboCup@Home Egypt 2026"],
+      ["photos/nav2/nav2-team.jpg", "With a teammate and the robot at the competition"],
+      ["photos/nav2/nav2-cert.jpg", "RoboCup Egypt 2026 — AASTMT, New Alamein, April 2026"],
+      ["photos/nav2/nav2-map.jpg", "The live SLAM map and planned path in RViz"],
+      ["photos/nav2/nav2-build.jpg", "Bringing up the robot's electronics"],
+      ["photos/nav2/nav2-rviz.jpg", "The Nav2 stack running: costmaps, localization and sensor data"],
     ],
     nissan: [
       ["photos/nissan/nissan-agv.jpg", "The AGV I built, on its stand at the plant"],
@@ -155,6 +157,7 @@ window.SITE = {
     leoni: [
       ["photos/leoni/leoni-dashboard.jpg", "The KOSU dashboard I built in Power BI, reproducing the paper form live"],
       ["photos/leoni/leoni-analytics.jpg", "The shift analytics view, filterable by date, line and shift"],
+      ["photos/leoni/leoni-me.jpg", "At LEONI's Rising Stars internship"],
     ],
     siemens: [
       ["photos/siemens/siemens-rig.jpg", "The SIMATIC training rig: S7-1500, ET200SP I/O and a SINAMICS drive"],
@@ -176,10 +179,22 @@ window.SITE = {
       ["photos/printers/printer-print.jpg", "A finished print off the bed"],
     ],
     spitfire: [
-      ["photos/spitfire/spitfire-v3.jpg", "A later Spitfire airframe with full camouflage and markings"],
-      ["photos/spitfire/spitfire-wing.jpg", "Top view of the painted wing"],
-      ["photos/spitfire/spitfire-build.jpg", "Bench work: the airframe with its electronics and radio"],
-      ["photos/spitfire/spitfire-v1.jpg", "An earlier airframe, one of six rebuilds since 2015"],
+      ["photos/spitfire/spitfire-top.jpg", "A later Spitfire airframe, fully painted"],
+      ["photos/spitfire/spitfire-desk.jpg", "The airframe with its electronics on the bench"],
+      ["photos/spitfire/spitfire-tx.jpg", "The custom RC transmitter I built, with hall-effect gimbals"],
+      ["photos/spitfire/spitfire-v2.jpg", "An earlier revision with the electronics exposed"],
+      ["photos/spitfire/spitfire-camo2.jpg", "Top view of the camouflaged airframe"],
+      ["photos/spitfire/spitfire-nose.jpg", "The nose and roundel, hand-painted"],
+      ["photos/spitfire/spitfire-bombs.jpg", "3D-printed drop tanks for the airframe"],
+      ["photos/spitfire/spitfire-jac.jpg", "At the JAC-ECC exhibition, where it placed second"],
+    ],
+
+    autopilot: [
+      ["photos/autopilot/autopilot-board.jpg", "The flight controller I built: ArduPilot on a Raspberry Pi Zero with a custom carrier board"],
+      ["photos/autopilot/autopilot-hmi.jpg", "The custom Nextion ground-station HMI"],
+      ["photos/autopilot/autopilot-station.jpg", "The ground station in its case: Nextion screen, HC-12 telemetry and electronics"],
+      ["photos/autopilot/autopilot-station2.jpg", "The ground station powered up"],
+      ["photos/autopilot/autopilot-night.jpg", "The ground station running"],
     ],
     cnc: [
       ["photos/cnc/cnc-nexus.jpg", "NEXUS, the 600 mm modular plotter, mill and laser platform"],
