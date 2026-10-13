@@ -423,8 +423,9 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
 :root[data-theme="dark"]{--red:#ff5a52}
 body{overflow-x:clip}
 .hero{position:relative;padding-block:clamp(40px,7vw,88px) clamp(40px,6vw,72px)}
-#bgfx{position:absolute;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);height:100%;pointer-events:none;z-index:0;
-  -webkit-mask-image:linear-gradient(transparent,#000 14%,#000 80%,transparent);mask-image:linear-gradient(transparent,#000 14%,#000 80%,transparent)}
+#bgfx{position:fixed;top:0;left:0;width:100vw;height:100vh;height:100lvh;pointer-events:none;z-index:-1}
+.hero-in{--pp:clamp(18px,2.6vw,34px);padding:var(--pp);margin:calc(var(--pp)*-1);border-radius:30px;
+  background:color-mix(in srgb,var(--bg) 80%,transparent);-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px)}
 .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:clamp(28px,5vw,72px);align-items:center}
 @media (max-width:960px){.hero-grid{grid-template-columns:1fr}}
 .hero-in{max-width:none}
@@ -1414,7 +1415,7 @@ body{overflow-x:clip}
       {id:'autopilot',k:'Autonomy',t:'A homemade autopilot that flies waypoint missions',d:'ArduPilot on a Raspberry Pi Zero, with a ground station I built around a Nextion screen.'},
       {id:'printers',k:'Making',t:'Two 3D printers I built, now a small business',d:'150+ student projects and hundreds of orders shipped across Egypt.'},
       {id:'drone',k:'Competition',t:'2nd place at the UAVC Drone Challenge',d:'A 102 g acrylic frame I designed, laser-cut and flew myself.'},
-      {id:'nexus',i:10,k:'Machines',t:'NEXUS, a plotter that draws portraits',d:'A modular 600 mm CNC that plots line art in ink.'},
+      {id:'nexus',i:0,k:'Machines',t:'NEXUS, a plotter that draws portraits',d:'A modular 600 mm CNC that plots line art in ink.'},
       {id:'stealth',k:'Aerial robotics',t:'A scale MQ-9 Reaper from foam and plywood',d:'Cut sheets drawn in CorelDRAW, airframe and electronics built by hand.'}
     ];
     var stage=$('#fc-stage'), dots=$('#fc-dots'), num=$('#fc-n'), box=$('#fcar'); if(!stage) return;
@@ -1449,11 +1450,11 @@ body{overflow-x:clip}
   /* ---------- hero: interactive circuit background ---------- */
   (function(){
     var cv=$('#bgfx'); if(!cv||!cv.getContext) return;
-    var cx=cv.getContext('2d'), hero=cv.parentNode, DPR=Math.min(2,window.devicePixelRatio||1);
+    var cx=cv.getContext('2d'), DPR=Math.min(1.5,window.devicePixelRatio||1);
     var W=0,H=0,CELL=62,nodes=[],edges=[],pulses=[],mx=-999,my=-999,running=false,visible=true,ink='0,0,0',acc='181,101,29',last=0,spawnT=0;
     function rnd(seed){var s=seed;return function(){s=(s*16807)%2147483647;return (s-1)/2147483646}}
     function build(){
-      var r=hero.getBoundingClientRect(); W=cv.clientWidth; H=cv.clientHeight;
+      W=cv.clientWidth; H=cv.clientHeight;
       cv.width=W*DPR; cv.height=H*DPR; cx.setTransform(DPR,0,0,DPR,0,0);
       var cols=Math.ceil(W/CELL)+1, rows=Math.ceil(H/CELL)+1, R=rnd(7), grid=[];
       nodes=[]; edges=[]; pulses=[];
@@ -1481,14 +1482,14 @@ body{overflow-x:clip}
       // traces
       for(var i=0;i<edges.length;i++){
         var e=edges[i], mxp=(e.a.x+e.b.x)/2, myp=(e.a.y+e.b.y)/2, d=Math.hypot(mxp-mx,myp-my), k=d<near?1-d/near:0;
-        cx.strokeStyle='rgba('+(k>0?acc:ink)+','+(k>0?(.10+.5*k):.085)+')'; cx.lineWidth=k>0?1+k*1.2:1;
+        cx.strokeStyle='rgba('+(k>0?acc:ink)+','+(k>0?(.08+.42*k):.062)+')'; cx.lineWidth=k>0?1+k*1.2:1;
         cx.beginPath(); cx.moveTo(e.a.x,e.a.y); cx.lineTo(e.b.x,e.b.y); cx.stroke();
       }
       // pads
       for(var j=0;j<nodes.length;j++){
         var n=nodes[j]; if(!n.e.length) continue;
         var dd=Math.hypot(n.x-mx,n.y-my), kk=dd<near?1-dd/near:0;
-        cx.fillStyle='rgba('+(kk>0?acc:ink)+','+(kk>0?(.22+.6*kk):.16)+')';
+        cx.fillStyle='rgba('+(kk>0?acc:ink)+','+(kk>0?(.18+.5*kk):.12)+')';
         cx.beginPath(); cx.arc(n.x,n.y,2.2+kk*2.6,0,6.283); cx.fill();
       }
       // signal pulses
@@ -1496,9 +1497,9 @@ body{overflow-x:clip}
         var q=pulses[p]; q.t+=q.sp*dt/q.e.len;
         var a=q.from, bb=(q.e.a===a?q.e.b:q.e.a), t=Math.min(1,q.t);
         var x=a.x+(bb.x-a.x)*t, y=a.y+(bb.y-a.y)*t, tx=a.x+(bb.x-a.x)*Math.max(0,t-.35), ty=a.y+(bb.y-a.y)*Math.max(0,t-.35);
-        var g=cx.createLinearGradient(tx,ty,x,y); g.addColorStop(0,'rgba('+acc+',0)'); g.addColorStop(1,'rgba('+acc+',.85)');
+        var g=cx.createLinearGradient(tx,ty,x,y); g.addColorStop(0,'rgba('+acc+',0)'); g.addColorStop(1,'rgba('+acc+',.55)');
         cx.strokeStyle=g; cx.lineWidth=2; cx.beginPath(); cx.moveTo(tx,ty); cx.lineTo(x,y); cx.stroke();
-        cx.fillStyle='rgba('+acc+',.95)'; cx.beginPath(); cx.arc(x,y,2.6,0,6.283); cx.fill();
+        cx.fillStyle='rgba('+acc+',.7)'; cx.beginPath(); cx.arc(x,y,2.4,0,6.283); cx.fill();
         if(q.t>=1){ pulses.splice(p,1); if(bb.e.length){ var opts=bb.e.filter(function(z){return z!==q.e}); var ne=(opts.length?opts:bb.e)[(Math.random()*(opts.length||bb.e.length))|0]; if(pulses.length<40) pulses.push({e:ne,from:bb,t:0,sp:q.sp}) } }
       }
       spawnT-=dt; if(spawnT<=0&&pulses.length<16){ spawn(); spawnT=.35 }
@@ -1510,15 +1511,14 @@ body{overflow-x:clip}
     if(reduce){ // one still frame
       cx.clearRect(0,0,W,H); edges.forEach(function(e){cx.strokeStyle='rgba('+ink+',.08)';cx.beginPath();cx.moveTo(e.a.x,e.a.y);cx.lineTo(e.b.x,e.b.y);cx.stroke()}); return;
     }
-    hero.addEventListener('pointermove',function(e){ var r=cv.getBoundingClientRect(); mx=e.clientX-r.left; my=e.clientY-r.top;
+    window.addEventListener('pointermove',function(e){ mx=e.clientX; my=e.clientY;
       var best=null,bd=1e9; for(var i=0;i<nodes.length;i+=1){ var n=nodes[i]; if(!n.e.length) continue; var d=Math.abs(n.x-mx)+Math.abs(n.y-my); if(d<bd){bd=d;best=n} }
       if(best&&Math.random()<.12&&pulses.length<30) spawn(best);
     });
-    hero.addEventListener('pointerleave',function(){mx=my=-999});
-    window.addEventListener('resize',function(){ build() });
+    document.addEventListener('pointerleave',function(){mx=my=-999});
+    var bw=0,bh=0; window.addEventListener('resize',function(){ var w=innerWidth,h=innerHeight; if(w!==bw||Math.abs(h-bh)>140){bw=w;bh=h;build()} }); bw=innerWidth; bh=innerHeight;
     new MutationObserver(colors).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
     document.addEventListener('visibilitychange',function(){document.hidden?stop():start()});
-    if('IntersectionObserver' in window) new IntersectionObserver(function(es){visible=es[0].isIntersecting; visible?start():stop()}).observe(hero);
     start();
   })();
 
