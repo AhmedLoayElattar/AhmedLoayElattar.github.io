@@ -249,9 +249,13 @@ window.SITE = {
       ["photos/plotter/plotter-0421.jpg", "Writing on paper"],
     ],
     ev: [
-      ["photos/ev/ev-team.jpg", "The EVER 5 team at the racetrack"],
+      ["photos/ev/ev-competition-front.jpg", "The car on competition day, seen from the front"],
+      ["photos/ev/ev-rear.jpg", "The finished car from the rear"],
+      ["photos/ev/ev-fender.jpg", "The body and front wheel arch up close"],
+      ["photos/ev/ev-early-body.jpg", "An earlier stage: the body before its white finish"],
+      ["photos/ev/ev-night.jpg", "Doors and bonnet open at night"],
+      ["photos/ev/ev-electronics.jpg", "The rear compartment with the drive electronics"],
       ["photos/ev/ev-board.jpg", "Low-voltage control electronics I built for the car"],
-      ["photos/ev/ev-group.jpg", "With the team on competition day"],
     ],
 
     omnibot: [
