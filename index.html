@@ -548,6 +548,10 @@ body{overflow-x:clip}
 .t3steps{position:relative;z-index:1;pointer-events:none}
 .t3step{min-height:90vh;min-height:90svh;display:flex;align-items:center;padding:0 clamp(14px,4vw,56px)}
 .t3card{pointer-events:auto;max-width:24rem;padding:20px 22px;border-radius:22px;background:color-mix(in srgb,var(--bg) 84%,transparent);-webkit-backdrop-filter:blur(14px) saturate(1.4);backdrop-filter:blur(14px) saturate(1.4);box-shadow:0 0 0 1px var(--hair),0 16px 44px rgba(0,0,0,.1);opacity:.3;transform:translateY(14px);transition:opacity .45s,transform .45s}
+.t3pre .t3card{opacity:1;transform:none}
+.t3wrap:not(.on) .t3step:not(.t3pre){display:none}
+.t3wrap.on .t3pre{display:none}
+.t3pre{min-height:80vh;min-height:80svh}
 .t3step.on .t3card{opacity:1;transform:none}
 .t3k{font-size:.72rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--cu)}
 .t3card h3{font-size:clamp(1.35rem,2.6vw,1.8rem);line-height:1.12;letter-spacing:-.02em;margin:6px 0 8px;font-weight:600}
@@ -1138,7 +1142,7 @@ body{overflow-x:clip}
 <section class="tour3d" id="tour3d" aria-labelledby="t3-h">
   <div class="t3head">
     <h2 id="t3-h">Tour the 2026 board stack</h2>
-    <p class="lede">The same ROV electronics, in 3D from my own PCB design files. Scroll to fly through the boards, or drag to look around.</p>
+    <p class="lede">The same ROV electronics, in 3D from my own PCB design files. Load it to fly through the boards by scrolling, or drag to look around.</p>
   </div>
   <div class="t3wrap">
     <div class="t3stage" id="t3stage">
@@ -1158,7 +1162,10 @@ var host=document.getElementById('t3steps'),mv=document.getElementById('t3mv'),s
 STOPS.forEach(function(s,i){var d=document.createElement('div');d.className='t3step';d.dataset.i=i;
   d.innerHTML='<div class="t3card"><div class="t3k"></div><h3></h3><p></p></div>';
   d.querySelector('.t3k').textContent=s[0];d.querySelector('h3').textContent=s[1];d.querySelector('p').textContent=s[2];host.appendChild(d)});
-var steps=[].slice.call(host.children),cur=-1;
+var steps=[].slice.call(host.children),cur=-1,wrap=host.parentNode;
+var pre=document.createElement('div');pre.className='t3step t3pre';
+pre.innerHTML='<div class="t3card"><div class="t3k">Interactive</div><h3>Take the 3D tour</h3><p>Press <b>Load the 3D model</b> to fly through the boards one part at a time. Or keep scrolling to skip it.</p></div>';
+host.insertBefore(pre,host.firstChild);
 function go(i){var s=STOPS[i];mv.cameraTarget=s[3];mv.cameraOrbit=s[4];steps.forEach(function(e,j){e.classList.toggle('on',j===i)})}
 if('IntersectionObserver' in window){
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var i=+e.target.dataset.i;if(i!==cur){cur=i;go(i)}}})},{rootMargin:'-45% 0px -45% 0px'});
@@ -1174,7 +1181,7 @@ function start(){
   import('./3d/model-viewer.js').then(function(){return customElements.whenDefined('model-viewer')}).then(function(){
     customElements.get('model-viewer').meshoptDecoderLocation=new URL('./3d/meshopt_decoder.js',document.baseURI).href;
     mv.addEventListener('progress',function(e){var p=e.detail.totalProgress;if(p>0&&p<1)pct.textContent='Loading… '+Math.round(p*100)+'%'});
-    mv.addEventListener('load',function(){stage.classList.remove('loading');stage.classList.add('ready','live');go(cur<0?0:cur);mv.jumpCameraToGoal()});
+    mv.addEventListener('load',function(){stage.classList.remove('loading');stage.classList.add('ready','live');wrap.classList.add('on');go(cur<0?0:cur);mv.jumpCameraToGoal()});
     mv.addEventListener('error',function(){pct.textContent='3D view unavailable on this device.'});
     mv.setAttribute('environment-image','./3d/studio.hdr');
     mv.setAttribute('src',lite?'./3d/pcb-lite.glb':'./3d/pcb.glb');
