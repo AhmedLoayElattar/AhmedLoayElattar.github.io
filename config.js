@@ -29,7 +29,7 @@ window.SITE = {
   cv: "",
 
   // A photo of you (square crop works best). Leave "" to hide it.
-  me: "",
+  me: "photos/me.jpg",
 
   // The "Five generations of ROV boards" section. One image per board,
   // IN ORDER: 2023, May 2024, Oct 2024, 2025, 2026. Use "" to skip one.
@@ -75,6 +75,53 @@ window.SITE = {
     ]},
   ],
 
+  // ROV subsystems. Each opens its own detail sheet from inside the ROV story.
+  // `photos` names a gallery key under `photos` below.
+  subsystems: {
+    acps: {
+      title: "Active pressure compensation",
+      org: "ROV subsystem · my system",
+      photos: "acps",
+      links: [["Fuzzy logic report", "#"]],
+      html:
+        "<p>Underwater, external pressure climbs about one atmosphere every ten metres; at a hundred metres a sealed canister holds back roughly ten atmospheres, enough to deform it or fail a seal. This system keeps the canister's internal pressure tracking the water outside, so the enclosure is never fighting that difference.</p>" +
+        "<p><b>The idea and the whole architecture were mine.</b> I designed it, modelled it and ran its tests in LabVIEW before it was built; Omar Hossam built the PCB.</p>" +
+        "<h4>How it works</h4>" +
+        "<p>The gas dynamics are nonlinear and the disturbances, a slow leak or a sudden depth change, are unpredictable, so instead of a precise model I used a <b>fuzzy logic controller</b> built from expert rules on the pressure error. Two custom in-house MS5837 sensors, one inside the canister and one outside, each on its own I2C bus for noise immunity, feed the error. The controller drives two solenoid valves, Fill and Release, to raise or bleed pressure. The pneumatic layout is in the diagram above.</p>" +
+        "<p>An <b>STM32F401</b> runs the real-time sensing and valve control; a <b>LabVIEW</b> front panel over the VISA protocol supervises it, showing the live pressure difference, the fuzzy output and the valve direction. I chose the STM32F401 over an Arduino Uno deliberately: its hardware floating-point unit and multiple independent I2C buses make the fuzzy maths and the two-sensor setup fast and clean, which the Uno cannot do.</p>" +
+        "<table class='spec'>" +
+        "<tr><th>Controller</th><td>Fuzzy logic, expert rules on pressure error</td></tr>" +
+        "<tr><th>Compute</th><td>STM32F401, ARM Cortex-M4 with FPU</td></tr>" +
+        "<tr><th>Sensing</th><td>2× custom MS5837, inside and outside, separate I2C buses</td></tr>" +
+        "<tr><th>Actuation</th><td>Two solenoid valves, Fill and Release</td></tr>" +
+        "<tr><th>Interface</th><td>LabVIEW over VISA, live supervision</td></tr>" +
+        "<tr><th>My role</th><td>System idea, architecture, modelling and LabVIEW testing</td></tr>" +
+        "</table>"
+    },
+    ota: {
+      title: "Over-the-air firmware updates",
+      org: "ROV subsystem",
+      photos: "rov",
+      html:
+        "<p>Opening the sealed hull to reflash a board costs time and risks a leak, so new firmware goes to any board without opening anything. A GUI on the station PC picks the target and the method, over the network or USB on the bench.</p>" +
+        "<p>For an over-the-air update the station PC sends the .bin to the STM32 gateway as TCP packets with a 12-byte header (node ID, size, CRC-32), on the same link as the gateway's micro-ROS traffic. The gateway stages it in SPI flash, then flashes the target over CAN through a bootloader state machine: IDLE, AWAIT_BOOT, ERASING, RECEIVING, VERIFY, SUCCESS. CRC-32 is checked on both the host and the target, and the gateway can update itself. The live replay of this is on the home page.</p>"
+    },
+    motion: {
+      title: "6-DoF motion control",
+      org: "ROV subsystem",
+      photos: "rov",
+      html:
+        "<p>Any six-degree-of-freedom command is split across seven T200 thrusters through a 6×7 allocation matrix solved by pseudo-inverse, <code>u = A⁺w</code>. Closed-loop PID runs on all six axes from a BNO055 IMU at 50 Hz and an MS5837 depth sensor, with a relay-based autotuner that finds the gains. The pilot gets stable, precise control at any depth.</p>"
+    },
+    can: {
+      title: "CAN network and three-tier control",
+      org: "ROV subsystem",
+      photos: "rov",
+      html:
+        "<p>A Raspberry Pi 5 runs ROS 2 Jazzy for pilot input, autonomy and logging. An STM32F411 gateway bridges it over Ethernet with micro-ROS. Distributed boards on a 1 Mbps CAN bus drive the thrusters, measure current and run pressure compensation, with priority-slot IDs from 0x000 to 0x5FF. By 2026 the CAN signals run through the metal standoffs that hold the stack, so there are no external cables inside the hull.</p>"
+    }
+  },
+
   photos: {
     rov: [
       ["photos/rov/rov-kamikaze-spec.jpg", "The KAMIKAZE control board on our spec sheet"],
@@ -85,40 +132,71 @@ window.SITE = {
     ],
     // Images for the active pressure compensation subsection inside the ROV story.
     acps: [
+      ["photos/rov/acps-pneumatic.jpg", "The pneumatic system diagram: fill and release valves around the canister"],
       ["photos/rov/acps-clean.jpg", "The active pressure compensation board"],
       ["photos/rov/acps-1.jpg", "The board live, with its pressure readout and status display"],
-      ["photos/rov/acps-pneumatic.jpg", "The pneumatic schematic: fill and release valves around the canister"],
       ["photos/rov/acps-2.jpg", "The board under test"],
     ],
     agv: [
       // ["photos/agv/chassis.jpg", "AGV chassis with both lidars mounted"],
     ],
     nav2: [
-      // ["photos/nav2/map.jpg", "Live Cartographer map in RViz"],
+      ["photos/nav2/nav2-robot-flag.jpg", "With the Pioneer 3-DX I built the Nav2 stack on, RoboCup@Home Egypt 2026"],
+      ["photos/nav2/nav2-rviz.jpg", "The Nav2 stack live in RViz: costmaps, the planned path and the SLAM map"],
+      ["photos/nav2/nav2-team.jpg", "Bringing up the navigation stack with the team"],
+      ["photos/nav2/nav2-award.jpg", "At the RoboCup@Home Egypt competition, April 2026"],
     ],
     nissan: [
-      // ["photos/nissan/agv-line.jpg", "The AGV on the line at Nissan"],
+      ["photos/nissan/nissan-agv.jpg", "The AGV I built, on its stand at the plant"],
+      ["photos/nissan/nissan-pendant.jpg", "The operator pendant I made: a Nextion touchscreen in a laser-cut case"],
+      ["photos/nissan/nissan-control.jpg", "The control electronics inside the vehicle"],
+      ["photos/nissan/nissan-front.jpg", "The front sensor array for line following"],
     ],
     leoni: [
-      // ["photos/leoni/dashboard.jpg", "KOSU dashboard filtered by shift"],
+      ["photos/leoni/leoni-dashboard.jpg", "The KOSU dashboard I built in Power BI, reproducing the paper form live"],
+      ["photos/leoni/leoni-analytics.jpg", "The shift analytics view, filterable by date, line and shift"],
     ],
     siemens: [
-      // ["photos/siemens/hmi.jpg", "HMI screen running my conveyor visualiser"],
+      ["photos/siemens/siemens-rig.jpg", "The SIMATIC training rig: S7-1500, ET200SP I/O and a SINAMICS drive"],
+      ["photos/siemens/siemens-hmi.jpg", "The HMI panel running next to my ladder program"],
+      ["photos/siemens/siemens-ladder.jpg", "My conveyor program in TIA Portal"],
+      ["photos/siemens/siemens-team.jpg", "At the Siemens digitalization training"],
     ],
     drone: [
-      // ["photos/drone/frame.jpg", "Laser-cut acrylic frame, 225 mm"],
+      ["photos/drone/drone-top.jpg", "The 225 mm clear-acrylic frame I designed and laser-cut, lit up"],
+      ["photos/drone/drone-award.jpg", "Second place at the UAVC Drone Challenge, ICMTC 2024"],
+      ["photos/drone/drone-team.jpg", "The team with the drone at the Military Technical College"],
+      ["photos/drone/drone-arena.jpg", "Flying inside the competition arena"],
+      ["photos/drone/drone-bench.jpg", "On the bench with the SpeedyBee F7 and the radio"],
     ],
     printers: [
-      // ["photos/printers/corexy.jpg", "CoreXY with the 5-lane multi-material unit"],
+      ["photos/printers/printer-corexy.jpg", "The CoreXY printer I built, running Klipper"],
+      ["photos/printers/printer-toolhead.jpg", "The modified StealthBurner toolhead"],
+      ["photos/printers/printer-first.jpg", "My first printer, a Cartesian build, mid-print"],
+      ["photos/printers/printer-print.jpg", "A finished print off the bed"],
     ],
     spitfire: [
-      // ["photos/spitfire/airframes.jpg", "Spitfire airframes across iterations"],
+      ["photos/spitfire/spitfire-v3.jpg", "A later Spitfire airframe with full camouflage and markings"],
+      ["photos/spitfire/spitfire-wing.jpg", "Top view of the painted wing"],
+      ["photos/spitfire/spitfire-build.jpg", "Bench work: the airframe with its electronics and radio"],
+      ["photos/spitfire/spitfire-v1.jpg", "An earlier airframe, one of six rebuilds since 2015"],
     ],
     cnc: [
-      // ["photos/cnc/apollo.jpg", "APOLLO milling a PCB"],
+      ["photos/cnc/cnc-nexus.jpg", "NEXUS, the 600 mm modular plotter, mill and laser platform"],
+      ["photos/cnc/cnc-build.jpg", "Building NEXUS in the workshop"],
+      ["photos/cnc/cnc-parts.jpg", "The NEXUS frame and controller during assembly"],
     ],
     ev: [
-      // ["photos/ev/harness.jpg", "Low-voltage wiring harness"],
+      ["photos/ev/ev-team.jpg", "The EVER 5 team at the racetrack"],
+      ["photos/ev/ev-board.jpg", "Low-voltage control electronics I built for the car"],
+      ["photos/ev/ev-group.jpg", "With the team on competition day"],
+    ],
+
+    omnibot: [
+      ["photos/omnibot/omni-top.jpg", "The holonomic robot seen from the overhead camera, with its ArUco marker"],
+      ["photos/omnibot/omni-hand.jpg", "The compact base: four omni wheels and the onboard electronics"],
+      ["photos/omnibot/omni-marker.jpg", "The ArUco fiducial the off-board camera tracks for pose"],
+      ["photos/omnibot/omni-floor.jpg", "Driving holonomically across the floor"],
     ]
   }
 };

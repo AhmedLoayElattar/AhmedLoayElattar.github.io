@@ -132,6 +132,15 @@ img{display:block}
 .tile .fig + .open{padding-top:14px}
 .tile .open:hover{text-decoration:underline}
 .tile .more{display:none}
+/* collapsible project grid */
+.grid.collapsed .tile[data-extra]{display:none}
+.grid-more{display:flex;justify-content:center;margin-top:30px}
+.morebtn{display:inline-flex;align-items:center;gap:12px;padding:13px 24px;border-radius:980px;border:1px solid var(--line);background:var(--surf);color:var(--ink);font:inherit;font-size:0.9375rem;font-weight:500;letter-spacing:-.01em;cursor:pointer;transition:background-color .25s var(--ease-out),border-color .25s var(--ease-out),transform .2s var(--ease-out)}
+.morebtn:hover{background:var(--surf2);border-color:var(--ink3)}
+.morebtn:active{transform:scale(.97)}
+.morebtn .mb-n{color:var(--ink3);font-variant-numeric:tabular-nums}
+.morebtn .mb-ic{width:18px;height:18px;fill:none;stroke:var(--ink2);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .3s var(--ease-out)}
+.grid-more.open .morebtn .mb-ic{transform:rotate(180deg)}
 /* wide ROV tile: cover beside text when a photo exists */
 .tile.wide.has-cover{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)}
 .tile.wide.has-cover .cover{aspect-ratio:auto;min-height:340px;order:2}
@@ -307,6 +316,29 @@ dialog.lb[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto}
 .bmore{margin-top:4px;font-size:0.875rem;font-weight:600;color:var(--cu)}
 .bcard.won .bmore{color:var(--cu)}
 
+
+/* hero: greeting name accent + larger avatar */
+.hero h1 .nm{color:var(--ink);background:linear-gradient(transparent 62%,color-mix(in srgb,var(--cu) 30%,transparent) 0);padding-right:.06em}
+.avatar{width:84px;height:84px;border-radius:50%;object-fit:cover;margin-bottom:22px;background:var(--surf);box-shadow:0 6px 20px rgba(0,0,0,.12)}
+/* ROV subsystem cards */
+.subnote{color:var(--ink2);font-size:0.95rem;margin-top:-4px}
+.subs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 6px}
+@media (max-width:560px){.subs{grid-template-columns:1fr}}
+.sub{display:flex;flex-direction:column;gap:3px;text-align:left;background:var(--surf);border:1px solid var(--hair);border-radius:var(--r-m);padding:14px 16px;cursor:pointer;font:inherit;color:var(--ink);transition:transform 160ms var(--ease-out),background-color .2s,border-color .2s}
+.sub:hover{background:var(--surf2);transform:translateY(-1px)}
+.sub:active{transform:scale(.99)}
+.sub .sub-t{font-weight:600;font-size:1rem}
+.sub .sub-d{font-size:0.8125rem;color:var(--ink2)}
+.sub.acc{border-color:color-mix(in srgb,var(--cu) 55%,transparent)}
+.sub.acc .sub-t{color:var(--cu)}
+/* sheet back button */
+.sbk{pointer-events:auto;margin-right:auto;background:var(--surf2);color:var(--ink);border:0;border-radius:980px;font:inherit;font-size:0.8125rem;font-weight:600;padding:7px 14px;cursor:pointer}
+.sbk:hover{background:var(--hair)}
+/* affiliation logos */
+.exlogo{width:44px;height:44px;border-radius:10px;object-fit:contain;background:#fff;padding:5px;flex:none;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.rhead{display:flex;align-items:center;gap:12px}
+.rhead h3{margin:0}
+
 /* scroll progress along the nav */
 .progress{position:absolute;left:0;bottom:-1px;width:100%;height:2px;background:var(--link);transform:scaleX(0);transform-origin:left center;pointer-events:none}
 .n{font-weight:inherit;font-variant-numeric:tabular-nums}
@@ -409,7 +441,7 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
   <div class="hero-in">
     <img class="avatar" id="avatar" alt="Ahmed Loay Elattar" hidden>
     <div class="eyebrow">Mechatronics &amp; Robotics Engineer</div>
-    <h1>Ahmed Loay Elattar</h1>
+    <h1>Hi, I'm <span class="nm">Ahmed Loay&nbsp;Elattar</span>.</h1>
     <p class="intro">I design the circuit boards and firmware that run robots, then build the robot around them.</p>
     <div class="actions">
       <a class="btn" href="#work">See projects</a>
@@ -491,7 +523,7 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
   </figure>
   </div>
 
-  <div class="grid">
+  <div class="grid collapsed" id="pgrid">
 
     <article class="tile c12 wide" data-id="rov">
       <div class="cover" hidden></div>
@@ -504,15 +536,14 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
       </div>
       <div class="more">
         <p>Everything topside and onboard shares one Ethernet network. The station PC connects over a single 1 Gb link to an Ethernet switch, and two cables leave that switch: one to the Raspberry Pi 5 and one to the STM32F411 gateway, which has its own W5500 Ethernet chip. The Pi runs ROS 2 Jazzy for pilot input, autonomy and logging, and talks plain ROS 2 with the station PC. The gateway is the only board running micro-ROS, and its agent runs on the station PC. Below the gateway, distributed boards on a 1 Mbps CAN bus drive the thrusters, measure current and run pressure compensation.</p>
-        <h4>Updating firmware inside a sealed hull</h4>
-        <p>Opening the hull to reflash a board costs time and risks a leak. So a GUI on the station PC picks the target board and the upload method: over the network, or USB when the board is on the bench. For an over-the-air update, the station PC sends the .bin straight to the gateway as TCP packets with a 12-byte header (node ID, size, CRC-32), on the same link that carries the gateway's micro-ROS messages. The Pi is not involved. The gateway stages the image in SPI flash, then flashes the target over CAN through this bootloader sequence:</p>
-        <ul class="steps"><li>IDLE</li><li>AWAIT_BOOT</li><li>ERASING</li><li>RECEIVING</li><li>VERIFY</li><li>SUCCESS</li></ul>
-        <p>CRC-32 is checked independently on the host and on the target. The gateway can update itself the same way. Between competition runs, nobody touches a screwdriver.</p>
-        <h4>Motion control</h4>
-        <p>Any 6-DoF command is split across seven T200 thrusters through a 6×7 allocation matrix solved by pseudo-inverse, <code>u = A⁺w</code>. Closed-loop PID runs on all six axes from a BNO055 IMU at 50 Hz and an MS5837 depth sensor, with a relay-based autotuner that finds the gains.</p>
-        <h4>Active pressure compensation</h4>
-        <p>Underwater, external pressure climbs about one atmosphere every ten metres; at a hundred metres a sealed canister is holding back roughly ten atmospheres, enough to deform it or fail a seal. The active pressure compensation system holds the canister's internal pressure tracking the water outside, so the enclosure is never fighting that difference. The idea and the whole architecture were mine: I designed it, modelled it and ran its tests in LabVIEW before it was built, and Omar Hossam built the PCB.</p>
-        <p>The gas dynamics are nonlinear and the disturbances, a slow leak or a sudden change of depth, are unpredictable, so instead of a precise model I used a <b>fuzzy logic controller</b> built from expert rules on the pressure error. Two custom in-house MS5837 sensors, one inside the canister and one outside, each on its own I2C bus for noise immunity, feed the error. The controller drives two solenoid valves, Fill and Release, to raise or bleed pressure. An STM32F401 runs the real-time sensing and valve control; a LabVIEW front panel over VISA supervises it, with the live pressure difference, the fuzzy output and the valve direction on screen. I chose the STM32F401 over an Arduino Uno deliberately: its hardware floating-point unit and multiple independent I2C buses make the fuzzy maths and the two-sensor setup fast and clean, which the Uno cannot do.</p>
+        <h4>Subsystems</h4>
+        <p class="subnote">Four systems make up the ROV. Open any one for its full detail, specs and photos.</p>
+        <div class="subs">
+          <button class="sub" type="button" data-sub="can"><span class="sub-t">CAN network &amp; control</span><span class="sub-d">Pi 5, STM32 gateway, 1 Mbps bus</span></button>
+          <button class="sub" type="button" data-sub="ota"><span class="sub-t">Over-the-air updates</span><span class="sub-d">Flash any sealed board, live</span></button>
+          <button class="sub" type="button" data-sub="motion"><span class="sub-t">6-DoF motion control</span><span class="sub-d">7 thrusters, pseudo-inverse, PID</span></button>
+          <button class="sub acc" type="button" data-sub="acps"><span class="sub-t">Active pressure compensation</span><span class="sub-d">Fuzzy control, my system</span></button>
+        </div>
         <h4>Five generations of boards</h4>
         <ol class="gens">
           <li><b>2023</b><span>Bare-copper carrier board for an Arduino Mega and Uno. ESCs sat loose inside the canister.</span></li>
@@ -590,17 +621,17 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
       <div class="slot">Photos go in <b>photos/nav2/</b></div>
       <div class="body">
         <h3>Autonomous navigation on ROS 2</h3>
-        <p class="org">RoboCup@Home Egypt, Mobile Robotics Lead</p>
-        <p class="sum">A Nav2 deployment with Cartographer SLAM, AMCL and fused lidar, odometry and IMU, tuned until mapping held up live. It became the club's reference setup.</p>
+        <p class="org">RoboCup@Home Egypt, April 2026 · Mobile Robotics Lead</p>
+        <p class="sum">A Nav2 deployment with SLAM Toolbox, AMCL and fused lidar, odometry and IMU, tuned until mapping held up live. It became the club's reference setup.</p>
         <button class="open" type="button">Read more</button>
       </div>
       <div class="more">
-        <p>This moved the club from underwater 3D control to autonomous driving on the ground. I built the Nav2 stack on a Pioneer 3-DX base with Cartographer for mapping, AMCL for localization, and sensor fusion of lidar, wheel odometry and IMU.</p>
+        <p>This moved the club from underwater 3D control to autonomous driving on the ground. I built the Nav2 stack on a Pioneer 3-DX base with SLAM Toolbox for mapping, AMCL for localization, and sensor fusion of lidar, wheel odometry and IMU.</p>
         <p>Most of the work was tuning: costmaps, the controller and planner servers, recovery behaviors and behavior trees, until live mapping and loop closure were dependable. On top of navigation I added an OpenCV loop that detects, decides and acts.</p>
         <p>I also wrote <a href="https://github.com/AhmedLoayElattar/ROS2Aria" target="_blank" rel="noopener">ROS2Aria</a>, an open-source C++ package that brings the Pioneer 3-DX to ROS 2.</p>
         <table class="spec">
           <tr><th>Stack</th><td>ROS 2, Nav2, behavior trees</td></tr>
-          <tr><th>Mapping</th><td>Cartographer SLAM</td></tr>
+          <tr><th>Mapping</th><td>SLAM Toolbox</td></tr>
           <tr><th>Localization</th><td>AMCL with lidar, odometry and IMU fusion</td></tr>
           <tr><th>Robot</th><td>Pioneer 3-DX</td></tr>
           <tr><th>Code</th><td><a href="https://github.com/AhmedLoayElattar/ROS2Aria" target="_blank" rel="noopener">github.com/AhmedLoayElattar/ROS2Aria</a></td></tr>
@@ -631,7 +662,28 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
       </div>
     </article>
 
-    <article class="tile c4" data-id="siemens">
+    <article class="tile c6" data-id="omnibot" data-extra>
+      <div class="cover" hidden></div>
+      <div class="slot">Photos go in <b>photos/omnibot/</b></div>
+      <div class="body">
+        <h3>A holonomic robot that an overhead camera drives</h3>
+        <p class="org">Mobile Robotics, E‑JUST, 2025</p>
+        <p class="sum">A four‑wheel omnidirectional base that gets its position not from wheel odometry, which drifts, but from a ceiling camera tracking a marker on its back.</p>
+        <button class="open" type="button">Read more</button>
+      </div>
+      <div class="more">
+        <p>A compact holonomic robot I built for the Mobile Robotics course. Four omni wheels let it translate in any direction and spin at the same time, with no need to turn before it moves.</p>
+        <p>Rather than dead‑reckoning from wheel encoders, the robot is localized by an off‑board camera looking down on the arena. The camera finds an ArUco marker on top of the robot and recovers its pose, which closes the loop: the controller compares that pose to the target and solves the holonomic kinematics for the four wheel speeds, so position error is corrected against ground truth instead of accumulating.</p>
+        <table class="spec">
+          <tr><th>Drive</th><td>Four omni wheels, holonomic (x, y and yaw)</td></tr>
+          <tr><th>Localization</th><td>Off‑board overhead camera, ArUco marker</td></tr>
+          <tr><th>Control</th><td>Closed loop on camera pose, holonomic kinematics</td></tr>
+          <tr><th>Course</th><td>Mobile Robotics, E‑JUST</td></tr>
+        </table>
+      </div>
+    </article>
+
+    <article class="tile c6" data-id="siemens" data-extra>
       <div class="cover" hidden></div>
       <div class="slot">Photos go in <b>photos/siemens/</b></div>
       <div class="body">
@@ -653,7 +705,7 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
       </div>
     </article>
 
-    <article class="tile c4" data-id="drone">
+    <article class="tile c6" data-id="drone" data-extra>
       <div class="cover" hidden></div>
       <div class="slot">Photos go in <b>photos/drone/</b></div>
       <div class="body">
@@ -674,7 +726,7 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
       </div>
     </article>
 
-    <article class="tile c4" data-id="printers">
+    <article class="tile c6" data-id="printers" data-extra>
       <div class="cover" hidden></div>
       <div class="slot">Photos go in <b>photos/printers/</b></div>
       <div class="body">
@@ -694,7 +746,7 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
       </div>
     </article>
 
-    <article class="tile c6" data-id="spitfire">
+    <article class="tile c4" data-id="spitfire" data-extra>
       <div class="cover" hidden></div>
       <div class="slot">Photos go in <b>photos/spitfire/</b></div>
       <div class="body">
@@ -709,7 +761,7 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
       </div>
     </article>
 
-    <article class="tile c3" data-id="cnc">
+    <article class="tile c4" data-id="cnc" data-extra>
       <div class="cover" hidden></div>
       <div class="slot">Photos go in <b>photos/cnc/</b></div>
       <div class="body">
@@ -724,7 +776,7 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
       </div>
     </article>
 
-    <article class="tile c3" data-id="ev">
+    <article class="tile c4" data-id="ev" data-extra>
       <div class="cover" hidden></div>
       <div class="slot">Photos go in <b>photos/ev/</b></div>
       <div class="body">
@@ -739,6 +791,14 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
       </div>
     </article>
 
+  </div>
+
+  <div class="grid-more">
+    <button class="morebtn" id="more-btn" type="button" aria-expanded="false" aria-controls="pgrid">
+      <span class="mb-t">Show all projects</span>
+      <span class="mb-n">7 more</span>
+      <svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+    </button>
   </div>
 </section>
 
@@ -834,11 +894,11 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
   <h2 id="exp-h">Experience</h2>
   <p class="lede">Three selective industrial internships in 2026, with global names in consumer goods, automotive wiring and automation, on top of four years building robots at E‑JUST.</p>
   <div class="rows">
-    <div class="row"><div class="when">Sep to Dec 2026</div><div><h3>Procter &amp; Gamble</h3><p class="pos">Innovation Quality Assurance Intern</p><p class="d">P&amp;G is the largest consumer goods (FMCG) company in the world, and its programs take a small fraction of the engineers who apply. I'm on the Innovation Quality Assurance team at the 6th of October City plant, on the quality side of how new products reach the line.</p></div></div>
-    <div class="row"><div class="when">Aug 2026</div><div><h3>LEONI</h3><p class="pos">Operational Excellence Intern, Rising Stars Program</p><p class="d">LEONI is one of the world's largest makers of automotive wiring systems. On its competitive Rising Stars program I built a live KOSU efficiency dashboard from production barcode-scan data and ran a 6S audit of the packaging area.</p></div></div>
-    <div class="row"><div class="when">Jul to Aug 2026</div><div><h3>Siemens</h3><p class="pos">SIMATIC Programming 1 in the TIA Portal</p><p class="d">Trained by Siemens engineers on industrial automation. I designed a full conveyor sorting program of my own on an S7-1500, built its HMI, and spent time in the Siemens Digitalization Lab.</p></div></div>
-    <div class="row"><div class="when">Jul to Sep 2023</div><div><h3>Nissan Motor Egypt</h3><p class="pos">Engineering Intern, MSPO, APW and Maintenance</p><p class="d">Designed and deployed the plant's first-ever AGV in two months, working across three teams.</p></div></div>
-    <div class="row"><div class="when">2022 to now</div><div><h3>E‑JUST Robotics Club</h3><p class="pos">Chief Technical Officer, Electrical and Embedded Systems</p><p class="d">Vice Chairperson from 2023 to 2025. I also co-run the club's technical training for <b class="n" data-count="50">50</b>+ members.</p></div></div>
+    <div class="row"><div class="when">Sep to Dec 2026</div><div><div class="rhead"><img class="exlogo" src="logos/pg.png" alt="Procter & Gamble logo"><h3>Procter &amp; Gamble</h3></div><p class="pos">Innovation Quality Assurance Intern</p><p class="d">P&amp;G is the largest consumer goods (FMCG) company in the world, and its programs take a small fraction of the engineers who apply. I'm on the Innovation Quality Assurance team at the 6th of October City plant, on the quality side of how new products reach the line.</p></div></div>
+    <div class="row"><div class="when">Aug 2026</div><div><div class="rhead"><img class="exlogo" src="logos/leoni.jpg" alt="LEONI logo"><h3>LEONI</h3></div><p class="pos">Operational Excellence Intern, Rising Stars Program</p><p class="d">LEONI is one of the world's largest makers of automotive wiring systems. On its competitive Rising Stars program I built a live KOSU efficiency dashboard from production barcode-scan data and ran a 6S audit of the packaging area.</p></div></div>
+    <div class="row"><div class="when">Jul to Aug 2026</div><div><div class="rhead"><img class="exlogo" src="logos/siemens.jpg" alt="Siemens logo"><h3>Siemens</h3></div><p class="pos">SIMATIC Programming 1 in the TIA Portal</p><p class="d">Trained by Siemens engineers on industrial automation. I designed a full conveyor sorting program of my own on an S7-1500, built its HMI, and spent time in the Siemens Digitalization Lab.</p></div></div>
+    <div class="row"><div class="when">Jul to Sep 2023</div><div><div class="rhead"><img class="exlogo" src="logos/nissan.jpg" alt="Nissan logo"><h3>Nissan Motor Egypt</h3></div><p class="pos">Engineering Intern, MSPO, APW and Maintenance</p><p class="d">Designed and deployed the plant's first-ever AGV in two months, working across three teams.</p></div></div>
+    <div class="row"><div class="when">2022 to now</div><div><div class="rhead"><img class="exlogo" src="logos/erc.jpg" alt="E-JUST Robotics Club logo"><h3>E‑JUST Robotics Club</h3></div><p class="pos">Chief Technical Officer, Electrical and Embedded Systems</p><p class="d">Vice Chairperson from 2023 to 2025. I also co-run the club's technical training for <b class="n" data-count="50">50</b>+ members.</p></div></div>
     <div class="row"><div class="when">2022 to 2027</div><div><h3>Egypt-Japan University of Science and Technology</h3><p class="pos">B.Sc. Mechatronics and Robotics Engineering</p><p class="d">Taught in English. Graduating February 2027.</p></div></div>
   </div>
 </section>
@@ -858,10 +918,8 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
     </figure>
   </div>
   <div class="rows">
-    <div class="row"><div class="when">Oct 2024</div><div><h3>No Pain No Gain Award</h3><p class="d">Alamein Robotics Championship, international underwater robotics, for first-time teams.</p></div></div>
     <div class="row"><div class="when">Aug 2024</div><div><h3>2nd place, UAVC Drone Challenge</h3><p class="d">ICMTC at the Military Technical College. 11 teams, 30,000 EGP prize.</p></div></div>
-    <div class="row"><div class="when">Aug 2024</div><div><h3>EVER 5 Electric Vehicle Competition</h3><p class="d">6th of 23 in endurance and 14th of 22 in the dynamic events, as electrical team lead.</p></div></div>
-    <div class="row"><div class="when">May 2023</div><div><h3>No Pain No Gain Award</h3><p class="d">MATE ROV Egypt, the team's first competition.</p></div></div>
+    <div class="row"><div class="when">Aug 2024</div><div><div class="rhead"><img class="exlogo" src="logos/ert.jpg" alt="E-JUST Racing Team logo"><h3>EVER 5 Electric Vehicle Competition</h3></div><p class="d">6th of 23 in endurance and 14th of 22 in the dynamic events, as electrical team lead.</p></div></div>
   </div>
 </section>
 
@@ -872,7 +930,7 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
     <div class="row"><dt>Programming</dt><dd>C, C++, Python, MATLAB</dd></div>
     <div class="row"><dt>Microcontrollers</dt><dd>STM32 (main platform), ESP32, Arduino, Raspberry Pi, Jetson Nano</dd></div>
     <div class="row"><dt>Communication</dt><dd>CAN, SPI, I2C, UART, NRF24L01, micro-ROS, PROFINET</dd></div>
-    <div class="row"><dt>Robotics</dt><dd>ROS 2, Nav2, Cartographer SLAM, AMCL, sensor fusion, thruster allocation, PID autotuning, OpenCV</dd></div>
+    <div class="row"><dt>Robotics</dt><dd>ROS 2, Nav2, SLAM Toolbox, AMCL, sensor fusion, thruster allocation, PID autotuning, OpenCV</dd></div>
     <div class="row"><dt>PCB design</dt><dd>Altium Designer, Eagle, power electronics</dd></div>
     <div class="row"><dt>Industrial automation</dt><dd>SIMATIC S7-1500, TIA Portal, ladder logic, SIMATIC HMI, SINAMICS, ET200SP</dd></div>
     <div class="row"><dt>Data</dt><dd>SQL, Power BI, DAX</dd></div>
@@ -899,7 +957,7 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
 
 <dialog class="sheet" id="sheet" aria-labelledby="sh-title">
   <div class="sheet-in">
-    <div class="sheet-bar"><span class="grab" aria-hidden="true"></span><button class="x" type="button" data-close aria-label="Close"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 2l10 10M12 2L2 12"/></svg></button></div>
+    <div class="sheet-bar"><button class="sbk" type="button" data-back hidden>← ROV electronics</button><span class="grab" aria-hidden="true"></span><button class="x" type="button" data-close aria-label="Close"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M2 2l10 10M12 2L2 12"/></svg></button></div>
     <div class="sheet-head"><h2 id="sh-title"></h2><p class="org" id="sh-org"></p></div>
     <div class="gallery" id="sh-gal"></div>
     <div class="sheet-body" id="sh-body"></div>
@@ -974,8 +1032,12 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
 
   /* ---------- sheet: transition in, faster out, drag to dismiss on phones ---------- */
   var sheet=$('#sheet'), sin=$('.sheet-in',sheet), gal=$('#sh-gal'), current=[], closing=false, endT=0, lastTile=null;
+  var backFn=null, sbk=null;
   function openData(d){
     lastTile=d.focus||null;
+    backFn=d.back||null;
+    if(!sbk) sbk=$('.sbk',sheet);
+    if(sbk) sbk.hidden=!backFn;
     $('#sh-title').textContent=d.title||'';
     $('#sh-org').textContent=d.org||'';
     $('#sh-body').innerHTML=d.html||'';
@@ -1008,6 +1070,29 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
     t.addEventListener('click',function(e){ if(e.target.closest('a')) return; openSheet(t); });
   });
 
+  /* ---------- show all / show fewer projects ---------- */
+  (function(){
+    var grid=$('#pgrid'), btn=$('#more-btn'); if(!grid||!btn) return;
+    var wrap=btn.closest('.grid-more');
+    var extras=$$('.tile[data-extra]',grid);
+    btn.addEventListener('click',function(){
+      var open=grid.classList.toggle('collapsed')===false;
+      wrap.classList.toggle('open',open);
+      btn.setAttribute('aria-expanded',open?'true':'false');
+      $('.mb-t',btn).textContent=open?'Show fewer projects':'Show all projects';
+      $('.mb-n',btn).textContent=open?'':extras.length+' more';
+      if(open){
+        if(window.gsap&&!reduce){
+          gsap.set(extras,{autoAlpha:1});
+          gsap.from(extras,{autoAlpha:0,y:24,duration:.5,stagger:.06,ease:'power2.out'});
+        }
+        if(window.ScrollTrigger) ScrollTrigger.refresh();
+      } else {
+        try{ $('#work').scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'}); }catch(e){}
+      }
+    });
+  })();
+
   /* ---------- board cards open their own gallery + details ---------- */
   var BDET=SITE.boardDetail||[];
   $$('.bcard').forEach(function(c,i){
@@ -1024,6 +1109,17 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
   /* ---------- featured band button opens the ROV story ---------- */
   var featBtn=$('#feat-open'), rovTile=$('.tile[data-id="rov"]');
   if(featBtn&&rovTile) featBtn.addEventListener('click',function(){ openSheet(rovTile); });
+
+  /* ---------- ROV subsystems: open a focused detail with a back link ---------- */
+  var SUBS=SITE.subsystems||{};
+  if(sbk===null) sbk=$('.sbk',sheet);
+  if(sbk) sbk.addEventListener('click',function(){ if(backFn) backFn(); });
+  $('#sh-body').addEventListener('click',function(e){
+    var b=e.target.closest('.sub'); if(!b) return;
+    var key=b.dataset.sub, d=SUBS[key]; if(!d) return;
+    openData({ title:d.title, org:d.org||'', html:d.html||'', photos:PH[d.photos]||[],
+      back:function(){ if(rovTile) openSheet(rovTile); } });
+  });
   sheet.addEventListener('cancel',function(e){e.preventDefault();closeSheet()});
   sheet.addEventListener('click',function(e){ if(e.target===sheet||e.target.closest('[data-close]')) closeSheet(); });
 
@@ -1139,7 +1235,6 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
 
       // hero eases away as you leave it
       gsap.to('.hero > div:first-child',{y:-70,opacity:.25,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
-      gsap.to('.hero .ota',{y:-30,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
 
       // headings rise out of a mask
       $$('.sec > h2, .boards-head h2, .contact h2').forEach(function(h){
