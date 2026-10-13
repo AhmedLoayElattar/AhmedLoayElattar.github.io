@@ -1211,7 +1211,7 @@ body{overflow-x:clip}
   function read(k){try{return localStorage.getItem(k)}catch(e){return null}}
   function applyTheme(m){
     root.setAttribute('data-theme',m);
-    modes.forEach(function(x){$('#ic-'+x).hidden=(x===m)});
+    modes.forEach(function(x){$('#ic-'+x).toggleAttribute('hidden',x===m)});
     $('#theme-lbl').textContent='Theme: '+names[m];
     $('#theme').title='Theme: '+names[m]+' (click to change)';
   }
