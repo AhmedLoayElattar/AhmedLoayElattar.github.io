@@ -190,7 +190,7 @@ footer{margin-inline:-20px;padding:22px 20px calc(28px + env(safe-area-inset-bot
 footer .w{display:flex;flex-wrap:wrap;gap:6px 24px;justify-content:space-between}
 
 /* sheet */
-dialog.sheet{border:0;padding:0;margin:auto auto 0;width:min(920px,100%);max-width:100%;height:calc(100% - 40px);max-height:calc(100% - 40px);border-radius:var(--r-xl) var(--r-xl) 0 0;background:var(--sheet);color:var(--ink);overflow:hidden}
+dialog.sheet{border:0;padding:0;margin:auto auto 0;width:min(920px,100%);max-width:100%;height:100%;max-height:calc(100% - 40px);border-radius:var(--r-xl) var(--r-xl) 0 0;background:var(--sheet);color:var(--ink);overflow:hidden}
 dialog.sheet[open]{display:flex;flex-direction:column}
 @media (min-width:760px){dialog.sheet{margin:auto;border-radius:var(--r-xl);height:auto;max-height:calc(100% - 64px)}}
 dialog.sheet::backdrop{background:var(--scrim);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
@@ -530,8 +530,22 @@ body{overflow-x:clip}
 .tour3d .t3head{width:fit-content;max-width:min(1100px,calc(100% - 40px));margin-inline:auto;padding:14px 22px;border-radius:20px;background:color-mix(in srgb,var(--bg) 80%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 .t3wrap{display:grid;margin-top:12px}
 .t3wrap>*{grid-area:1/1}
-.t3stage{position:sticky;top:calc(var(--navh,52px) + 6px);align-self:start;height:calc(100vh - var(--navh,52px) - 12px);height:calc(100svh - var(--navh,52px) - 12px);z-index:0;pointer-events:none;-webkit-mask-image:linear-gradient(transparent,#000 9%,#000 91%,transparent);mask-image:linear-gradient(transparent,#000 9%,#000 91%,transparent)}
-.t3stage.live{pointer-events:auto}
+.t3stage{position:sticky;top:calc(var(--navh,52px) + 6px);align-self:start;height:calc(100vh - var(--navh,52px) - 12px);height:calc(100svh - var(--navh,52px) - 12px);z-index:0;pointer-events:none}
+.t3stage.free{pointer-events:auto}
+.t3stage model-viewer,.t3poster{-webkit-mask-image:linear-gradient(transparent,#000 9%,#000 91%,transparent);mask-image:linear-gradient(transparent,#000 9%,#000 91%,transparent)}
+.t3wrap.free .t3steps{visibility:hidden}
+.t3ctl{position:absolute;top:10px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:980px;background:color-mix(in srgb,var(--bg) 82%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 0 0 1px var(--hair),0 8px 24px rgba(0,0,0,.12);opacity:0;pointer-events:none;transition:opacity .4s;white-space:nowrap}
+.t3stage.ready .t3ctl{opacity:1;pointer-events:auto}
+.t3ctl button{border:0;background:none;color:var(--ink);font:inherit;cursor:pointer;display:grid;place-items:center;padding:0}
+.t3arr{width:34px;height:34px;border-radius:50%;background:var(--surf)!important}
+.t3arr svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.t3arr:disabled{opacity:.35;cursor:default}
+.t3dots{display:flex;gap:2px}
+.t3dots button{width:16px;height:34px}
+.t3dots button i{display:block;width:8px;height:8px;border-radius:50%;background:var(--hair);transition:transform .25s,background .25s}
+.t3dots button.on i{background:var(--btn);transform:scale(1.5)}
+.t3free{padding:0 14px!important;height:34px;border-radius:980px;background:var(--surf)!important;font-size:.8125rem!important;font-weight:600}
+.t3wrap.free .t3free{background:var(--btn)!important;color:var(--btn-ink)}
 .t3stage model-viewer{position:absolute;left:0;top:0;width:100%;height:calc(100% - 40px);--poster-color:transparent;background:transparent;touch-action:pan-y;opacity:0;transition:opacity .6s}
 .t3stage.ready model-viewer{opacity:1}
 .t3poster{position:absolute;left:0;top:0;width:100%;height:calc(100% - 64px);object-fit:contain;object-position:60% 40%;transition:opacity .5s}
@@ -543,7 +557,7 @@ body{overflow-x:clip}
 .t3ld{position:absolute;left:62%;top:50%;transform:translate(-50%,-50%);text-align:center;color:var(--ink);font-size:.9375rem;pointer-events:none;opacity:0;transition:opacity .3s;padding:10px 18px;border-radius:14px;background:color-mix(in srgb,var(--bg) 80%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 .t3stage.loading .t3ld{opacity:1}.t3stage.ready .t3ld{opacity:0}
 .t3hint{position:absolute;right:16px;bottom:12px;font-size:.75rem;color:var(--ink3);pointer-events:none;opacity:0;transition:opacity .4s}
-.t3stage.ready .t3hint{opacity:1}
+.t3wrap.free .t3hint{opacity:1}
 @media (max-width:760px){.t3go,.t3ld{left:50%}.t3poster{object-position:50% 30%;height:60%}}
 .t3steps{position:relative;z-index:1;pointer-events:none}
 .t3step{min-height:90vh;min-height:90svh;display:flex;align-items:center;padding:0 clamp(14px,4vw,56px)}
@@ -557,6 +571,19 @@ body{overflow-x:clip}
 .t3card h3{font-size:clamp(1.35rem,2.6vw,1.8rem);line-height:1.12;letter-spacing:-.02em;margin:6px 0 8px;font-weight:600}
 .t3card p{margin:0;color:var(--ink2);font-size:.97rem;line-height:1.5}
 @media (max-width:760px){.t3step{align-items:flex-end;padding-bottom:3vh}.t3card{max-width:none;width:100%}}
+
+/* v22 phone: very compact skills */
+@media (max-width:600px){
+  .skcat{padding:12px 10px 8px}
+  .skhead{margin-bottom:8px;gap:10px}.skhead h3{font-size:1.15rem}
+  .skcards{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-bottom:2px}
+  .skcard{padding:7px 3px 6px;border-radius:8px;gap:1px;min-height:0}
+  .skcard>span:not(.skic){display:none}
+  .skcard b{font-size:.625rem;line-height:1.15;font-weight:600;overflow-wrap:anywhere}
+  .skic{width:30px;height:30px;margin-bottom:3px;border-radius:7px}
+  .skic svg{width:19px;height:19px}.skic img{width:20px;height:20px}
+  .sktags{gap:4px}.sktags span{font-size:.5625rem;padding:3px 6px;letter-spacing:.02em}
+}
 </style>
 </head>
 <body>
@@ -1146,10 +1173,11 @@ body{overflow-x:clip}
   </div>
   <div class="t3wrap">
     <div class="t3stage" id="t3stage">
-      <img class="t3poster" src="3d/poster.webp" alt="Preview of the 3D board stack" width="712" height="582">
-      <model-viewer id="t3mv" alt="Interactive 3D model of the ROV control and power board stack" camera-controls disable-zoom interaction-prompt="none" shadow-intensity="1.1" shadow-softness=".8" exposure="1.05" field-of-view="30deg" camera-orbit="25deg 40deg 1.9m" camera-target="0m 0m 0m" min-camera-orbit="auto auto 0.1m" max-camera-orbit="auto auto 6m" interpolation-decay="140"></model-viewer>
+      <img class="t3poster" src="3d/poster-v2.webp" alt="Preview of the 3D board stack" width="712" height="582">
+      <model-viewer id="t3mv" alt="Interactive 3D model of the ROV control and power board stack" camera-controls disable-zoom interaction-prompt="none" shadow-intensity="1.1" shadow-softness=".8" exposure="1.05" field-of-view="30deg" camera-orbit="25deg 40deg 2.6m" camera-target="0m 0m 0m" min-camera-orbit="auto auto 0.1m" max-camera-orbit="auto auto 6m" interpolation-decay="140"></model-viewer>
       <button class="t3go" id="t3go" type="button">Load the 3D model <small id="t3sz">12 MB</small></button>
       <div class="t3ld" id="t3ld"><span id="t3pct">Loading…</span></div>
+      <div class="t3ctl" id="t3ctl"><button class="t3arr" id="t3prev" type="button" aria-label="Previous stop"><svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg></button><div class="t3dots" id="t3dots"></div><button class="t3arr" id="t3next" type="button" aria-label="Next stop"><svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button><button class="t3free" id="t3free" type="button" aria-pressed="false">Explore</button></div>
       <span class="t3hint">Drag to rotate</span>
     </div>
     <div class="t3steps" id="t3steps"></div>
@@ -1157,7 +1185,7 @@ body{overflow-x:clip}
 </section>
 <script>
 (function(){
-var STOPS=[["Overview", "The 2026 control and power stack", "This is the latest generation of the ROV\u2019s electronics: the control and power boards stacked on metal standoffs, with no cables between them. Scroll to fly through it.", "0m 0m 0m", "25deg 40deg 1.9m"], ["Motor drive", "One ESC for every thruster", "Each thruster has its own ESC. Because they are separate, a failed one is swapped on its own instead of reworking the whole power board.", "-0.30m 0m -0.09m", "20deg 38deg 0.7m"], ["Thrusters", "Power and signal in one place", "The thruster connections land right beside the ESCs they feed, so the high-current wiring stays short and the hull stays tidy.", "-0.43m 0m 0m", "60deg 45deg 0.55m"], ["Compute", "Raspberry Pi 5 on a carrier board", "The onboard computer sits directly on the stack. It runs ROS 2 Jazzy for pilot input, autonomy and logging, and talks to the station PC over Ethernet.", "0m 0m 0.20m", "-15deg 40deg 0.65m"], ["Gateway", "The STM32F411 gateway", "A small microcontroller with a W5500 Ethernet chip. It runs micro-ROS, bridges the network to the CAN bus, and is where firmware updates arrive before they are sent to the other boards.", "0m 0m -0.29m", "15deg 38deg 0.55m"], ["Network", "One Ethernet link to the surface", "A single 1 Gb Ethernet cable runs up the tether to the station PC and carries everything, so the tether stays thin.", "0.32m 0m -0.27m", "-25deg 40deg 0.55m"], ["Structure", "CAN runs through the standoffs", "The boards are held apart by metal standoffs, and the CAN bus is routed through them. That is why there are no external cables inside the stack.", "0m 0m 0m", "88deg 80deg 1.3m"], ["Your turn", "Fabricated at JLCPCB", "The off-the-shelf modules of earlier generations were replaced with SMD parts on the boards themselves. Drag the model to look around.", "0m 0m 0m", "-30deg 45deg 1.9m"]];
+var STOPS=[["Overview", "The 2026 control and power stack", "This is the latest generation of the ROV\u2019s electronics: the control and power boards stacked on metal standoffs, with no cables between them. Scroll to fly through it.", "0m 0m 0m", "25deg 40deg 2.6m"], ["Motor drive", "One ESC for every thruster", "Each thruster has its own ESC. Because they are separate, a failed one is swapped on its own instead of reworking the whole power board.", "-0.30m 0m -0.09m", "20deg 38deg 0.7m"], ["Thrusters", "Power and signal in one place", "The thruster connections land right beside the ESCs they feed, so the high-current wiring stays short and the hull stays tidy.", "-0.43m 0m 0m", "60deg 45deg 0.55m"], ["Compute", "Raspberry Pi 5 on a carrier board", "The onboard computer sits directly on the stack. It runs ROS 2 Jazzy for pilot input, autonomy and logging, and talks to the station PC over Ethernet.", "0m 0m 0.20m", "-15deg 40deg 0.65m"], ["Gateway", "The STM32F411 gateway", "A small microcontroller with a W5500 Ethernet chip. It runs micro-ROS, bridges the network to the CAN bus, and is where firmware updates arrive before they are sent to the other boards.", "0m 0m -0.29m", "15deg 38deg 0.55m"], ["Network", "One Ethernet link to the surface", "A single 1 Gb Ethernet cable runs up the tether to the station PC and carries everything, so the tether stays thin.", "0.32m 0m -0.27m", "-25deg 40deg 0.55m"], ["Structure", "CAN runs through the standoffs", "The boards are held apart by metal standoffs, and the CAN bus is routed through them. That is why there are no external cables inside the stack.", "0m 0m 0m", "88deg 80deg 1.3m"], ["Your turn", "Fabricated at JLCPCB", "The off-the-shelf modules of earlier generations were replaced with SMD parts on the boards themselves. Drag the model to look around.", "0m 0m 0m", "-30deg 45deg 2.7m"]];
 var host=document.getElementById('t3steps'),mv=document.getElementById('t3mv'),stage=document.getElementById('t3stage'),pct=document.getElementById('t3pct');
 STOPS.forEach(function(s,i){var d=document.createElement('div');d.className='t3step';d.dataset.i=i;
   d.innerHTML='<div class="t3card"><div class="t3k"></div><h3></h3><p></p></div>';
@@ -1166,7 +1194,13 @@ var steps=[].slice.call(host.children),cur=-1,wrap=host.parentNode;
 var pre=document.createElement('div');pre.className='t3step t3pre';
 pre.innerHTML='<div class="t3card"><div class="t3k">Interactive</div><h3>Take the 3D tour</h3><p>Press <b>Load the 3D model</b> to fly through the boards one part at a time. Or keep scrolling to skip it.</p></div>';
 host.insertBefore(pre,host.firstChild);
-function go(i){var s=STOPS[i];mv.cameraTarget=s[3];mv.cameraOrbit=s[4];steps.forEach(function(e,j){e.classList.toggle('on',j===i)})}
+var dotsEl=document.getElementById('t3dots'),prevB=document.getElementById('t3prev'),nextB=document.getElementById('t3next'),freeB=document.getElementById('t3free');
+var dotB=STOPS.map(function(s,i){var d=document.createElement('button');d.type='button';d.setAttribute('aria-label','Go to stop '+(i+1)+': '+s[0]);d.innerHTML='<i></i>';d.addEventListener('click',function(){jump(i)});dotsEl.appendChild(d);return d});
+function jump(i){i=Math.max(0,Math.min(STOPS.length-1,i));cur=i;go(i);if(wrap.classList.contains('free'))setFree(false);steps[i].scrollIntoView({block:'center',behavior:'smooth'})}
+function setFree(on){wrap.classList.toggle('free',on);stage.classList.toggle('free',on);freeB.textContent=on?'Back to tour':'Explore';freeB.setAttribute('aria-pressed',on?'true':'false');if(!on)go(cur<0?0:cur)}
+prevB.addEventListener('click',function(){jump((cur<0?0:cur)-1)});nextB.addEventListener('click',function(){jump((cur<0?0:cur)+1)});
+freeB.addEventListener('click',function(){setFree(!wrap.classList.contains('free'))});
+function go(i){var s=STOPS[i];mv.cameraTarget=s[3];mv.cameraOrbit=s[4];steps.forEach(function(e,j){e.classList.toggle('on',j===i)});dotB.forEach(function(d,j){d.classList.toggle('on',j===i)});prevB.disabled=i<=0;nextB.disabled=i>=STOPS.length-1}
 if('IntersectionObserver' in window){
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var i=+e.target.dataset.i;if(i!==cur){cur=i;go(i)}}})},{rootMargin:'-45% 0px -45% 0px'});
   steps.forEach(function(e){io.observe(e)});
@@ -1181,7 +1215,7 @@ function start(){
   import('./3d/model-viewer.js').then(function(){return customElements.whenDefined('model-viewer')}).then(function(){
     customElements.get('model-viewer').meshoptDecoderLocation=new URL('./3d/meshopt_decoder.js',document.baseURI).href;
     mv.addEventListener('progress',function(e){var p=e.detail.totalProgress;if(p>0&&p<1)pct.textContent='Loading… '+Math.round(p*100)+'%'});
-    mv.addEventListener('load',function(){stage.classList.remove('loading');stage.classList.add('ready','live');wrap.classList.add('on');go(cur<0?0:cur);mv.jumpCameraToGoal()});
+    mv.addEventListener('load',function(){stage.classList.remove('loading');stage.classList.add('ready');wrap.classList.add('on');go(cur<0?0:cur);mv.jumpCameraToGoal()});
     mv.addEventListener('error',function(){pct.textContent='3D view unavailable on this device.'});
     mv.setAttribute('environment-image','./3d/studio.hdr');
     mv.setAttribute('src',lite?'./3d/pcb-lite.glb':'./3d/pcb.glb');
