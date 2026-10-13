@@ -52,13 +52,13 @@ img{display:block}
 
 /* nav */
 .nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;margin-inline:-20px;padding-inline:20px;background:var(--nav);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px)}
-.nav .w{display:flex;align-items:center;gap:8px;height:52px}
-.nav .me{font-size:0.9375rem;font-weight:600;color:var(--ink);white-space:nowrap;margin-right:auto}
+.nav .w{display:flex;align-items:center;gap:12px;height:60px}
+.nav .me{font-size:1rem;font-weight:600;color:var(--ink);white-space:nowrap;margin-right:auto}
 .nav .me:hover{text-decoration:none}
-.nav nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;min-width:0}
+.nav nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;min-width:0;background:var(--surf);padding:4px;border-radius:980px;box-shadow:inset 0 0 0 1px var(--hair)}
 .nav nav::-webkit-scrollbar{display:none}
-.nav nav a{font-size:0.8125rem;color:var(--ink2);white-space:nowrap;padding:6px 10px;border-radius:980px}
-.nav nav a:hover{color:var(--ink);text-decoration:none;background:var(--surf)}
+.nav nav a{font-size:0.9375rem;font-weight:500;color:var(--ink);white-space:nowrap;padding:8px 14px;border-radius:980px;transition:background-color .2s ease,color .2s ease}
+.nav nav a:hover{color:var(--ink);text-decoration:none;background:var(--surf2)}
 .theme{flex:none;width:34px;height:34px;border-radius:50%;border:0;background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer}
 .theme:hover{background:var(--surf)}
 .theme svg{width:18px;height:18px}
@@ -365,10 +365,13 @@ dialog.lb[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto}
 /* nav: fade edge where content meets the bar, not a hard rule */
 .nav::after{content:"";position:absolute;left:0;right:0;top:100%;height:10px;pointer-events:none;background:linear-gradient(color-mix(in srgb,var(--ink) 7%,transparent),transparent);opacity:0;transition:opacity .3s ease}
 .nav.scrolled::after{opacity:1}
-.nav nav a.cur{color:var(--ink);background:var(--surf)}
+.nav nav a.cur{color:var(--btn-ink);background:var(--btn)}
+.nav nav a.cur:hover{background:var(--btn)}
+.nav nav a:focus-visible{outline:2px solid var(--btn);outline-offset:1px}
 @media (max-width:560px){
-  .nav .w{flex-wrap:wrap;height:auto;padding-top:8px;row-gap:2px}
-  .nav nav{order:3;flex-basis:100%;margin-inline:-10px;padding-bottom:6px}
+  .nav .w{flex-wrap:wrap;height:auto;padding-top:10px;padding-bottom:8px;row-gap:8px}
+  .nav nav{order:3;flex-basis:100%}
+  .nav nav a{padding:8px 13px}
 }
 
 /* one orchestrated load moment: hero settles in, staggered */
@@ -598,9 +601,9 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
       <div class="cover" hidden></div>
       <div class="slot">Photos go in <b>photos/nissan/</b></div>
       <div class="body">
-        <h3>The plant's first AGV</h3>
+        <h3>Nissan Egypt's First AGV</h3>
         <p class="org">Nissan Motor Egypt, summer 2023</p>
-        <p class="sum">Researched, built and deployed in a two-month internship. It took over half a worker's material handling on every shift.</p>
+        <p class="sum">Researched, built and deployed an autonomous guided vehicle (AGV) in a two-month internship. It took over half a worker's material handling on every shift.</p>
         <div class="figs">
           <p class="fig">~<b class="n" data-count="4000">4,000</b> EGP<span>saved per month, on every shift</span></p>
           <p class="fig sm"><b class="n" data-count="27000">27,000</b> EGP<span>total build budget</span></p>
@@ -608,12 +611,13 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
         <button class="open" type="button">Read more</button>
       </div>
       <div class="more">
-        <p>The plant had never had an AGV. During a two-month engineering internship across the MSPO, APW and Maintenance teams, I took the project from research to a vehicle running on the floor.</p>
+        <p>Nissan Motor Egypt had never had an autonomous guided vehicle (AGV). During a two-month engineering internship across the MSPO, APW and Maintenance teams, I took the project from research to a vehicle running on the floor.</p>
         <p>Before building, I tested the options side by side: IR line following against computer vision, electrical tape against magnetic tape, and DC, brushless and hoverboard hub motors compared on torque and cost. The deployed AGV took over half a worker's material handling on every shift, which saves about 4,000 EGP a month per shift, on a total build budget of 27,000 EGP.</p>
         <table class="spec">
           <tr><th>Compute</th><td>Raspberry Pi for vision, STM32 for control</td></tr>
           <tr><th>Drive</th><td>Hoverboard hub motors</td></tr>
           <tr><th>Operator controls</th><td>Nextion touchscreen, NRF24 wireless pendant</td></tr>
+          <tr><th>Line following</th><td>Front array of infrared sensors (the photo shows the old configuration)</td></tr>
           <tr><th>Timeline</th><td>Two months, concept to deployment</td></tr>
           <tr><th>Budget</th><td>27,000 EGP in total</td></tr>
           <tr><th>Savings</th><td>About 4,000 EGP per month on every shift, by covering half a worker</td></tr>
@@ -791,7 +795,30 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
       </div>
     </article>
 
-    <article class="tile c6" data-id="cnc" data-extra>
+    <article class="tile c4" data-id="stealth" data-extra>
+      <div class="cover" hidden></div>
+      <div class="slot">Photos go in <b>photos/stealth/</b></div>
+      <div class="body">
+        <h3>Project STEALTH, a Reaper from foam and plywood</h3>
+        <p class="org">Personal project, 2022 to 2023</p>
+        <p class="sum">A scale MQ-9 Reaper drawn up in CorelDRAW and cut from foam and plywood, built to carry the autopilot from SPITFIRE. It never flew, but the fabrication and electronics were the point.</p>
+        <button class="open" type="button">Read more</button>
+      </div>
+      <div class="more">
+        <p>STEALTH is the fixed-wing build that followed SPITFIRE. I took published MQ-9 Reaper plans and turned them into my own set of cut sheets in CorelDRAW: fuselage sections in 3 and 5 mm polyfoam (Depron), 3 mm plywood formers, wing formers, wingtips, a motor mount and a landing-gear base, all nested for cutting.</p>
+        <p>The build covered three things: the foam and wood fabrication, a landing gear I developed for it, and the electronics, with my own radio transmitter and receiver firmware, and the ArduPilot autopilot from SPITFIRE carried over to it.</p>
+        <p>It never left the ground. I couldn't source brushless motors powerful enough for it in Egypt, so I treat it as a fabrication and electronics project rather than a flight result. <button class="inlink" type="button" data-goto="spitfire">Project SPITFIRE →</button> and <button class="inlink" type="button" data-goto="autopilot">Pi AutoPilot →</button> are the work it built on.</p>
+        <p class="links"><a href="https://www.behance.net/gallery/172774757/Project-STEALTH-In-Progress" target="_blank" rel="noopener">Project STEALTH on Behance</a></p>
+        <table class="spec">
+          <tr><th>Airframe</th><td>MQ-9 Reaper scale model, polyfoam/Depron 3 and 5 mm with 3 mm plywood formers</td></tr>
+          <tr><th>Design</th><td>CorelDRAW part sheets and a 3D model, cut for assembly</td></tr>
+          <tr><th>Radio</th><td>My own transmitter and receiver firmware</td></tr>
+          <tr><th>Status</th><td>Airframe built, never flown (no suitable motors available)</td></tr>
+        </table>
+      </div>
+    </article>
+
+    <article class="tile c4" data-id="cnc" data-extra>
       <div class="cover" hidden></div>
       <div class="slot">Photos go in <b>photos/cnc/</b></div>
       <div class="body">
@@ -806,7 +833,7 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
       </div>
     </article>
 
-    <article class="tile c6" data-id="ev" data-extra>
+    <article class="tile c4" data-id="ev" data-extra>
       <div class="cover" hidden></div>
       <div class="slot">Photos go in <b>photos/ev/</b></div>
       <div class="body">
@@ -826,7 +853,7 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
   <div class="grid-more">
     <button class="morebtn" id="more-btn" type="button" aria-expanded="false" aria-controls="pgrid">
       <span class="mb-t">Show all projects</span>
-      <span class="mb-n">8 more</span>
+      <span class="mb-n">9 more</span>
       <svg class="mb-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
     </button>
   </div>
@@ -927,9 +954,9 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
     <div class="row"><div class="when">Sep to Dec 2026</div><div><div class="rhead"><img class="exlogo" src="logos/pg.png" alt="Procter & Gamble logo"><h3>Procter &amp; Gamble</h3></div><p class="pos">Innovation Quality Assurance Intern</p><p class="d">P&amp;G is the largest consumer goods (FMCG) company in the world, and its programs take a small fraction of the engineers who apply. I'm on the Innovation Quality Assurance team at the 6th of October City plant, on the quality side of how new products reach the line.</p></div></div>
     <div class="row"><div class="when">Aug 2026</div><div><div class="rhead"><img class="exlogo" src="logos/leoni.jpg" alt="LEONI logo"><h3>LEONI</h3></div><p class="pos">Operational Excellence Intern, Rising Stars Program</p><p class="d">LEONI is one of the world's largest makers of automotive wiring systems. On its competitive Rising Stars program I built a live KOSU efficiency dashboard from production barcode-scan data and ran a 6S audit of the packaging area.</p></div></div>
     <div class="row"><div class="when">Jul to Aug 2026</div><div><div class="rhead"><img class="exlogo" src="logos/siemens.jpg" alt="Siemens logo"><h3>Siemens</h3></div><p class="pos">SIMATIC Programming 1 in the TIA Portal</p><p class="d">Trained by Siemens engineers on industrial automation. I designed a full conveyor sorting program of my own on an S7-1500, built its HMI, and spent time in the Siemens Digitalization Lab.</p></div></div>
-    <div class="row"><div class="when">Jul to Sep 2023</div><div><div class="rhead"><img class="exlogo" src="logos/nissan.jpg" alt="Nissan logo"><h3>Nissan Motor Egypt</h3></div><p class="pos">Engineering Intern, MSPO, APW and Maintenance</p><p class="d">Designed and deployed the plant's first-ever AGV in two months, working across three teams.</p></div></div>
+    <div class="row"><div class="when">Jul to Sep 2023</div><div><div class="rhead"><img class="exlogo" src="logos/nissan.jpg" alt="Nissan logo"><h3>Nissan Motor Egypt</h3></div><p class="pos">Engineering Intern, MSPO, APW and Maintenance</p><p class="d">Designed and deployed Nissan Egypt's first autonomous guided vehicle (AGV) in two months, working across three teams.</p></div></div>
     <div class="row"><div class="when">2022 to now</div><div><div class="rhead"><img class="exlogo" src="logos/erc.jpg" alt="E-JUST Robotics Club logo"><h3>E‑JUST Robotics Club</h3></div><p class="pos">Chief Technical Officer, Electrical and Embedded Systems</p><p class="d">Vice Chairperson from 2023 to 2025. I also co-run the club's technical training for <b class="n" data-count="50">50</b>+ members.</p></div></div>
-    <div class="row"><div class="when">2022 to 2027</div><div><h3>Egypt-Japan University of Science and Technology</h3><p class="pos">B.Sc. Mechatronics and Robotics Engineering</p><p class="d">Taught in English. Graduating February 2027.</p></div></div>
+    <div class="row"><div class="when">2022 to 2027</div><div><div class="rhead"><img class="exlogo" src="logos/ejust.png" alt="E-JUST logo"><h3>Egypt-Japan University of Science and Technology</h3></div><p class="pos">B.Sc. Mechatronics and Robotics Engineering</p><p class="d">Taught in English. Graduating February 2027.</p></div></div>
   </div>
 </section>
 
@@ -938,7 +965,7 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
   <p class="lede">Five competition results since 2023.</p>
   <div class="award-lead">
     <div>
-      <p class="when">April 2025, awarded by NTRA</p>
+      <div class="rhead"><img class="exlogo" src="logos/erc.jpg" alt="E-JUST Robotics Club logo"><p class="when" style="margin:0">April 2025, awarded by NTRA</p></div>
       <h3>Best Communication System, MATE ROV Egypt</h3>
       <p>Ours was the only team of about thirty with a purpose-built communication architecture. The organizers created this award for it, a first in the competition's thirteen years.</p>
       <p class="big">1 of <b class="n" data-count="30">30</b><span>teams with a dedicated comms system</span></p>
@@ -948,7 +975,7 @@ dialog.lb.pre .lb-stage img{transform:scale(.96)}
     </figure>
   </div>
   <div class="rows">
-    <div class="row"><div class="when">Aug 2024</div><div><h3>2nd place, UAVC Drone Challenge</h3><p class="d">ICMTC at the Military Technical College. 11 teams, 30,000 EGP prize.</p></div></div>
+    <div class="row"><div class="when">Aug 2024</div><div><div class="rhead"><img class="exlogo" src="logos/icmtc.png" alt="ICMTC logo" onerror="this.remove()"><h3>2nd place, UAVC Drone Challenge</h3></div><p class="d">ICMTC at the Military Technical College. 11 teams, 30,000 EGP prize.</p></div></div>
     <div class="row"><div class="when">Aug 2024</div><div><div class="rhead"><img class="exlogo" src="logos/ert.jpg" alt="E-JUST Racing Team logo"><h3>EVER 5 Electric Vehicle Competition</h3></div><p class="d">6th of 23 in endurance and 14th of 22 in the dynamic events, as electrical team lead.</p></div></div>
   </div>
 </section>
