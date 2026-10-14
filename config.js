@@ -26,7 +26,7 @@ window.SITE = {
 
   // Your CV as a PDF, for example "cv/Ahmed-Loay-Elattar-CV.pdf".
   // Leave empty ("") to hide the Download CV button.
-  cv: "",
+  cv: "cv/ahmed-loay-elattar-cv.pdf",
 
   // A photo of you (square crop works best). Leave "" to hide it.
   me: "photos/me.jpg",
@@ -200,7 +200,7 @@ window.SITE = {
       ["photos/spitfire/spitfire-camo2.jpg", "Top view of the camouflaged airframe"],
       ["photos/spitfire/spitfire-nose.jpg", "The nose and roundel, hand-painted"],
       ["photos/spitfire/spitfire-bombs.jpg", "3D-printed drop tanks for the airframe"],
-      ["photos/spitfire/spitfire-jac.jpg", "At the JAC-ECC exhibition, where it placed second"],
+      ["photos/spitfire/spitfire-jac.jpg", "At the project exhibition, where it placed second"],
     ],
 
     autopilot: [
