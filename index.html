@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Ahmed Loay Elattar, mechatronics and robotics engineer. Embedded systems, PCB design, CAN bus and ROS 2.">
+<meta name="description" content="Ahmed Loay Elattar. Embedded electronics, firmware, and navigation, from a sealed ROV to a factory floor.">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <meta property="og:title" content="Ahmed Loay Elattar">
-<meta property="og:description" content="Mechatronics and robotics engineer. Embedded systems, PCB design, CAN bus and ROS 2.">
+<meta property="og:description" content="Embedded electronics, firmware, and navigation, from a sealed ROV to a factory floor.">
 <meta property="og:type" content="website">
 <link rel="icon" type="image/png" sizes="48x48" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
@@ -442,6 +442,7 @@ body{overflow-x:clip}
 @keyframes blink{50%{opacity:0}}
 .hero h1{font-size:clamp(2.5rem,5.2vw,4.5rem);margin-top:0}
 .hero .intro{max-width:30em}
+.hero .subintro{font-size:clamp(.9375rem,1.7vw,1.0625rem);line-height:1.45;color:var(--ink3);margin-top:10px;max-width:30em;animation:settle .7s var(--ease-out) 120ms backwards}
 /* featured carousel */
 .fcar{background:var(--surf);border:1px solid var(--hair);border-radius:var(--r-xl);padding:clamp(14px,2vw,22px);box-shadow:0 24px 60px rgba(0,0,0,.09);min-width:0}
 .fc-label{display:flex;justify-content:space-between;font-family:var(--fm);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);padding:2px 6px 12px;margin:0}
@@ -643,11 +644,12 @@ dialog.lb{height:100vh;height:100dvh;max-height:100dvh}
         <img class="avatar" id="avatar" alt="Ahmed Loay Elattar" hidden>
         <div class="idtxt">
           <div class="eyebrow">Mechatronics &amp; Robotics Engineer</div>
-          <p class="typed" aria-label="I am a firmware developer, a PCB designer, a robotics engineer, a drone pilot, a plane builder and a student"><span class="ti">I am <span id="tart">a</span> </span><span class="tw" id="tw"></span><span class="tc" aria-hidden="true">_</span></p>
+          <p class="typed" aria-label="I am a firmware developer, a PCB designer, an embedded engineer, an ROV electronics lead, a drone pilot, a plane builder and a student"><span class="ti">I am <span id="tart">a</span> </span><span class="tw" id="tw"></span><span class="tc" aria-hidden="true">_</span></p>
         </div>
       </div>
       <h1>Hi, I'm <span class="nm">Ahmed Loay&nbsp;Elattar</span>.</h1>
-      <p class="intro">I design the circuit boards and firmware that run robots, then build the robot around them.</p>
+      <p class="intro">I design robots to run without me.</p>
+      <p class="subintro">Embedded electronics, firmware, and navigation, from a sealed ROV to a factory floor.</p>
       <div class="actions">
         <a class="btn" href="#work">See projects</a>
         <a class="btn ghost" id="cv" href="#" target="_blank" rel="noopener" hidden>Download CV</a>
@@ -1553,7 +1555,7 @@ go2.addEventListener('click',start);
 
   /* ---------- hero: typed identity line ---------- */
   (function(){
-    var W=[['Firmware Developer','a'],['PCB Designer','a'],['Drone Pilot','a'],['Embedded Engineer','an'],['Plane Builder','a'],['ROS 2 Developer','an'],['3D Printer Builder','a'],['Student','a']];
+    var W=[['Firmware Developer','a'],['PCB Designer','a'],['Drone Pilot','a'],['Embedded Engineer','an'],['ROV Electronics Lead','an'],['Plane Builder','a'],['ROS 2 Developer','an'],['3D Printer Builder','a'],['Student','a']];
     var tw=$('#tw'), ar=$('#tart'); if(!tw) return;
     if(reduce){tw.textContent='Firmware Developer';ar.textContent='a';return}
     var wi=0,ci=0,del=false;
