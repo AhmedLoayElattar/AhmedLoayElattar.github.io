@@ -1998,5 +1998,52 @@ D.forEach(function(d,i){
 })();
 </script>
 
+<style>
+.cx-peek{display:flex;align-items:center;gap:clamp(14px,2.4vw,24px);margin:18px 0 0;padding:12px 16px 12px 14px;border-radius:var(--r-l);background:color-mix(in srgb,var(--bg) 80%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid var(--hair);width:fit-content;max-width:100%;cursor:pointer;text-align:left;font:inherit;color:inherit;transition:transform .25s,border-color .25s}
+.cx-peek:hover{border-color:var(--ink3)}.cx-peek:active{transform:scale(.99)}
+.cx-stack{display:flex;flex:none;padding-left:4px}
+.cx-stack img{width:76px;height:48px;object-fit:cover;border-radius:8px;border:2px solid var(--bg);box-shadow:0 2px 8px rgba(0,0,0,.25);margin-left:-26px;background:#10131a;transition:transform .3s}
+.cx-stack img:first-child{margin-left:0}
+.cx-stack img:nth-child(1){transform:rotate(-4deg)}.cx-stack img:nth-child(2){transform:rotate(2deg)}.cx-stack img:nth-child(3){transform:rotate(-2deg)}.cx-stack img:nth-child(4){transform:rotate(4deg)}
+.cx-peek:hover .cx-stack img:nth-child(n){transform:translateY(-3px) rotate(0)}
+.cx-txt{display:grid;gap:2px;min-width:0}
+.cx-txt b{font-size:1rem;letter-spacing:-.01em}.cx-txt span{font-size:.8125rem;color:var(--ink3)}
+.cx-go{flex:none;display:inline-flex;align-items:center;gap:6px;padding:9px 16px;border-radius:980px;background:var(--ink);color:var(--bg);font-weight:600;font-size:.875rem}
+.cx-go svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;transition:transform .3s}
+.cx-wrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.32,.72,0,1)}
+.cx-wrap>.cx-in{overflow:hidden;min-height:0}
+.cx-open .cx-wrap{grid-template-rows:1fr}
+.cx-open .cx-peek{display:none}
+.cx-close{display:inline-flex;align-items:center;gap:6px;margin:22px 0 0;padding:9px 18px;border-radius:980px;border:1px solid var(--hair);background:color-mix(in srgb,var(--bg) 80%,transparent);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);font:inherit;font-weight:600;font-size:.875rem;color:var(--ink);cursor:pointer}
+.cx-close svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;transform:rotate(180deg)}
+.cx-wrap:not(.on)>.cx-in{visibility:hidden}
+@media (max-width:560px){.cx-peek{flex-wrap:wrap;width:100%}.cx-stack img{width:64px;height:40px;margin-left:-22px}.cx-go{margin-left:auto}}
+@media (prefers-reduced-motion:reduce){.cx-wrap{transition:none}}
+</style>
+<script>
+(function(){
+var CFG={
+ design:{t:'Schematics and layouts',sub:'Control, power and ESC boards, plus system diagrams',n:'Show schematics',imgs:['docs/control-layout.webp','docs/power-layout.webp','docs/esc-layout.webp','docs/power-rov.webp']},
+ pcbs:{t:'8 more boards',sub:'Controllers, a Slayer exciter, a relay module and more',n:'Show boards',imgs:['pcbs/v3smt-00.webp','pcbs/fc-01.webp','pcbs/sl-01.webp','pcbs/bal-01.webp']}};
+var chev='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+function refresh(){if(window.ScrollTrigger){ScrollTrigger.refresh()}}
+Object.keys(CFG).forEach(function(id){
+  var s=document.getElementById(id);if(!s)return;var c=CFG[id];
+  var kids=[].slice.call(s.children).filter(function(k){return !k.matches('h2,.lede')});
+  var wrap=document.createElement('div');wrap.className='cx-wrap';var inn=document.createElement('div');inn.className='cx-in';wrap.appendChild(inn);
+  kids.forEach(function(k){inn.appendChild(k)});
+  var peek=document.createElement('button');peek.type='button';peek.className='cx-peek';peek.setAttribute('aria-expanded','false');peek.setAttribute('aria-controls',id+'-cx');
+  peek.innerHTML='<span class="cx-stack">'+c.imgs.map(function(u){return '<img src="'+u+'" alt="" loading="lazy" decoding="async">'}).join('')+'</span><span class="cx-txt"><b>'+c.t+'</b><span>'+c.sub+'</span></span><span class="cx-go">'+c.n+' '+chev+'</span>';
+  inn.id=id+'-cx';
+  var close=document.createElement('button');close.type='button';close.className='cx-close';close.innerHTML='Collapse '+chev;inn.appendChild(close);
+  s.appendChild(peek);s.appendChild(wrap);
+  function set(o){s.classList.toggle('cx-open',o);wrap.classList.toggle('on',o);peek.setAttribute('aria-expanded',o?'true':'false');
+    var n=0,t=setInterval(function(){refresh();if(++n>8)clearInterval(t)},60);
+    if(!o){var r=s.getBoundingClientRect();if(r.top<0)s.scrollIntoView({block:'start'})}}
+  peek.addEventListener('click',function(){set(true)});close.addEventListener('click',function(){set(false)});
+});
+})();
+</script>
+
 </body>
 </html>
