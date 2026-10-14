@@ -31,6 +31,10 @@ window.SITE = {
   // A photo of you (square crop works best). Leave "" to hide it.
   me: "photos/me.jpg",
 
+  // Your Instagram profile link for the printed-parts button, for example
+  // "https://instagram.com/yourhandle". While empty, the button emails you instead.
+  instagram: "",
+
   // The "Five generations of ROV boards" section. One image per board,
   // IN ORDER: 2023, May 2024, Oct 2024, 2025, 2026. Use "" to skip one.
   boards: [
@@ -189,6 +193,7 @@ window.SITE = {
     printers: [
       ["photos/printers/printer-corexy.jpg", "The CoreXY printer I built, running Klipper"],
       ["photos/printers/printer-toolhead.jpg", "The modified StealthBurner toolhead"],
+      ["photos/printers/printer-first-lit.jpg", "My first printer at night, with its LED strip on"],
       ["photos/printers/printer-first.jpg", "My first printer, a Cartesian build, mid-print"],
       ["photos/printers/printer-print.jpg", "A finished print off the bed"],
     ],
@@ -219,6 +224,7 @@ window.SITE = {
     ],
     nexus: [
       ["photos/nexus/nexus-machine.jpg", "NEXUS: the 600 mm plywood-frame machine from the side"],
+      ["photos/nexus/nexus-ejust-art.jpg", "The E-JUST logo, drawn by NEXUS"],
       ["photos/nexus/nexus-ejust.jpg", "From above, with its pen carriage over the paper"],
       ["photos/nexus/nexus-run.jpg", "The controller box, with Pause, Resume and Abort"],
       ["photos/nexus/art-01.jpg", "Plotting at night"],
@@ -241,10 +247,10 @@ window.SITE = {
       ["photos/nexus/art-18.jpg", "Line art drawn by NEXUS"],
     ],
     miniplotter: [
+      ["photos/plotter/plotter-head.jpg", "The pen carriage on CNC Writer V1.0"],
       ["photos/plotter/plotter-0383.jpg", "CNC Writer V1.0, my first pen plotter"],
       ["photos/plotter/plotter-0385.jpg", "The pen carriage: a servo lifts the pen"],
       ["photos/plotter/plotter-0389.jpg", "Side view of the laser-cut wooden frame"],
-      ["photos/plotter/plotter-0400.jpg", "The machine from the front"],
       ["photos/plotter/plotter-0417.jpg", "The salvaged drive mechanism that moves the pen"],
       ["photos/plotter/plotter-0421.jpg", "Writing on paper"],
     ],
@@ -259,6 +265,12 @@ window.SITE = {
     ],
 
     omnibot: [
+      ["photos/omnibot/omni-marker-top.jpg", "Top view of the robot with its ArUco marker"],
+      ["photos/omnibot/omni-track-1.jpg", "Tracking the robot's pose from an overhead camera"],
+      ["photos/omnibot/omni-track-2.jpg", "Tracking with ArUco markers on the floor"],
+      ["photos/omnibot/omni-sim.jpg", "The robot in simulation"],
+      ["photos/omnibot/omni-model.jpg", "The 3D model with its omni wheels"],
+      ["photos/omnibot/omni-parts.jpg", "Printed orange parts for the wheels"],
       ["photos/omnibot/omni-top.jpg", "The holonomic robot seen from the overhead camera, with its ArUco marker"],
       ["photos/omnibot/omni-hand.jpg", "The compact base: four omni wheels and the onboard electronics"],
       ["photos/omnibot/omni-marker.jpg", "The ArUco fiducial the off-board camera tracks for pose"],

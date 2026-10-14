@@ -649,6 +649,31 @@ dialog.lb{height:100vh;height:100dvh;max-height:100dvh}
 .dfacts dt{font-weight:600;font-size:.9375rem}
 .dfacts dd{margin:3px 0 0;color:var(--ink2);font-size:.9375rem;line-height:1.5}
 .dnote{margin:16px 0 0;color:var(--ink2);font-size:.9375rem;max-width:44em}
+.pcbs .pk{display:flex;gap:4px;flex-wrap:wrap;margin:22px 0 22px;padding:4px;border-radius:24px;background:var(--surf);width:fit-content;max-width:100%}
+.pk button{border:0;background:none;font:inherit;font-size:.9375rem;font-weight:600;color:var(--ink2);padding:8px 16px;border-radius:980px;cursor:pointer;transition:background-color .25s,color .25s}
+.pk button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
+.pp-panel[hidden]{display:none}
+.pp-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:start}
+.pp-fig{margin:0;position:relative}
+.pp-main{display:block;width:100%;border:0;padding:0;border-radius:var(--r-l);overflow:hidden;background:#10131a;cursor:zoom-in;position:relative}
+.pp-main img{display:block;width:100%;height:auto}
+.pp-main::after{content:"Tap to enlarge";position:absolute;right:10px;bottom:10px;font-size:.75rem;font-weight:600;color:#fff;background:rgba(0,0,0,.55);padding:4px 10px;border-radius:980px;backdrop-filter:blur(6px)}
+.pp-th{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.pp-th button{border:0;padding:0;border-radius:12px;overflow:hidden;cursor:zoom-in;width:84px;aspect-ratio:16/10;background:#10131a;outline-offset:2px}
+.pp-th img{width:100%;height:100%;object-fit:cover;display:block}
+.pp-info h3{font-size:clamp(1.375rem,2.4vw,1.75rem);letter-spacing:-.02em;line-height:1.15;margin:0}
+.pp-meta{margin:6px 0 0;color:var(--ink3);font-size:.875rem;font-weight:600;letter-spacing:.02em}
+.pp-sum{margin:12px 0 0;color:var(--ink2);font-size:1.0625rem;line-height:1.5}
+.pp-gl{margin:18px 0 0;display:grid;gap:0}
+.pp-gl div{border-top:1px solid var(--hair);padding:10px 0 10px 0}
+.pp-gl dt{font-weight:600;font-size:.9688rem;display:flex;align-items:center;gap:8px}
+.pp-gl dt::before{content:"";width:7px;height:7px;border-radius:50%;background:#e5742d;flex:none}
+.pp-gl dd{margin:3px 0 0 15px;color:var(--ink2);font-size:.9375rem;line-height:1.5}
+@media (max-width:860px){.pp-grid{grid-template-columns:1fr}.pk button{padding:8px 13px;font-size:.875rem}}
+.pp-parts{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px;margin:4px 0 0}
+.pp-parts button{border:0;padding:0;border-radius:12px;overflow:hidden;cursor:zoom-in;aspect-ratio:3/4;background:var(--surf)}
+.pp-parts img{width:100%;height:100%;object-fit:cover;display:block}
+.pp-cta{display:inline-flex;align-items:center;gap:8px;margin-top:6px;padding:12px 22px;border-radius:980px;background:var(--btn);color:var(--btn-ink)!important;font-weight:600;font-size:.9688rem;text-decoration:none!important;width:fit-content}
 </style>
 </head>
 <body>
@@ -1026,6 +1051,11 @@ dialog.lb{height:100vh;height:100dvh;max-height:100dvh}
           <tr><th>Multi-material</th><td>Custom five-lane unit</td></tr>
           <tr><th>Business</th><td>150+ campus projects, ~70% gross margin</td></tr>
         </table>
+        <h4>Printed parts</h4>
+        <p>Beyond student projects I print figures, lamps, keychains and custom desk pieces on request. Prices depend on size, material and colours.</p>
+        <div class="pp-parts" id="pp-parts"><button type="button" data-src="photos/prints/hollow-knight-1.jpg" data-cap="A hand-finished character figure"><img src="photos/prints/hollow-knight-1.jpg" alt="A hand-finished character figure" loading="lazy" decoding="async"></button><button type="button" data-src="photos/prints/hollow-knight-2.jpg" data-cap="The same figure from the front"><img src="photos/prints/hollow-knight-2.jpg" alt="The same figure from the front" loading="lazy" decoding="async"></button><button type="button" data-src="photos/prints/lantern-lit.jpg" data-cap="A lantern with a warm LED inside"><img src="photos/prints/lantern-lit.jpg" alt="A lantern with a warm LED inside" loading="lazy" decoding="async"></button><button type="button" data-src="photos/prints/lantern-moon.jpg" data-cap="Lantern and moon lamp on a shelf"><img src="photos/prints/lantern-moon.jpg" alt="Lantern and moon lamp on a shelf" loading="lazy" decoding="async"></button><button type="button" data-src="photos/prints/moon-lamp.jpg" data-cap="A moon lamp on its stand"><img src="photos/prints/moon-lamp.jpg" alt="A moon lamp on its stand" loading="lazy" decoding="async"></button><button type="button" data-src="photos/prints/trex-moon.jpg" data-cap="An articulated T-rex"><img src="photos/prints/trex-moon.jpg" alt="An articulated T-rex" loading="lazy" decoding="async"></button><button type="button" data-src="photos/prints/lowpoly-cat.jpg" data-cap="A low-poly cat"><img src="photos/prints/lowpoly-cat.jpg" alt="A low-poly cat" loading="lazy" decoding="async"></button><button type="button" data-src="photos/prints/figure-keychain.jpg" data-cap="A figure keychain"><img src="photos/prints/figure-keychain.jpg" alt="A figure keychain" loading="lazy" decoding="async"></button><button type="button" data-src="photos/prints/heart-keychain.jpg" data-cap="A two-colour keychain"><img src="photos/prints/heart-keychain.jpg" alt="A two-colour keychain" loading="lazy" decoding="async"></button><button type="button" data-src="photos/prints/gameboy-keychain.jpg" data-cap="A handheld-console keychain"><img src="photos/prints/gameboy-keychain.jpg" alt="A handheld-console keychain" loading="lazy" decoding="async"></button><button type="button" data-src="photos/prints/bookmark-sword.jpg" data-cap="A sword bookmark"><img src="photos/prints/bookmark-sword.jpg" alt="A sword bookmark" loading="lazy" decoding="async"></button><button type="button" data-src="photos/prints/articulated-figure-1.jpg" data-cap="An articulated figure on the bed"><img src="photos/prints/articulated-figure-1.jpg" alt="An articulated figure on the bed" loading="lazy" decoding="async"></button><button type="button" data-src="photos/prints/nameplate-seif.jpg" data-cap="A multicolour desk nameplate"><img src="photos/prints/nameplate-seif.jpg" alt="A multicolour desk nameplate" loading="lazy" decoding="async"></button></div>
+        <p class="links">Want something printed? Message me on Instagram with what you have in mind.</p>
+        <a class="pp-cta" data-ig href="mailto:A.LoayElattar@gmail.com?subject=3D%20printing%20inquiry" target="_blank" rel="noopener">Order or ask on Instagram</a>
       </div>
     </article>
 
@@ -1291,6 +1321,99 @@ go2.addEventListener('click',start);
 })();
 </script>
 
+<section class="sec pcbs" id="pcbs" aria-labelledby="pp-h">
+  <h2 id="pp-h">More boards I designed</h2>
+  <p class="lede">Before the ROV stack there were smaller boards, drawn in Eagle and mostly made at home. Each has a labelled view and a glossary of the parts that matter.</p>
+  <div class="pk" id="pk" role="tablist" aria-label="Boards"></div>
+  <div id="pp-root"></div>
+</section>
+<script>
+(function(){
+var I='pcbs/';
+var D=[
+{k:'Hybrid V3 · SMT',t:'Hybrid model-aircraft controller, V3 (SMT)',m:'2021 · Eagle · two ATmega328P',
+ s:'The surface-mount version of my third controller board for model aircraft. Two ATmega328P microcontrollers share one board with a radio socket, a gyroscope header and servo and motor outputs, and each has its own USB port for programming.',
+ im:[['v3smt-explain.webp','Labelled view of the SMT board',1,2400,1061],['v3smt-1.webp','3D render of the SMT board']],
+ g:[['Maincontroller 1 and 2 (ATmega328P)','Two TQFP chips on one board, each with its own resonator, reset button and USB port.'],
+ ['CH340G USB-to-serial, ×2','One per microcontroller, each with its own micro-USB port, so either chip can be reprogrammed without a separate programmer.'],
+ ['Main power regulators','Bring the supply down to the 5 V rail for the logic and servos.'],
+ ['3.3 V regulator for the radio','The nRF24L01 radio runs at 3.3 V, so it gets its own regulator instead of sharing the 5 V rail.'],
+ ['Radio module input pins','An 8-pin socket for the nRF24L01 radio module.'],
+ ['Gyroscope sensor pins','A 4-pin header for a GY-521 (MPU-6050) gyroscope and accelerometer board.'],
+ ['Servos and motor outputs','The long pin header that carries every servo and motor signal off the board.'],
+ ['ATtiny85 MCUs','Two small ATtiny85 chips on the board for side jobs next to the main controllers.'],
+ ['Resonators, reset buttons, indicator LEDs','Ceramic resonators clock each ATmega328P, a reset button sits beside each chip, and the LED groups show status.']]},
+{k:'Hybrid V3 · TH',t:'Hybrid model-aircraft controller, V3 (through-hole)',m:'2021 · Eagle · same design, hand-solderable',
+ s:'The same V3 circuit redrawn with through-hole parts, so it can be soldered with a basic iron and a socketed DIP ATmega328P. The surface-mount version came second.',
+ im:[['v3th-explain.webp','Labelled view of the through-hole board',1,2400,1227],['v3th-1.webp','3D render of the through-hole board']],
+ g:[['Maincontroller 1 and 2 (DIP ATmega328P)','Through-hole chips in sockets, so a damaged processor can be pulled out and replaced.'],
+ ['USB A connectors','Full-size USB ports in place of the micro-USB sockets on the SMT version.'],
+ ['CH340G USB-to-serial, ×2','One per microcontroller, as on the SMT board.'],
+ ['Main power regulators','The 5 V supply for the logic and servos.'],
+ ['3.3 V regulator for the radio','A separate 3.3 V rail for the nRF24L01 radio module.'],
+ ['Radio module input pins','The 8-pin socket the radio plugs into.'],
+ ['Gyroscope sensor pins','A header for the GY-521 gyroscope board.'],
+ ['Servos and motor outputs','Servo and motor signal headers along the board edge.'],
+ ['ATtiny85 MCUs, reset buttons, LEDs','Two ATtiny85 helpers, a reset button for each main chip, and two LED groups.']]},
+{k:'Balancing robot',t:'Self-balancing robot controller',m:'2021 · Eagle · ATmega328P',
+ s:'A compact controller for a two-wheeled balancing robot. It reads an IMU, runs the balance loop on an ATmega328P and sends drive commands to a motor driver.',
+ im:[['bal-explain.webp','Labelled view of the controller',1,1800,1345],['bal-1.webp','3D render close-up'],['bal-2.webp','PCB layout']],
+ g:[['Main controller (ATmega328P)','A DIP-28 chip that runs the balance loop and talks to the IMU and the motor driver.'],
+ ['Resonator','A crystal with two 22 pF capacitors for a stable clock, which the loop timing depends on.'],
+ ['IMU pins','A 4-pin header for the inertial sensor that measures tilt.'],
+ ['Motor driver pins','A 5-pin header to the motor driver board.'],
+ ['Input','A screw terminal and regulator bring the battery down to the 5 V the chip needs.'],
+ ['Indicator LEDs and reset button','Two LEDs with their own resistors for state, and a push button to restart the firmware.']]},
+{k:'Relay module',t:'5 V relay module',m:'2021 · Eagle · BC547 driver',
+ s:'A one-channel relay board for switching mains-rated loads from a 3.3 V or 5 V logic pin. A small transistor drives the relay coil so the microcontroller pin never carries coil current.',
+ im:[['relay-1.webp','3D render of the relay module'],['relay-2.webp','Top view'],['relay-sch.webp','Schematic']],
+ g:[['SRD-05VDC relay','A 5 V coil relay with changeover contacts, rated at 10 A.'],
+ ['BC547 driver transistor','Switches the coil from the ENABLE pin through a base resistor.'],
+ ['1N4007 flyback diode','Clamps the voltage spike when the coil turns off, protecting the transistor.'],
+ ['Status LEDs','One shows that power is present, one that the relay is active.'],
+ ['Input pins','ENABLE, 5 V and GND on a three-pin header.'],
+ ['Output terminal','A screw terminal for the load wires.']]},
+{k:'ATmega328P board',t:'ATmega328P board with USB',m:'2021 · Eagle · CH340G',
+ s:'A small board that turns a bare ATmega328P into an Arduino-style target with its own USB programming port, so a project can be moved onto its own board.',
+ im:[['atmega-1.webp','3D render of the board'],['atmega-2.webp','Close-up of the CH340G and crystal']],
+ g:[['ATmega328P-AU','The TQFP microcontroller itself.'],
+ ['CH340G USB-to-serial','Lets the board be programmed over USB like an Arduino.'],
+ ['Micro-USB connector','Power and programming in one cable.'],
+ ['Crystal and load capacitors','The clock source for the ATmega328P.'],
+ ['Reset switch','Restarts the firmware without unplugging the board.']]},
+{k:'Slayer exciter',t:'Slayer exciter driver board',m:'2021 · Eagle · parallel transistors',
+ s:'The switching board for a Slayer exciter, a small solid-state Tesla coil circuit. Several transistors share the switching current so the board is not limited by a single transistor.',
+ im:[['slayer-explain.webp','Labelled view of the board',1,1800,1349],['slayer-1.webp','3D render close-up']],
+ g:[['Input and output','Two 2-pin terminals, one for the supply and one for the coil connection.'],
+ ['Parallel transistors','Four power transistors wired in parallel, so each carries a share of the switching current.'],
+ ['Base resistors','Four through-hole resistors set the drive current into the transistor bases.'],
+ ['Feedback pin','A pin that feeds a signal back from the coil side to the transistor drive.']]},
+{k:'ATtiny85 board',t:'ATtiny85 programming board',m:'2021 · Eagle · smallest board',
+ s:'The first board of the set, a small breakout for programming an SOIC ATtiny85 and plugging it into other circuits.',
+ im:[['attiny-1.webp','3D render of the board'],['attiny-2.webp','Close-up of the chip and header']],
+ g:[['ATtiny85V-10SH','The 8-pin SOIC microcontroller.'],
+ ['Two 4-pin headers (J1, J2)','Break out all eight pins so the chip can plug into a programmer or a breadboard.'],
+ ['LED and resistor','A status light with a 5.6 kΩ series resistor.']]}
+];
+var tabs=document.getElementById('pk'),root=document.getElementById('pp-root'),btns=[],ps=[];
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e}
+D.forEach(function(d,i){
+  var b=el('button',null,d.k);b.type='button';b.setAttribute('role','tab');b.setAttribute('aria-selected',i?'false':'true');tabs.appendChild(b);btns.push(b);
+  var p=el('div','pp-panel');p.setAttribute('role','tabpanel');if(i)p.hidden=true;
+  var list=d.im.map(function(x){return [I+x[0],x[1]]});
+  var g=el('div','pp-grid'),f=el('figure','pp-fig');
+  var m=el('button','pp-main');m.type='button';m.setAttribute('aria-label','Enlarge: '+d.im[0][1]);
+  var im=el('img');im.src=I+d.im[0][0];im.alt=d.im[0][1];im.loading=i?'lazy':'lazy';im.decoding='async';if(d.im[0][3]){im.width=d.im[0][3];im.height=d.im[0][4]}m.appendChild(im);
+  m.addEventListener('click',function(){window.__lbOpen&&window.__lbOpen(list,0)});f.appendChild(m);
+  if(d.im.length>1){var th=el('div','pp-th');d.im.forEach(function(x,j){if(j===0)return;var bb=el('button');bb.type='button';bb.setAttribute('aria-label','Enlarge: '+x[1]);var ii=el('img');ii.src=I+x[0];ii.alt=x[1];ii.loading='lazy';ii.decoding='async';bb.appendChild(ii);bb.addEventListener('click',function(){window.__lbOpen&&window.__lbOpen(list,j)});th.appendChild(bb)});f.appendChild(th)}
+  var inf=el('div','pp-info');inf.appendChild(el('h3',null,d.t));inf.appendChild(el('p','pp-meta',d.m));inf.appendChild(el('p','pp-sum',d.s));
+  var dl=el('dl','pp-gl');d.g.forEach(function(r){var w=el('div');w.appendChild(el('dt',null,r[0]));w.appendChild(el('dd',null,r[1]));dl.appendChild(w)});inf.appendChild(dl);
+  g.appendChild(f);g.appendChild(inf);p.appendChild(g);root.appendChild(p);ps.push(p);
+  b.addEventListener('click',function(){btns.forEach(function(t,j){t.setAttribute('aria-selected',j===i?'true':'false')});ps.forEach(function(q,j){q.hidden=j!==i});if(window.ScrollTrigger)ScrollTrigger.refresh()});
+});
+})();
+</script>
+
 <section class="sec design" id="design" aria-labelledby="ds-h">
   <h2 id="ds-h">Schematics and layouts</h2>
   <p class="lede">The design files behind the boards in the tour. Open an image to see the whole sheet, or open the PDF to zoom in on a part number.</p>
@@ -1484,6 +1607,8 @@ bs.forEach(function(b,i){b.addEventListener('click',function(){if(window.__lbOpe
     sheet.getBoundingClientRect();
     requestAnimationFrame(function(){sheet.classList.remove('pre')});
   }
+  (function(){var ig=(window.SITE&&SITE.instagram)||'';var a=document.querySelector('.tile[data-id="printers"] .more a[data-ig]');if(a&&ig){a.href=ig;a.target='_blank'}
+    document.addEventListener('click',function(e){var bt=e.target.closest('.pp-parts button');if(!bt||!window.__lbOpen)return;var all=[].slice.call(bt.parentNode.querySelectorAll('button'));window.__lbOpen(all.map(function(x){return [x.dataset.src,x.dataset.cap]}),all.indexOf(bt))})})();
   function openSheet(t){
     openData({ title:$('h3',t).textContent, org:($('.org',t)||{}).textContent||'',
       html:$('.more',t).innerHTML, photos:PH[t.dataset.id]||[], focus:$('.open',t)||t });
