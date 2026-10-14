@@ -593,6 +593,8 @@ dialog.lb{height:100vh;height:100dvh;max-height:100dvh}
 .lb-stage img{position:absolute;inset:0;width:100%;height:100%;max-width:none;max-height:none;object-fit:contain;border-radius:0;padding:0 12px;box-sizing:border-box}
 @media (min-width:900px){.lb-stage img{padding:0 72px}}
 
+.mailrow{display:flex;flex-wrap:wrap;align-items:center;gap:14px}
+.mailrow .btn[hidden]{display:none}
 /* v24: phone nav, stepper, typed line */
 @media (max-width:700px){
   .stepper{display:none}
@@ -1301,6 +1303,7 @@ go2.addEventListener('click',start);
   <p class="lede">I'm happy to share schematics, code, photos and videos of anything on this page.</p>
   <div class="mailrow">
     <a class="mail" id="em" href="mailto:A.LoayElattar@gmail.com">A.LoayElattar@gmail.com</a>
+    <a class="btn" id="cv2" href="#" target="_blank" rel="noopener" download hidden>Download CV</a>
   </div>
   <div class="elsewhere">
     <a href="https://www.linkedin.com/in/aloayelattar" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>LinkedIn</a>
@@ -1377,7 +1380,7 @@ go2.addEventListener('click',start);
   }
 
   /* ---------- CV, avatar, photo guide ---------- */
-  if(SITE.cv){var cv=$('#cv');cv.href=SITE.cv;cv.hidden=false}
+  if(SITE.cv){var cv=$('#cv');cv.href=SITE.cv;cv.hidden=false;var cv2=$('#cv2');if(cv2){cv2.href=SITE.cv;cv2.hidden=false}}
   if(SITE.me){var av=$('#avatar');av.onload=function(){av.hidden=false};av.src=SITE.me}
   function slots(){document.body.classList.toggle('show-slots',location.hash==='#photos')}
   slots(); window.addEventListener('hashchange',slots);
