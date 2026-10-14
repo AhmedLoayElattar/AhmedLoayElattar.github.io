@@ -653,19 +653,25 @@ dialog.lb{height:100vh;height:100dvh;max-height:100dvh}
 .pk button{border:0;background:none;font:inherit;font-size:.9375rem;font-weight:600;color:var(--ink2);padding:8px 16px;border-radius:980px;cursor:pointer;transition:background-color .25s,color .25s}
 .pk button[aria-selected="true"]{background:var(--ink);color:var(--bg)}
 .pp-panel[hidden]{display:none}
-.pp-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:start}
-.pp-fig{margin:0;position:relative}
-.pp-main{display:block;width:100%;border:0;padding:0;border-radius:var(--r-l);overflow:hidden;background:#10131a;cursor:zoom-in;position:relative}
-.pp-main img{display:block;width:100%;height:auto}
-.pp-main::after{content:"Tap to enlarge";position:absolute;right:10px;bottom:10px;font-size:.75rem;font-weight:600;color:#fff;background:rgba(0,0,0,.55);padding:4px 10px;border-radius:980px;backdrop-filter:blur(6px)}
-.pp-th{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
-.pp-th button{border:0;padding:0;border-radius:12px;overflow:hidden;cursor:zoom-in;width:84px;aspect-ratio:16/10;background:#10131a;outline-offset:2px}
-.pp-th img{width:100%;height:100%;object-fit:cover;display:block}
+.pp-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:start}
+.pp-fig{margin:0;min-width:0}
+.pp-stage{position:relative;aspect-ratio:8/5;border-radius:var(--r-l);overflow:hidden;background:#10131a;touch-action:pan-y}
+.pp-stage>button.pp-open{position:absolute;inset:0;border:0;padding:0;background:none;cursor:zoom-in;display:block;width:100%;height:100%}
+.pp-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;display:block}
+.pp-arr{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:0;background:rgba(40,44,52,.78);border:1px solid rgba(255,255,255,.28);color:#fff;display:grid;place-items:center;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:background-color .2s,transform .2s;touch-action:manipulation;z-index:2}
+.pp-arr:hover{background:rgba(0,0,0,.72)}.pp-arr:active{transform:translateY(-50%) scale(.92)}
+.pp-arr svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.pp-arr.l{left:10px}.pp-arr.r{right:10px}
+.pp-ct{position:absolute;left:10px;bottom:10px;font-size:.75rem;font-weight:600;color:#fff;background:rgba(0,0,0,.55);padding:4px 10px;border-radius:980px;backdrop-filter:blur(6px);z-index:2;font-variant-numeric:tabular-nums}
+.pp-zoom{position:absolute;right:10px;bottom:10px;font-size:.75rem;font-weight:600;color:#fff;background:rgba(0,0,0,.55);padding:4px 10px;border-radius:980px;backdrop-filter:blur(6px);z-index:2;pointer-events:none}
+.pp-cap{margin:10px 2px 0;color:var(--ink2);font-size:.9375rem;line-height:1.4;padding:6px 12px;border-radius:12px;background:color-mix(in srgb,var(--bg) 80%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);width:fit-content;max-width:100%}
+.pp-info{padding:clamp(16px,2.2vw,26px) clamp(16px,2.4vw,28px);border-radius:var(--r-l);background:color-mix(in srgb,var(--bg) 80%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 .pp-info h3{font-size:clamp(1.375rem,2.4vw,1.75rem);letter-spacing:-.02em;line-height:1.15;margin:0}
 .pp-meta{margin:6px 0 0;color:var(--ink3);font-size:.875rem;font-weight:600;letter-spacing:.02em}
 .pp-sum{margin:12px 0 0;color:var(--ink2);font-size:1.0625rem;line-height:1.5}
 .pp-gl{margin:18px 0 0;display:grid;gap:0}
-.pp-gl div{border-top:1px solid var(--hair);padding:10px 0 10px 0}
+.pp-gl h4{margin:16px 0 4px;font-size:.8125rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3)}
+.pp-gl div{border-top:1px solid var(--hair);padding:10px 0}
 .pp-gl dt{font-weight:600;font-size:.9688rem;display:flex;align-items:center;gap:8px}
 .pp-gl dt::before{content:"";width:7px;height:7px;border-radius:50%;background:#e5742d;flex:none}
 .pp-gl dd{margin:3px 0 0 15px;color:var(--ink2);font-size:.9375rem;line-height:1.5}
@@ -1321,113 +1327,62 @@ go2.addEventListener('click',start);
 })();
 </script>
 
-<section class="sec pcbs" id="pcbs" aria-labelledby="pp-h">
-  <h2 id="pp-h">More boards I designed</h2>
-  <p class="lede">Before the ROV stack there were smaller boards, drawn in Eagle and mostly made at home. Each has a labelled view and a glossary of the parts that matter.</p>
-  <div class="pk" id="pk" role="tablist" aria-label="Boards"></div>
-  <div id="pp-root"></div>
-</section>
-<script>
-(function(){
-var I='pcbs/';
-var D=[
-{k:'Hybrid V3 · SMT',t:'Hybrid model-aircraft controller, V3 (SMT)',m:'2021 · Eagle · two ATmega328P',
- s:'The surface-mount version of my third controller board for model aircraft. Two ATmega328P microcontrollers share one board with a radio socket, a gyroscope header and servo and motor outputs, and each has its own USB port for programming.',
- im:[['v3smt-explain.webp','Labelled view of the SMT board',1,2400,1061],['v3smt-1.webp','3D render of the SMT board']],
- g:[['Maincontroller 1 and 2 (ATmega328P)','Two TQFP chips on one board, each with its own resonator, reset button and USB port.'],
- ['CH340G USB-to-serial, ×2','One per microcontroller, each with its own micro-USB port, so either chip can be reprogrammed without a separate programmer.'],
- ['Main power regulators','Bring the supply down to the 5 V rail for the logic and servos.'],
- ['3.3 V regulator for the radio','The nRF24L01 radio runs at 3.3 V, so it gets its own regulator instead of sharing the 5 V rail.'],
- ['Radio module input pins','An 8-pin socket for the nRF24L01 radio module.'],
- ['Gyroscope sensor pins','A 4-pin header for a GY-521 (MPU-6050) gyroscope and accelerometer board.'],
- ['Servos and motor outputs','The long pin header that carries every servo and motor signal off the board.'],
- ['ATtiny85 MCUs','Two small ATtiny85 chips on the board for side jobs next to the main controllers.'],
- ['Resonators, reset buttons, indicator LEDs','Ceramic resonators clock each ATmega328P, a reset button sits beside each chip, and the LED groups show status.']]},
-{k:'Hybrid V3 · TH',t:'Hybrid model-aircraft controller, V3 (through-hole)',m:'2021 · Eagle · same design, hand-solderable',
- s:'The same V3 circuit redrawn with through-hole parts, so it can be soldered with a basic iron and a socketed DIP ATmega328P. The surface-mount version came second.',
- im:[['v3th-explain.webp','Labelled view of the through-hole board',1,2400,1227],['v3th-1.webp','3D render of the through-hole board']],
- g:[['Maincontroller 1 and 2 (DIP ATmega328P)','Through-hole chips in sockets, so a damaged processor can be pulled out and replaced.'],
- ['USB A connectors','Full-size USB ports in place of the micro-USB sockets on the SMT version.'],
- ['CH340G USB-to-serial, ×2','One per microcontroller, as on the SMT board.'],
- ['Main power regulators','The 5 V supply for the logic and servos.'],
- ['3.3 V regulator for the radio','A separate 3.3 V rail for the nRF24L01 radio module.'],
- ['Radio module input pins','The 8-pin socket the radio plugs into.'],
- ['Gyroscope sensor pins','A header for the GY-521 gyroscope board.'],
- ['Servos and motor outputs','Servo and motor signal headers along the board edge.'],
- ['ATtiny85 MCUs, reset buttons, LEDs','Two ATtiny85 helpers, a reset button for each main chip, and two LED groups.']]},
-{k:'Balancing robot',t:'Self-balancing robot controller',m:'2021 · Eagle · ATmega328P',
- s:'A compact controller for a two-wheeled balancing robot. It reads an IMU, runs the balance loop on an ATmega328P and sends drive commands to a motor driver.',
- im:[['bal-explain.webp','Labelled view of the controller',1,1800,1345],['bal-1.webp','3D render close-up'],['bal-2.webp','PCB layout']],
- g:[['Main controller (ATmega328P)','A DIP-28 chip that runs the balance loop and talks to the IMU and the motor driver.'],
- ['Resonator','A crystal with two 22 pF capacitors for a stable clock, which the loop timing depends on.'],
- ['IMU pins','A 4-pin header for the inertial sensor that measures tilt.'],
- ['Motor driver pins','A 5-pin header to the motor driver board.'],
- ['Input','A screw terminal and regulator bring the battery down to the 5 V the chip needs.'],
- ['Indicator LEDs and reset button','Two LEDs with their own resistors for state, and a push button to restart the firmware.']]},
-{k:'Relay module',t:'5 V relay module',m:'2021 · Eagle · BC547 driver',
- s:'A one-channel relay board for switching mains-rated loads from a 3.3 V or 5 V logic pin. A small transistor drives the relay coil so the microcontroller pin never carries coil current.',
- im:[['relay-1.webp','3D render of the relay module'],['relay-2.webp','Top view'],['relay-sch.webp','Schematic']],
- g:[['SRD-05VDC relay','A 5 V coil relay with changeover contacts, rated at 10 A.'],
- ['BC547 driver transistor','Switches the coil from the ENABLE pin through a base resistor.'],
- ['1N4007 flyback diode','Clamps the voltage spike when the coil turns off, protecting the transistor.'],
- ['Status LEDs','One shows that power is present, one that the relay is active.'],
- ['Input pins','ENABLE, 5 V and GND on a three-pin header.'],
- ['Output terminal','A screw terminal for the load wires.']]},
-{k:'ATmega328P board',t:'ATmega328P board with USB',m:'2021 · Eagle · CH340G',
- s:'A small board that turns a bare ATmega328P into an Arduino-style target with its own USB programming port, so a project can be moved onto its own board.',
- im:[['atmega-1.webp','3D render of the board'],['atmega-2.webp','Close-up of the CH340G and crystal']],
- g:[['ATmega328P-AU','The TQFP microcontroller itself.'],
- ['CH340G USB-to-serial','Lets the board be programmed over USB like an Arduino.'],
- ['Micro-USB connector','Power and programming in one cable.'],
- ['Crystal and load capacitors','The clock source for the ATmega328P.'],
- ['Reset switch','Restarts the firmware without unplugging the board.']]},
-{k:'Slayer exciter',t:'Slayer exciter driver board',m:'2021 · Eagle · parallel transistors',
- s:'The switching board for a Slayer exciter, a small solid-state Tesla coil circuit. Several transistors share the switching current so the board is not limited by a single transistor.',
- im:[['slayer-explain.webp','Labelled view of the board',1,1800,1349],['slayer-1.webp','3D render close-up']],
- g:[['Input and output','Two 2-pin terminals, one for the supply and one for the coil connection.'],
- ['Parallel transistors','Four power transistors wired in parallel, so each carries a share of the switching current.'],
- ['Base resistors','Four through-hole resistors set the drive current into the transistor bases.'],
- ['Feedback pin','A pin that feeds a signal back from the coil side to the transistor drive.']]},
-{k:'ATtiny85 board',t:'ATtiny85 programming board',m:'2021 · Eagle · smallest board',
- s:'The first board of the set, a small breakout for programming an SOIC ATtiny85 and plugging it into other circuits.',
- im:[['attiny-1.webp','3D render of the board'],['attiny-2.webp','Close-up of the chip and header']],
- g:[['ATtiny85V-10SH','The 8-pin SOIC microcontroller.'],
- ['Two 4-pin headers (J1, J2)','Break out all eight pins so the chip can plug into a programmer or a breadboard.'],
- ['LED and resistor','A status light with a 5.6 kΩ series resistor.']]}
-];
-var tabs=document.getElementById('pk'),root=document.getElementById('pp-root'),btns=[],ps=[];
-function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e}
-D.forEach(function(d,i){
-  var b=el('button',null,d.k);b.type='button';b.setAttribute('role','tab');b.setAttribute('aria-selected',i?'false':'true');tabs.appendChild(b);btns.push(b);
-  var p=el('div','pp-panel');p.setAttribute('role','tabpanel');if(i)p.hidden=true;
-  var list=d.im.map(function(x){return [I+x[0],x[1]]});
-  var g=el('div','pp-grid'),f=el('figure','pp-fig');
-  var m=el('button','pp-main');m.type='button';m.setAttribute('aria-label','Enlarge: '+d.im[0][1]);
-  var im=el('img');im.src=I+d.im[0][0];im.alt=d.im[0][1];im.loading=i?'lazy':'lazy';im.decoding='async';if(d.im[0][3]){im.width=d.im[0][3];im.height=d.im[0][4]}m.appendChild(im);
-  m.addEventListener('click',function(){window.__lbOpen&&window.__lbOpen(list,0)});f.appendChild(m);
-  if(d.im.length>1){var th=el('div','pp-th');d.im.forEach(function(x,j){if(j===0)return;var bb=el('button');bb.type='button';bb.setAttribute('aria-label','Enlarge: '+x[1]);var ii=el('img');ii.src=I+x[0];ii.alt=x[1];ii.loading='lazy';ii.decoding='async';bb.appendChild(ii);bb.addEventListener('click',function(){window.__lbOpen&&window.__lbOpen(list,j)});th.appendChild(bb)});f.appendChild(th)}
-  var inf=el('div','pp-info');inf.appendChild(el('h3',null,d.t));inf.appendChild(el('p','pp-meta',d.m));inf.appendChild(el('p','pp-sum',d.s));
-  var dl=el('dl','pp-gl');d.g.forEach(function(r){var w=el('div');w.appendChild(el('dt',null,r[0]));w.appendChild(el('dd',null,r[1]));dl.appendChild(w)});inf.appendChild(dl);
-  g.appendChild(f);g.appendChild(inf);p.appendChild(g);root.appendChild(p);ps.push(p);
-  b.addEventListener('click',function(){btns.forEach(function(t,j){t.setAttribute('aria-selected',j===i?'true':'false')});ps.forEach(function(q,j){q.hidden=j!==i});if(window.ScrollTrigger)ScrollTrigger.refresh()});
-});
-})();
-</script>
-
 <section class="sec design" id="design" aria-labelledby="ds-h">
   <h2 id="ds-h">Schematics and layouts</h2>
   <p class="lede">The design files behind the boards in the tour. Open an image to see the whole sheet, or open the PDF to zoom in on a part number.</p>
-  <div class="dtabs" role="tablist" aria-label="Design files"><button type="button" role="tab" aria-selected="true">Control board</button><button type="button" role="tab" aria-selected="false">Power board</button><button type="button" role="tab" aria-selected="false">ESC shield</button><button type="button" role="tab" aria-selected="false">System power</button></div>
+  <div class="dtabs" role="tablist" aria-label="Design files"><button type="button" role="tab" aria-selected="true">Control board</button><button type="button" role="tab" aria-selected="false">Power board</button><button type="button" role="tab" aria-selected="false">ESC shield</button><button type="button" role="tab" aria-selected="false">System diagrams</button></div>
   <div class="dpanel" role="tabpanel"><div class="dgrid"><figure class="dfig"><button class="dimg" type="button" style="aspect-ratio:1/1" data-src="docs/control-schematic.webp" data-cap="Control board"><img src="docs/control-schematic.webp" alt="Control board" loading="lazy" decoding="async"></button><figcaption><span><b>Schematic</b> Control board</span> <a href="docs/control-schematic.pdf" target="_blank" rel="noopener">Open PDF</a></figcaption></figure><figure class="dfig"><button class="dimg" type="button" style="aspect-ratio:1/1" data-src="docs/control-layout.webp" data-cap="Control board"><img src="docs/control-layout.webp" alt="Control board" loading="lazy" decoding="async"></button><figcaption><span><b>Layout</b> Control board</span> <a href="docs/control-layout.pdf" target="_blank" rel="noopener">Open PDF</a></figcaption></figure></div><dl class="dfacts"><div><dt>Gateway</dt><dd>An STM32F411 Black Pill running micro-ROS, with a W5500 Ethernet module.</dd></div><div><dt>CAN</dt><dd>Two MCP2515 controllers with TJA1050 transceivers, one for the gateway and one for the Raspberry Pi 5. Each has a 120 ohm termination that jumpers in or out.</dd></div><div><dt>Raspberry Pi 5</dt><dd>A 40-pin header footprint, plus a supercapacitor on the Pi 5 V supply.</dd></div><div><dt>Sensors</dt><dd>Two depth-sensor connectors, each with its own I2C pair.</dd></div><div><dt>Lights</dt><dd>Six SK6812 addressable RGB LEDs in a chain, indicator LEDs, and two LEDs for the logo’s eyes.</dd></div><div><dt>Layout</dt><dd>Two copper layers, red on top and blue underneath. The silkscreen carries the labels and the club logo.</dd></div></dl></div>
   <div class="dpanel" role="tabpanel" hidden><div class="dgrid"><figure class="dfig"><button class="dimg" type="button" style="aspect-ratio:4/3" data-src="docs/power-schematic.webp" data-cap="Power board"><img src="docs/power-schematic.webp" alt="Power board" loading="lazy" decoding="async"></button><figcaption><span><b>Schematic</b> Power board</span> <a href="docs/power-schematic.pdf" target="_blank" rel="noopener">Open PDF</a></figcaption></figure><figure class="dfig"><button class="dimg" type="button" style="aspect-ratio:4/3" data-src="docs/power-layout.webp" data-cap="Power board"><img src="docs/power-layout.webp" alt="Power board" loading="lazy" decoding="async"></button><figcaption><span><b>Layout</b> Power board</span> <a href="docs/power-layout.pdf" target="_blank" rel="noopener">Open PDF</a></figcaption></figure></div><dl class="dfacts"><div><dt>Controllers</dt><dd>Two STM32F411 Black Pills, each with its own MCP2515 and TJA1050 on CAN.</dd></div><div><dt>Current sensing</dt><dd>One ACS712 per thruster, with an RC filter and a voltage divider before the ADC.</dd></div><div><dt>ESC sockets</dt><dd>Seven footprints for Blue Robotics ESCs. Each ESC plugs into its own small shield board.</dd></div><div><dt>Converters</dt><dd>Two LM2596 and two XL4005 buck stages, with TVS diodes (1.5KE20A) on the inputs and SS54 Schottky diodes.</dd></div><div><dt>Grippers</dt><dd>Two gripper channels. Each has two PC817 optocouplers, AOD403 MOSFETs and flyback diodes.</dd></div><div><dt>Pi control</dt><dd>A relay (SRD-05VDC) in the Pi control block, with signals named for the Pi’s power and reset.</dd></div><div><dt>Layout</dt><dd>233.2 by 179.2 mm. Wide copper carries the ESC current, and the board was made at JLCPCB.</dd></div></dl></div>
   <div class="dpanel" role="tabpanel" hidden><div class="dgrid"><figure class="dfig"><button class="dimg" type="button" style="aspect-ratio:1/1" data-src="docs/esc-schematic.webp" data-cap="ESC shield"><img src="docs/esc-schematic.webp" alt="ESC shield" loading="lazy" decoding="async"></button><figcaption><span><b>Schematic</b> ESC shield</span> <a href="docs/esc-schematic.pdf" target="_blank" rel="noopener">Open PDF</a></figcaption></figure><figure class="dfig"><button class="dimg" type="button" style="aspect-ratio:1/1" data-src="docs/esc-layout.webp" data-cap="ESC shield"><img src="docs/esc-layout.webp" alt="ESC shield" loading="lazy" decoding="async"></button><figcaption><span><b>Layout</b> ESC shield</span> <a href="docs/esc-layout.pdf" target="_blank" rel="noopener">Open PDF</a></figcaption></figure></div><dl class="dfacts"><div><dt>What it is</dt><dd>A small adapter board for one Blue Robotics ESC. The power board carries seven of these sockets.</dd></div><div><dt>Current</dt><dd>Each motor phase (blue, green, white) has four pads in parallel, and ground and supply have six, to carry the thruster current.</dd></div><div><dt>Signal</dt><dd>One signal pad from the controller, and a 220 ohm resistor with an LED across the supply as a power indicator.</dd></div></dl></div>
-  <div class="dpanel" role="tabpanel" hidden><div class="dgrid"><figure class="dfig"><button class="dimg" type="button" style="aspect-ratio:1.3/1" data-src="docs/power-rov.webp" data-cap="ROV power distribution"><img src="docs/power-rov.webp" alt="ROV power distribution" loading="lazy" decoding="async"></button><figcaption><span><b>Diagram</b> ROV power distribution</span></figcaption></figure><figure class="dfig"><button class="dimg" type="button" style="aspect-ratio:1.3/1" data-src="docs/power-nonrov.webp" data-cap="Non-ROV device power"><img src="docs/power-nonrov.webp" alt="Non-ROV device power" loading="lazy" decoding="async"></button><figcaption><span><b>Diagram</b> Non-ROV device power</span></figcaption></figure></div><dl class="dfacts"><div><dt>ROV, 48 V</dt><dd>The 48 V supply from the surface passes a 30 A fuse. Four 48 V to 12 V converters rated 30 A and one rated 10 A feed the ESC channels and the electronics, and a 12 V to 5 V stage supplies the 5 V rail.</dd></div><div><dt>Fuse sizing</dt><dd>The diagram totals 1060.91 W. With a 1.3 safety factor that is 28.8 A, so a 30 A fuse is the closest standard value.</dd></div><div><dt>Sensing</dt><dd>Each ESC channel has a voltage and current sensor (the pink blocks), read by the controllers.</dd></div><div><dt>Nodes</dt><dd>The Pi 5 node, the gateway node and the sensors node each have a CAN module. The gateway and the Pi connect through an Ethernet switch to the station router.</dd></div><div><dt>Non-ROV device</dt><dd>A separate battery-powered unit: an STM32 with an NRF radio module, a depth sensor, an EEPROM and a stepper driver, fed from a 12 V pack.</dd></div><div><dt>Its fuse</dt><dd>22.22 W in total. At 2.243 A with a 1.5 safety factor that is 3.36 A, so a 5 A fuse is the closest commercial value.</dd></div></dl></div>
+  <div class="dpanel" role="tabpanel" hidden><div class="dgrid"><figure class="dfig"><button class="dimg" type="button" style="aspect-ratio:1.3/1" data-src="docs/power-rov.webp" data-cap="ROV system diagram"><img src="docs/power-rov.webp" alt="ROV system diagram showing power flow and signal flow" loading="lazy" decoding="async"></button><figcaption><span><b>System diagram</b> ROV</span></figcaption></figure><figure class="dfig"><button class="dimg" type="button" style="aspect-ratio:1.3/1" data-src="docs/power-nonrov.webp" data-cap="Float system diagram (the non-ROV device)"><img src="docs/power-nonrov.webp" alt="Float system diagram showing its onboard electronics and the radio receiving station" loading="lazy" decoding="async"></button><figcaption><span><b>System diagram</b> Float (the non-ROV device)</span></figcaption></figure></div><dl class="dfacts"><div><dt>What these are</dt><dd>System diagrams. Each one draws the power flow and the signal flow of a whole system on a single page, in a form that is quick to read before you open a schematic.</dd></div><div><dt>ROV</dt><dd>The 48 V supply from the surface passes a 30 A fuse. Four 48 V to 12 V converters rated 30 A and one rated 10 A feed the ESC channels and the electronics, and a 12 V to 5 V stage supplies the 5 V rail. Each ESC channel has a voltage and current sensor read by the controllers.</dd></div><div><dt>ROV fuse sizing</dt><dd>The diagram totals 1060.91 W. With a 1.3 safety factor that is 28.8 A, so a 30 A fuse is the closest standard value.</dd></div><div><dt>Nodes and network</dt><dd>The Pi 5 node, the gateway node and the sensors node each have a CAN module. The gateway and the Pi connect through an Ethernet switch to the station router.</dd></div><div><dt>Float</dt><dd>The float is officially the non-ROV device. Its diagram covers the onboard electronics (an STM32 with an NRF radio module, a depth sensor, an EEPROM and a stepper driver on a 12 V pack) and the radio receiving station.</dd></div><div><dt>Float fuse sizing</dt><dd>22.22 W in total. At 2.243 A with a 1.5 safety factor that is 3.36 A, so a 5 A fuse is the closest commercial value.</dd></div></dl>
+</div>
 </section>
 <script>
 (function(){var tabs=[].slice.call(document.querySelectorAll('.dtabs button')),ps=[].slice.call(document.querySelectorAll('.dpanel'));
 tabs.forEach(function(b,i){b.addEventListener('click',function(){tabs.forEach(function(t,j){t.setAttribute('aria-selected',j===i?'true':'false')});ps.forEach(function(p,j){p.hidden=j!==i})})});
 ps.forEach(function(p){var bs=[].slice.call(p.querySelectorAll('.dimg'));var list=bs.map(function(b){return [b.dataset.src,b.dataset.cap]});
 bs.forEach(function(b,i){b.addEventListener('click',function(){if(window.__lbOpen)window.__lbOpen(list,i)})})});
+})();
+</script>
+
+<section class="sec pcbs" id="pcbs" aria-labelledby="pp-h">
+  <h2 id="pp-h">More boards I designed</h2>
+  <p class="lede">Before the ROV stack there were smaller boards, drawn in Eagle and mostly made at home, newest and most advanced first. The dates show when I worked on each one, so you can see how the boards progressed. Each has a glossary of the parts that matter.</p>
+  <div class="pk" id="pk" role="tablist" aria-label="Boards"></div>
+  <div id="pp-root"></div>
+</section>
+<script>
+(function(){
+var I='pcbs/',D=[{"k": "Hybrid V3 · SMT", "t": "Hybrid model-aircraft controller, V3 (SMT)", "m": "Oct 2021 · Eagle · two ATmega328P · the most advanced of these boards", "s": "The surface-mount version of my third controller board for model aircraft. Two ATmega328P microcontrollers share one board with a radio socket, a gyroscope header and servo and motor outputs, and each has its own USB port for programming. The renders are my own Blender scenes.", "im": [["v3smt-00.webp", "Labelled view"], ["v3smt-01.webp", "Top, angled"], ["v3smt-02.webp", "Top, angled, wider"], ["v3smt-03.webp", "Edge-on view of the bottom copper"], ["v3smt-04.webp", "Bottom copper"], ["v3smt-05.webp", "Top, from above and to one side"], ["v3smt-06.webp", "Top, small"], ["v3smt-07.webp", "Close-up of the power section"], ["v3smt-08.webp", "Close-up of the pin headers"], ["v3smt-09.webp", "Close-up of the radio socket and reset button"], ["v3smt-10.webp", "Top view"], ["v3smt-11.webp", "Bottom copper, full width"], ["v3smt-12.webp", "Top view, full width"]], "g": [["Maincontroller 1 and 2 (ATmega328P)", "Two TQFP chips on one board, each with its own resonator, reset button and USB port."], ["CH340G USB-to-serial, ×2", "One per microcontroller, each with its own micro-USB port, so either chip can be reprogrammed without a separate programmer."], ["Main power regulators", "Bring the supply down to the 5 V rail for the logic and servos."], ["3.3 V regulator for the radio", "The nRF24L01 radio runs at 3.3 V, so it gets its own regulator instead of sharing the 5 V rail."], ["Radio module input pins", "An 8-pin socket for the nRF24L01 radio module."], ["Gyroscope sensor pins", "A 4-pin header for a GY-521 (MPU-6050) gyroscope and accelerometer board."], ["Servos and motor outputs", "The long pin header that carries every servo and motor signal off the board."], ["ATtiny85 MCUs", "Two small ATtiny85 chips on the board for side jobs next to the main controllers."], ["Resonators, reset buttons, indicator LEDs", "Ceramic resonators clock each ATmega328P, a reset button sits beside each chip, and the LED groups show status."]]}, {"k": "Hybrid V3 · TH", "t": "Hybrid model-aircraft controller, V3 (through-hole)", "m": "Jan 2021 · Eagle · same circuit, hand-solderable", "s": "The same V3 circuit with through-hole parts, so it can be soldered with a basic iron and a socketed DIP ATmega328P. I drew it first; the surface-mount version came later in the year.", "im": [["v3th-00.webp", "3D render"], ["v3th-01.webp", "3D render"], ["v3th-02.webp", "3D render"], ["v3th-03.webp", "3D render"], ["v3th-04.webp", "3D render"], ["v3th-05.webp", "3D render"], ["v3th-06.webp", "3D render"]], "g": [["Maincontroller 1 and 2 (DIP ATmega328P)", "Through-hole chips in sockets, so a damaged processor can be pulled out and replaced."], ["USB A connectors", "Full-size USB ports in place of the micro-USB sockets on the SMT version."], ["CH340G USB-to-serial, ×2", "One per microcontroller, as on the SMT board."], ["Main power regulators", "The 5 V supply for the logic and servos."], ["3.3 V regulator for the radio", "A separate 3.3 V rail for the nRF24L01 radio module."], ["Radio module input pins", "The 8-pin socket the radio plugs into."], ["Gyroscope sensor pins", "A header for the GY-521 gyroscope board."], ["Servos and motor outputs", "Servo and motor signal headers along the board edge."], ["ATtiny85 MCUs, reset buttons, LEDs", "Two ATtiny85 helpers, a reset button for each main chip, and two LED groups."]]}, {"k": "Flight controller V2", "t": "Flight controller V2: two boards, one system", "m": "Nov 2020 · Eagle · ATmega328P · MultiWii", "s": "My second flight controller, split into two boards. One runs MultiWii, an open-source flight controller firmware, and drives the servos. The other is a radio receiver with an nRF24L01 that feeds it. Only three wires join them: 5 V, ground and a single PPM signal that carries every radio channel.", "im": [["fc-00.webp", "Flight controller board"], ["rx-00.webp", "Receiver board"], ["fc-01.webp", "Flight controller board"], ["rx-01.webp", "Receiver board"], ["fc-02.webp", "Flight controller board, close-up"], ["rx-02.webp", "Receiver board, close-up"], ["fc-03.webp", "Flight controller board, close-up"], ["rx-03.webp", "Receiver board, close-up"], ["fc-04.webp", "Flight controller board layout"], ["rx-04.webp", "Receiver board layout"], ["fc-05.webp", "Flight controller board, copper"], ["rx-05.webp", "Receiver board, copper"], ["fc-06.webp", "Flight controller board, copper"], ["rx-06.webp", "Receiver board, copper"], ["fc-07.webp", "Flight controller schematic"]], "gh": [["Flight controller board", [["ATmega328P running MultiWii", "The flight controller itself, with a crystal and two load capacitors."], ["Servo and motor outputs", "Rows of pin headers carry the outputs to the servos and speed controllers."], ["Status LED and power input", "A red LED shows the board is alive, and a 2-pin input takes the supply."]]], ["Receiver board", [["nRF24L01 radio", "A socket for the radio module, with the antenna end kept clear of copper along the board edge."], ["ATmega328P receiver", "Reads the radio packets and turns them into one PPM stream for the flight controller."], ["Voltage regulator", "A small surface-mount regulator beside the radio."]]], ["Between the boards", [["Three wires", "5 V, ground and one PPM signal. All of the radio data crosses on that single PPM line."]]]]}, {"k": "Balancing robot", "t": "Self-balancing robot controller", "m": "Apr 2021 · Eagle · ATmega328P", "s": "A compact controller for a two-wheeled balancing robot. It reads an IMU, runs the balance loop on an ATmega328P and sends drive commands to a motor driver.", "im": [["bal-00.webp", "Labelled view of the controller"], ["bal-01.webp", "3D render close-up"], ["bal-02.webp", "PCB layout"]], "g": [["Main controller (ATmega328P)", "A DIP-28 chip that runs the balance loop and talks to the IMU and the motor driver."], ["Resonator", "A crystal with two 22 pF capacitors for a stable clock, which the loop timing depends on."], ["IMU pins", "A 4-pin header for the inertial sensor that measures tilt."], ["Motor driver pins", "A 5-pin header to the motor driver board."], ["Input", "A screw terminal and regulator bring the battery down to the 5 V the chip needs."], ["Indicator LEDs and reset button", "Two LEDs with their own resistors for state, and a push button to restart the firmware."]]}, {"k": "Slayer exciter", "t": "Slayer exciter driver board", "m": "Sep 2020 · Eagle · TIP41C transistors", "s": "The switching board for a Slayer exciter, a small solid-state Tesla coil circuit. Four TIP41C power transistors share the switching current.", "im": [["sl-00.webp", "Labelled view"], ["sl-01.webp", "3D render"], ["sl-02.webp", "Close-up"], ["sl-03.webp", "Close-up from the other side"], ["sl-04.webp", "3D render, wide"], ["sl-05.webp", "Top view"], ["sl-06.webp", "Layout, top copper"], ["sl-07.webp", "Layout, with net names"], ["sl-08.webp", "Schematic"]], "g": [["Input and output", "Two 2-pin terminals, one for the supply and one for the coil connection."], ["Parallel transistors", "Four TIP41C power transistors wired in parallel, so each carries a share of the switching current."], ["Base resistors", "Four through-hole resistors set the drive current into the transistor bases."], ["Feedback pin", "A pin that feeds a signal back from the coil side to the transistor drive."]]}, {"k": "Relay module", "t": "5 V relay module", "m": "Mar 2021 · Eagle · BC547 driver", "s": "A one-channel relay board for switching mains-rated loads from a 3.3 V or 5 V logic pin. A small transistor drives the relay coil so the microcontroller pin never carries coil current.", "im": [["relay-00.webp", "3D render of the relay module"], ["relay-01.webp", "Top view"], ["relay-02.webp", "Schematic"]], "g": [["SRD-05VDC relay", "A 5 V coil relay with changeover contacts, rated at 10 A."], ["BC547 driver transistor", "Switches the coil from the ENABLE pin through a base resistor."], ["1N4007 flyback diode", "Clamps the voltage spike when the coil turns off, protecting the transistor."], ["Status LEDs", "One shows that power is present, one that the relay is active."], ["Input pins", "ENABLE, 5 V and GND on a three-pin header."], ["Output terminal", "A screw terminal for the load wires."]]}, {"k": "ATmega328P programmer", "t": "ATmega328P programmer board", "m": "Jan 2021 · Eagle · CH340G", "s": "A board I use to program bare SMD ATmega328P chips. I snap the chip onto it, program it over USB, then take it off, which is much faster than programming each chip on its final board.", "im": [["atmega-00.webp", "3D render of the board"], ["atmega-01.webp", "Close-up of the CH340G and crystal"]], "g": [["ATmega328P-AU footprint", "The TQFP footprint where the chip being programmed sits."], ["CH340G USB-to-serial", "Lets the chip be programmed over USB like an Arduino."], ["Micro-USB connector", "Power and programming in one cable."], ["Crystal and load capacitors", "The clock source for the chip."], ["Reset switch", "Restarts the chip without unplugging the board."]]}, {"k": "ATtiny85 breakout", "t": "ATtiny85 breakout board", "m": "Jan 2021 · Eagle · smallest board", "s": "A small breakout for an SOIC ATtiny85, so the chip can be programmed and then plugged into other circuits.", "im": [["attiny-00.webp", "3D render of the board"], ["attiny-01.webp", "Close-up of the chip and header"]], "g": [["ATtiny85V-10SH", "The 8-pin SOIC microcontroller."], ["Two 4-pin headers (J1, J2)", "Break out all eight pins so the chip can plug into a programmer or a breadboard."], ["LED and resistor", "A status light with a 5.6 kΩ series resistor."]]}];
+function ar(d){return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+d+'"/></svg>'}
+var tabs=document.getElementById('pk'),root=document.getElementById('pp-root'),btns=[],ps=[];
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e}
+function gl(d){var dl=el('dl','pp-gl');
+  function row(r){var w=el('div');w.appendChild(el('dt',null,r[0]));w.appendChild(el('dd',null,r[1]));dl.appendChild(w)}
+  if(d.g)d.g.forEach(row);
+  if(d.gh)d.gh.forEach(function(h){dl.appendChild(el('h4',null,h[0]));h[1].forEach(row)});
+  return dl}
+D.forEach(function(d,i){
+  var b=el('button',null,d.k);b.type='button';b.setAttribute('role','tab');b.setAttribute('aria-selected',i?'false':'true');tabs.appendChild(b);btns.push(b);
+  var p=el('div','pp-panel');p.setAttribute('role','tabpanel');if(i)p.hidden=true;
+  var list=d.im.map(function(x){return [I+x[0],x[1]]}),n=list.length,cur=0;
+  var g=el('div','pp-grid'),f=el('figure','pp-fig'),st=el('div','pp-stage');
+  var im=el('img');im.width=1400;im.height=875;im.decoding='async';
+  var op=el('button','pp-open');op.type='button';op.appendChild(im);st.appendChild(op);
+  var ct=el('span','pp-ct'),cap=el('p','pp-cap');
+  function idx(k){return ((k%n)+n)%n}
+  function show(k){cur=idx(k);im.src=list[cur][0];im.alt=list[cur][1];ct.textContent=(cur+1)+' / '+n;cap.textContent=list[cur][1];(new Image()).src=list[idx(cur+1)][0];(new Image()).src=list[idx(cur-1)][0]}
+  op.addEventListener('click',function(){window.__lbOpen&&window.__lbOpen(list,cur)});
+  if(n>1){var l=el('button','pp-arr l',ar('M15 6l-6 6 6 6'));l.type='button';l.setAttribute('aria-label','Previous image');var r=el('button','pp-arr r',ar('M9 6l6 6-6 6'));r.type='button';r.setAttribute('aria-label','Next image');
+    l.addEventListener('click',function(e){e.stopPropagation();show(cur-1)});r.addEventListener('click',function(e){e.stopPropagation();show(cur+1)});st.appendChild(l);st.appendChild(r);st.appendChild(ct);
+    var x0=null;st.addEventListener('touchstart',function(e){x0=e.touches[0].clientX},{passive:true});st.addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>40)show(cur+(dx<0?1:-1))},{passive:true});
+    st.tabIndex=0;st.addEventListener('keydown',function(e){if(e.key==='ArrowLeft')show(cur-1);else if(e.key==='ArrowRight')show(cur+1)})}
+  st.appendChild(el('span','pp-zoom','Tap to enlarge'));
+  show(0);f.appendChild(st);f.appendChild(cap);
+  var inf=el('div','pp-info');inf.appendChild(el('h3',null,d.t));inf.appendChild(el('p','pp-meta',d.m));inf.appendChild(el('p','pp-sum',d.s));inf.appendChild(gl(d));
+  g.appendChild(f);g.appendChild(inf);p.appendChild(g);root.appendChild(p);ps.push(p);
+  b.addEventListener('click',function(){btns.forEach(function(t,j){t.setAttribute('aria-selected',j===i?'true':'false')});ps.forEach(function(q,j){q.hidden=j!==i});if(window.ScrollTrigger)ScrollTrigger.refresh()});
+});
 })();
 </script>
 
