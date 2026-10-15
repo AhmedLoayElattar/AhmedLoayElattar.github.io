@@ -2045,5 +2045,44 @@ Object.keys(CFG).forEach(function(id){
 })();
 </script>
 
+<style>
+.rail{position:fixed;right:clamp(10px,1.6vw,22px);top:50%;transform:translateY(-50%) translateX(12px);z-index:24;display:flex;flex-direction:column;align-items:flex-end;gap:clamp(2px,.7vh,8px);opacity:0;pointer-events:none;transition:opacity .35s,transform .35s cubic-bezier(.32,.72,0,1)}
+.rail.show{opacity:1;pointer-events:auto;transform:translateY(-50%)}
+.rail a{position:relative;display:flex;align-items:center;justify-content:flex-end;gap:10px;height:32px;min-width:32px;padding:0 11px 0 0;border-radius:980px;color:var(--ink);text-decoration:none;font-size:.9375rem;font-weight:600;letter-spacing:-.01em;white-space:nowrap;-webkit-tap-highlight-color:transparent;outline-offset:2px}
+.rail a::before{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--bg);border:1px solid var(--hair);box-shadow:0 6px 20px rgba(0,0,0,.12);opacity:0;transition:opacity .25s}
+.rail a>span,.rail a>i{position:relative}
+.rail a>span{max-width:0;opacity:0;overflow:hidden;padding-left:0;transition:max-width .3s cubic-bezier(.32,.72,0,1),opacity .25s,padding .3s}
+.rail a>i{flex:none;width:7px;height:7px;border-radius:50%;background:var(--link);transition:transform .25s,background-color .25s,box-shadow .25s}
+.rail a:hover::before,.rail a:focus-visible::before{opacity:.55}
+.rail a:hover>span,.rail a:focus-visible>span{max-width:160px;opacity:.7;padding-left:16px}
+.rail a.on::before{opacity:1}
+.rail a.on>span{max-width:160px;opacity:1;padding-left:16px;color:var(--link)}
+.rail a.on>i{width:16px;height:16px;background:transparent;box-shadow:inset 0 0 0 1.5px var(--link);display:grid;place-items:center;margin-right:-4px}
+.rail a.on>i::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--link)}
+.rail a.on:hover>span{opacity:1}
+@media (max-width:1100px),(max-height:600px){.rail{display:none}}
+</style>
+<script>
+(function(){
+var L=[['work','Work'],['boards','Boards'],['tour3d','3D tour'],['design','Schematics'],['pcbs','More boards'],['experience','Experience'],['education','Education'],['awards','Awards'],['skills','Skills'],['contact','Contact']];
+var rail=document.createElement('nav');rail.className='rail';rail.setAttribute('aria-label','Page sections');
+var items=[];
+L.forEach(function(x){var s=document.getElementById(x[0]);if(!s)return;
+  var a=document.createElement('a');a.href='#'+x[0];a.innerHTML='<span>'+x[1]+'</span><i></i>';a.setAttribute('aria-label',x[1]);
+  a.addEventListener('click',function(e){e.preventDefault();s.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth',block:'start'});try{history.replaceState(null,'','#'+x[0])}catch(_){}});
+  rail.appendChild(a);items.push({s:s,a:a})});
+document.body.appendChild(rail);
+var cur=null,tk=false;
+function upd(){tk=false;
+  var y=innerHeight*.45,best=null;
+  items.forEach(function(it){var r=it.s.getBoundingClientRect();if(r.top<=y&&r.bottom>y)best=it});
+  if(!best){var h=items[0]&&items[0].s.getBoundingClientRect();rail.classList.toggle('show',false);if(cur){cur.a.classList.remove('on');cur=null}return}
+  rail.classList.add('show');
+  if(best!==cur){if(cur)cur.a.classList.remove('on');best.a.classList.add('on');best.a.removeAttribute('aria-current');best.a.setAttribute('aria-current','true');cur=best}}
+function req(){if(!tk){tk=true;requestAnimationFrame(upd)}}
+addEventListener('scroll',req,{passive:true});addEventListener('resize',req);upd();
+})();
+</script>
+
 </body>
 </html>
