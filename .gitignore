@@ -2,3 +2,6 @@ _sync.zip
 .DS_Store
 Thumbs.db
 *.tmp
+.claude/
+_to_delete/
+mig.zip
