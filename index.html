@@ -723,6 +723,11 @@ dialog.lb{height:100vh;height:100dvh;max-height:100dvh}
       <h1>Hi, I'm <span class="nm">Ahmed Loay&nbsp;Elattar</span>.</h1>
       <p class="intro">I design robots to run without me.</p>
       <p class="subintro">Embedded electronics, firmware, and navigation, from a sealed ROV to a factory floor.</p>
+      <div class="labnote" id="labnote" hidden>
+        <p class="ln-ask"><b>Seeking a funded MASc or PhD, starting September 2027.</b> Final-year Mechatronics &amp; Robotics student at E&#8209;JUST, graduating February 2027.</p>
+        <p class="ln-int"><span>Research interests</span>Reliable embedded systems for robots: distributed control networks, in-field firmware updates and fault tolerance. Autonomous mobile and field robots: navigation and localization on real hardware.</p>
+        <p class="ln-int"><span>Working toward</span>A paper on over-the-air firmware updates across a CAN bus inside a sealed ROV.</p>
+      </div>
       <div class="actions">
         <a class="btn" href="#work">See projects</a>
         <a class="btn ghost" id="cv" href="#" target="_blank" rel="noopener" hidden>Download CV</a>
@@ -1388,7 +1393,7 @@ D.forEach(function(d,i){
 
 <section class="sec" id="experience" aria-labelledby="exp-h">
   <h2 id="exp-h">Experience</h2>
-  <p class="lede">Three selective industrial internships in 2026, with global names in consumer goods, automotive wiring and automation, on top of a 2023 internship at Nissan and four years building robots at E‑JUST.</p>
+  <p class="lede">Three industrial internships with global names: Nissan (2023), LEONI and P&amp;G (2026). Plus Siemens TIA Portal training and four years building robots at E‑JUST.</p>
   <div class="rows">
     <div class="row"><div class="when">Sep to Dec 2026</div><div><div class="rhead"><img class="exlogo" src="logos/pg.png" alt="Procter & Gamble logo"><h3>Procter &amp; Gamble</h3></div><p class="pos">Innovation Quality Assurance Intern</p><p class="d">Baby Care team. I built a Microsoft 365 Copilot agent that automates a monthly eCommerce ratings-and-reviews report that used to take about a week by hand. It processes 200,000+ reviews per run through a fixed rulebook and Python analysis, then renders a branded LaTeX PDF with an integrity check for silently clipped content. I am now redesigning it as a question-driven tool for any P&amp;G brand.</p><p class="d">I am also automating SOP review in Power Automate: each global SOP update is routed to the affected local owner, their reply is collected, and revision completion is tracked. On the line, I am installing three end-of-line laser sensors that measure pack dimensions, with data flowing from the PLC to the historian to Proficy.</p></div></div>
     <div class="row"><div class="when">Aug 2026</div><div><div class="rhead"><img class="exlogo" src="logos/leoni.jpg" alt="LEONI logo"><h3>LEONI</h3></div><p class="pos">Operational Excellence Intern, Rising Stars Program</p><p class="d">LEONI is one of the world's largest makers of automotive wiring systems. On its competitive Rising Stars program I built a live KOSU efficiency dashboard from production barcode-scan data and ran a 6S audit of the packaging area.</p></div></div>
@@ -1408,13 +1413,13 @@ D.forEach(function(d,i){
 
 <section class="sec" id="awards" aria-labelledby="aw-h">
   <h2 id="aw-h">Awards</h2>
-  <p class="lede">Five competition results since 2023. Percentages show how close to the top each placement was.</p>
+  <p class="lede">Competition results since 2023. Percentages show how close to the top each placement was.</p>
   <div class="award-lead">
     <div>
       <div class="rhead"><img class="exlogo" src="logos/erc.jpg" alt="E-JUST Robotics Club logo"><p class="when" style="margin:0">April 2025, awarded by NTRA</p></div>
       <h3>Best Communication System, MATE ROV Egypt</h3>
       <p>Ours was the only team of about thirty with a purpose-built communication architecture. The organizers created this award for it, a first in the competition's thirteen years.</p>
-      <p class="big">1 of <b class="n" data-count="30">30</b><span>teams with a dedicated comms system (top 3%)</span></p>
+      <p class="big">1 of <b class="n" data-count="30">30</b><span>teams with a dedicated communication system</span></p>
     </div>
     <figure class="award-fig">
       <img src="photos/boards/d2025/award.jpg" alt="Best Communication System award, MATE ROV Egypt 2025, awarded to E-JUST Robotics Club" loading="lazy">
@@ -1422,7 +1427,7 @@ D.forEach(function(d,i){
   </div>
   <div class="rows">
     <div class="row"><div class="when">Aug 2024</div><div><div class="rhead"><img class="exlogo" src="logos/icmtc.png" alt="ICMTC logo" onerror="this.remove()"><h3>2nd place, UAVC Drone Challenge</h3></div><p class="d">ICMTC at the Military Technical College. 2nd of 11 teams (top 18%), plus the Innovation Prize: 30,000 EGP, about $620 at the August 2024 rate (~48.5 EGP/$).</p></div></div>
-    <div class="row"><div class="when">Aug 2024</div><div><div class="rhead"><img class="exlogo" src="logos/ert.jpg" alt="E-JUST Racing Team logo"><h3>EVER 5 Electric Vehicle Competition</h3></div><p class="d">6th of 23 in endurance (top 26%) and 14th of 22 in the dynamic events (top 64%), as electrical team lead.</p></div></div>
+    <div class="row"><div class="when">Aug 2024</div><div><div class="rhead"><img class="exlogo" src="logos/ert.jpg" alt="E-JUST Racing Team logo"><h3>EVER 5 Electric Vehicle Competition</h3></div><p class="d">6th of 23 in endurance (top 26%), as electrical team lead.</p></div></div>
   </div>
 </section>
 
@@ -2082,6 +2087,16 @@ function upd(){tk=false;
 function req(){if(!tk){tk=true;requestAnimationFrame(upd)}}
 addEventListener('scroll',req,{passive:true});addEventListener('resize',req);upd();
 })();
+</script>
+
+<style>
+.labnote{margin:18px 0 4px;padding:14px 18px;border-radius:var(--r-m);border:1px solid var(--hair);border-left:3px solid var(--link);background:color-mix(in srgb,var(--bg) 82%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);max-width:620px;display:grid;gap:8px}
+.labnote p{margin:0;font-size:.9375rem;line-height:1.45;color:var(--ink2)}
+.labnote .ln-ask b{color:var(--ink)}
+.labnote .ln-int span{display:block;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:2px}
+</style>
+<script>
+(function(){try{var q=new URLSearchParams(location.search);if(q.get('r')==='lab'){var n=document.getElementById('labnote');if(n)n.hidden=false;document.documentElement.classList.add('for-lab')}}catch(e){}})();
 </script>
 
 </body>
