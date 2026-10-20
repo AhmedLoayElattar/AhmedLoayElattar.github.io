@@ -27,20 +27,28 @@ Personal portfolio of Ahmed Loay Elattar, mechatronics and robotics engineer.
 4. Commit. The site refreshes in about a minute.
 
 ### Board history photos
-The "Five generations of ROV boards" section shows one board at a time and changes it as you scroll. Give it one image per board, in order (2023, May 2024, Oct 2024, 2025, 2026): background-removed PNGs work best, from a photo or a 3D render. Keep every image the same size with the board centred the same way, so each change looks like the board transforming in place. Upload them to `photos/boards/` and fill the `boards` list at the top of `config.js`. Put `""` in a spot to skip a board; it keeps the built-in illustration.
+The "Five generations of ROV boards" section is a slider: one board at a time, changed by dragging, swiping, the arrow buttons or the arrow keys. Give it one image per board, in order (2023, May 2024, Oct 2024, 2025, 2026): background-removed images work best, from a photo or a 3D render. Keep every image the same size with the board centred the same way. Upload them to `photos/boards/` and fill the `boards` list at the top of `config.js`; the caption's text before the colon (for example `May 2024`) becomes the label on the timeline. Put `""` in a spot to skip a board; its name shows instead.
 
 Want to see every photo slot and the folder it expects? Open the site with `#photos` at the end:
 `https://ahmedloayelattar.github.io/#photos`
 
 ### Photo tips
-- JPG, about 1600 px wide, under 500 KB. Phone photos are usually 3 to 5 MB, so shrink them first (squoosh.app works well).
-- Lowercase names with no spaces: `pool-test.jpg`, not `Pool Test.JPG`. GitHub is case-sensitive.
+- WebP or JPG, about 1600 px on the long edge, around 150 KB. Phone photos are usually 3 to 5 MB, so shrink them first (squoosh.app works well).
+- Tile covers also load a smaller copy named like `cover-800.webp` (800 px) if one sits next to the photo. Without it the full photo is used.
+- Lowercase names with no spaces: `pool-test.webp`, not `Pool Test.JPG`. GitHub is case-sensitive.
 - Landscape shots make the best covers.
+- Full-size originals live in `_originals/` on your computer only (it is ignored by git and never published).
+
+## Views for different readers
+
+- `https://ahmedloayelattar.github.io/` is the public page.
+- `?r=lab` adds the research note for professors.
+- `?r=industry` puts Experience first (P&G, LEONI, Nissan) and opens Projects with the AGV, Nissan and LEONI.
 
 ## Add your CV and a photo of yourself
 
 - Upload your CV PDF into `cv/`, then set `cv: "cv/your-file.pdf"` in `config.js`. A Download CV button appears.
-- Upload a square photo of yourself (for example `photos/me.jpg`) and set `me: "photos/me.jpg"`.
+- Upload a square photo of yourself (for example `photos/me.webp`) and set `me: "photos/me.webp"`.
 
 ## Folder layout
 
