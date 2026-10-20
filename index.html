@@ -724,9 +724,12 @@ dialog.lb{height:100vh;height:100dvh;max-height:100dvh}
       <p class="intro">I design robots to run without me.</p>
       <p class="subintro">Embedded electronics, firmware, and navigation, from a sealed ROV to a factory floor.</p>
       <div class="labnote" id="labnote" hidden>
-        <p class="ln-ask"><b>Seeking a funded MASc or PhD, starting September 2027.</b> Final-year Mechatronics &amp; Robotics student at E&#8209;JUST, graduating February 2027.</p>
-        <p class="ln-int"><span>Research interests</span>Reliable embedded systems for robots: distributed control networks, in-field firmware updates and fault tolerance. Autonomous mobile and field robots: navigation and localization on real hardware.</p>
-        <p class="ln-int"><span>Working toward</span>A paper on over-the-air firmware updates across a CAN bus inside a sealed ROV.</p>
+        <p class="ln-status"><i aria-hidden="true"></i>Seeking a funded MASc or PhD<span>Sept 2027</span></p>
+        <div class="ln-int" role="list">
+          <button type="button" role="listitem" data-open="rov"><b>Reliable robot electronics</b><span>CAN networks, in-field firmware updates and fault tolerance.</span><em>The ROV <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg></em></button>
+          <button type="button" role="listitem" data-open="agv"><b>Autonomy on real hardware</b><span>Navigation and localization for mobile and field robots.</span><em>The AGV <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3.5 10.5 8 6 12.5"/></svg></em></button>
+        </div>
+        <p class="ln-foot">Graduating February 2027 from E&#8209;JUST. Writing a paper on over-the-air firmware updates over CAN.</p>
       </div>
       <div class="actions">
         <a class="btn" href="#work">See projects</a>
@@ -2090,13 +2093,28 @@ addEventListener('scroll',req,{passive:true});addEventListener('resize',req);upd
 </script>
 
 <style>
-.labnote{margin:18px 0 4px;padding:14px 18px;border-radius:var(--r-m);border:1px solid var(--hair);border-left:3px solid var(--link);background:color-mix(in srgb,var(--bg) 82%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);max-width:620px;display:grid;gap:8px}
-.labnote p{margin:0;font-size:.9375rem;line-height:1.45;color:var(--ink2)}
-.labnote .ln-ask b{color:var(--ink)}
-.labnote .ln-int span{display:block;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);margin-bottom:2px}
+.labnote{margin:26px 0 0;max-width:34rem;animation:settle .7s var(--ease-out,cubic-bezier(.22,1,.36,1)) 130ms backwards}
+.ln-status{display:inline-flex;align-items:center;gap:8px;margin:0;padding:6px 14px 6px 12px;border-radius:980px;font-size:.875rem;font-weight:600;letter-spacing:-.005em;color:var(--ink);background:color-mix(in srgb,var(--surf) 72%,transparent);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);box-shadow:inset 0 0 0 .5px var(--hair)}
+.ln-status i{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px color-mix(in srgb,var(--ok) 22%,transparent)}
+.ln-status span{color:var(--ink3);font-weight:500}
+.ln-status span::before{content:"·";margin:0 6px 0 2px}
+.ln-int{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:14px 0 0 -12px}
+.ln-int button{all:unset;box-sizing:border-box;display:flex;flex-direction:column;gap:3px;padding:10px 12px 11px;border-radius:14px;cursor:pointer;transition:background-color .2s,transform .1s ease-out;-webkit-tap-highlight-color:transparent}
+.ln-int button:hover{background:color-mix(in srgb,var(--surf) 80%,transparent)}
+.ln-int button:active{transform:scale(.98)}
+.ln-int button:focus-visible{outline:2px solid var(--link);outline-offset:1px}
+.ln-int b{font-size:1.0625rem;font-weight:600;letter-spacing:-.015em;line-height:1.25;color:var(--ink)}
+.ln-int span{font-size:.9063rem;line-height:1.4;color:var(--ink2)}
+.ln-int em{font-style:normal;font-size:.875rem;font-weight:500;color:var(--link);display:inline-flex;align-items:center;gap:2px;margin-top:3px}
+.ln-int em svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+.ln-int button:hover em svg{transform:translateX(2px)}
+.ln-foot{margin:10px 0 0;font-size:.8125rem;line-height:1.45;color:var(--ink3)}
+@media (max-width:560px){.ln-int{grid-template-columns:1fr;margin-left:-12px}.ln-status{font-size:.8125rem;white-space:nowrap}}
+@media (prefers-reduced-motion:reduce){.labnote{animation:none}}
+@media (prefers-reduced-transparency:reduce){.ln-status{background:var(--surf);backdrop-filter:none}}
 </style>
 <script>
-(function(){try{var q=new URLSearchParams(location.search);if(q.get('r')==='lab'){var n=document.getElementById('labnote');if(n)n.hidden=false;document.documentElement.classList.add('for-lab')}}catch(e){}})();
+(function(){try{var q=new URLSearchParams(location.search);if(q.get('r')==='lab'){var n=document.getElementById('labnote');if(n){n.hidden=false;n.querySelectorAll('[data-open]').forEach(function(b){b.addEventListener('click',function(){var t=document.querySelector('.tile[data-id="'+b.dataset.open+'"]');if(t)t.click()})})}document.documentElement.classList.add('for-lab')}}catch(e){}})();
 </script>
 
 </body>
