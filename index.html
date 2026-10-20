@@ -266,58 +266,45 @@ dialog.lb[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto}
 .lb-cap{text-align:center;font-size:0.9375rem;color:#d2d2d7;padding:14px 20px calc(18px + env(safe-area-inset-bottom,0px));min-height:3em}
 
 
-/* ---- board history: one stage that changes generation as you scroll, cards beside it ---- */
-.boards{margin-inline:-20px;padding-block:clamp(64px,9vw,112px) 0}
-.boards .w{max-width:1100px;padding-inline:20px}
-.boards-head h2{font-size:clamp(2.125rem,5vw,3.25rem);line-height:1.08;letter-spacing:-.02em;margin-bottom:12px}
-.boards-head .lede{font-size:clamp(1.125rem,2vw,1.3125rem);color:var(--ink2);max-width:36em;line-height:1.4}
-.boards-body{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(24px,3vw,40px) 18px}
-@media (max-width:820px){.boards-body{grid-template-columns:1fr}}
-.stage{position:relative;margin:0;min-width:0}
-.stage-yr{position:absolute;left:0;right:0;top:50%;transform:translateY(-58%);text-align:center;font-family:var(--fd);font-weight:700;font-size:clamp(5.5rem,15vw,11rem);letter-spacing:-.05em;line-height:1;color:var(--surf);user-select:none;pointer-events:none;font-variant-numeric:tabular-nums;transition:filter .2s ease,opacity .2s ease}
-.stage-yr.swap{filter:blur(6px);opacity:.3}
-.sg-wrap{position:relative;width:100%;aspect-ratio:10/7;max-height:min(52vh,440px)}
-.sg{position:absolute;inset:0;display:grid;place-items:center;opacity:0;transform:scale(.94);filter:blur(6px);transition:opacity .5s ease,transform .6s var(--ease-out),filter .5s ease;will-change:transform,opacity}
-.sg.on{opacity:1;transform:none;filter:none}
-.sg svg,.sg img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 22px 28px rgba(0,0,0,.22))}
-@media (max-width:820px){.sg svg,.sg img{filter:drop-shadow(0 12px 14px rgba(0,0,0,.16))}}
-.scan{position:absolute;top:4%;bottom:4%;left:0;width:2px;margin-left:-1px;border-radius:2px;background:linear-gradient(transparent,var(--cu) 20%,var(--cu) 80%,transparent);box-shadow:0 0 18px 2px color-mix(in srgb,var(--cu) 60%,transparent);opacity:0;pointer-events:none}
-.stage-cap{text-align:center;font-size:.8125rem;color:var(--ink3);margin-top:8px;min-height:1.3em}
-.track-clip{min-width:0}
-.boards-track{position:relative;display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:4px}
-.boards-track::-webkit-scrollbar{display:none}
-.bcard{flex:none;width:min(86%,420px);background:var(--surf);border-radius:var(--r-l);padding:clamp(24px,3vw,32px);scroll-snap-align:start;display:flex;flex-direction:column;gap:10px;transition:opacity .4s ease,transform .4s var(--ease-out),background-color .3s ease}
-.bcard .byr{font-family:var(--fd);font-weight:700;font-size:clamp(2.75rem,5vw,3.75rem);line-height:.92;letter-spacing:-.045em;font-variant-numeric:tabular-nums}
-.bcard h3{font-size:clamp(1.3125rem,2.2vw,1.5rem);letter-spacing:-.018em;line-height:1.2}
-.bcard .bd{font-size:1rem;color:var(--ink2);line-height:1.5}
-.bcard .bfix{font-size:.9375rem;color:var(--ink2);line-height:1.5;margin-top:auto;padding-top:14px;border-top:1px solid var(--hair)}
-.bcard .bfix b{color:var(--ink);font-weight:600}
-.bcard.won{background:var(--ink);color:var(--bg)}
-.bcard.won .byr{color:var(--cu)}
-.bcard.won .bd,.bcard.won .bfix{color:var(--bg);opacity:.75}
-.bcard.won .bfix{border-top-color:color-mix(in srgb,var(--bg) 25%,transparent)}
-.bcard.won .bfix b{color:var(--bg)}
-.bcard:not(.on){opacity:.55}
-.boards-meter{display:flex;align-items:center;gap:14px;font-size:.875rem;color:var(--ink2)}
-.boards-meter b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
-.bm-bar{flex:1;max-width:220px;height:3px;border-radius:2px;background:var(--surf2);overflow:hidden}
-.bm-bar i{display:block;height:100%;background:var(--cu);transform-origin:left center;transform:scaleX(.2)}
-.boards .slot{margin:10px 0 0}
-/* pinned mode: GSAP scrubs the stage and the cards together */
-.boards.pinned .boards-pin{height:100vh;height:100svh;padding-top:var(--navh,52px);display:flex;flex-direction:column;justify-content:center}
-.boards.pinned .track-clip{overflow:hidden;border-radius:var(--r-l)}
-.boards.pinned .boards-track{overflow:visible;scroll-snap-type:none}
-.boards.pinned .sg{transition:none;filter:none;opacity:1;transform:none}
-.boards.pinned .bcard{transform:scale(.97)}
-.boards.pinned .bcard.on{transform:none}
-@media (max-width:820px){
-  .boards.pinned .boards-head .lede{display:none}
-  .boards.pinned .sg-wrap{max-height:30vh;max-height:30svh}
-  .boards.pinned .stage-cap{display:none}
-  .boards.pinned .boards-body{padding-block:12px 10px;gap:12px}
-  .boards.pinned .bcard{padding:20px}
-  .boards.pinned .bcard .byr{font-size:2.5rem}
-}
+/* ---- board generations: one slider; drag or swipe 1:1, momentum, spring snap, rubber-band at the ends ---- */
+.gen{margin-top:clamp(18px,3vw,32px)}
+.gen-view{position:relative;overflow:hidden;touch-action:pan-y;cursor:grab;-webkit-user-select:none;user-select:none;border-radius:var(--r-l);outline-offset:4px}
+.gen-view.drag{cursor:grabbing}
+.gen-view:focus-visible{outline:2px solid var(--link)}
+.gen-track{display:flex;align-items:center;will-change:transform}
+.gen-slide{flex:none;margin:0;aspect-ratio:10/7;display:grid;place-items:center;transform-origin:50% 60%;cursor:pointer}
+.gen-slide img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 22px 28px rgba(0,0,0,.22));-webkit-user-drag:none;pointer-events:none}
+.gen-ph{font-family:var(--fd);font-weight:700;font-size:1.25rem;color:var(--ink3)}
+.gen-more{display:none}
+.gen-info{text-align:center;max-width:36rem;margin:clamp(6px,1.4vw,14px) auto 0;padding:6px 14px;border-radius:var(--r-m)}
+.gen-when{font-family:var(--fd);font-weight:700;font-size:clamp(1.75rem,3.4vw,2.5rem);letter-spacing:-.03em;line-height:1.05;font-variant-numeric:tabular-nums}
+.gen-cap{font-size:clamp(1rem,1.6vw,1.1875rem);color:var(--ink2);margin-top:6px;line-height:1.4}
+.gen-note{font-size:.9375rem;font-weight:600;color:var(--cu);margin-top:6px}
+.gen-note:empty{display:none}
+.gen-open{min-height:44px;margin-top:4px;padding:0 6px;background:none;border:0;font:inherit;font-size:.9375rem;font-weight:600;color:var(--link);cursor:pointer;transition:transform 160ms var(--ease-out)}
+.gen-open:hover{text-decoration:underline}
+.gen-open:active{transform:scale(.97)}
+.gen-ctl{display:flex;align-items:center;gap:clamp(8px,2vw,18px);max-width:720px;margin:clamp(10px,1.6vw,18px) auto 0}
+.gen-arr{flex:none;width:44px;height:44px;border-radius:50%;border:1px solid var(--hair);background:var(--bg);color:var(--ink);display:grid;place-items:center;cursor:pointer;transition:transform 160ms var(--ease-out),opacity .2s ease}
+.gen-arr:active{transform:scale(.94)}
+.gen-arr[aria-disabled="true"]{opacity:.3;cursor:default}
+.gen-arr[aria-disabled="true"]:active{transform:none}
+.gen-arr svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.gen-line{position:relative;flex:1;display:flex;justify-content:space-between}
+.gen-line::before,.gen-fill{content:"";position:absolute;left:22px;right:22px;top:16px;height:2px;border-radius:2px;background:var(--surf2)}
+.gen-fill{background:var(--cu);transform-origin:left center;transform:scaleX(0)}
+.gen-line button{position:relative;display:flex;flex-direction:column;align-items:center;gap:7px;min-width:44px;min-height:44px;padding:10px 2px 2px;border:0;background:none;font:inherit;font-size:.8125rem;line-height:1.15;color:var(--ink3);cursor:pointer;white-space:nowrap;font-variant-numeric:tabular-nums}
+.gen-line button i{width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--hair);transition:border-color .2s ease,background-color .2s ease,transform .2s var(--ease-out)}
+.gen-line button.past i{border-color:var(--cu)}
+.gen-line button.on{color:var(--ink);font-weight:600}
+.gen-line button.on i{border-color:var(--cu);background:var(--cu);transform:scale(1.2)}
+.gen-line small{font-size:inherit}
+@media (max-width:620px){.gen-line button{font-size:.75rem}.gen-line small{display:block}.gen-line::before,.gen-fill{top:16px}}
+.gen .slot{margin:10px 0 0}
+/* reduced motion: slides crossfade in place */
+.gen.rm .gen-track{display:grid;transform:none!important}
+.gen.rm .gen-slide{grid-area:1/1;width:auto!important;max-width:620px;justify-self:center;opacity:0;transform:none!important;transition:opacity .25s ease}
+.gen.rm .gen-slide.on{opacity:1}
 .figs{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px 28px;margin-top:auto;padding-top:22px}
 .figs .fig{margin-top:0;padding-top:0}
 .tile .fig.sm{font-size:clamp(1.75rem,3vw,2.25rem)}
@@ -339,11 +326,6 @@ dialog.lb[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto}
 .featured .ota-read{font-size:.9375rem}
 .featured .ota-read .state{font-size:.875rem}
 @media (min-width:821px){.featured h3{font-size:clamp(1.9rem,2.8vw,2.5rem)}.featured p{font-size:1.0625rem}}
-/* board card is clickable */
-.bcard{cursor:pointer}
-.bcard:focus-visible{outline:2px solid var(--cu);outline-offset:3px}
-.bmore{margin-top:4px;font-size:0.875rem;font-weight:600;color:var(--cu)}
-.bcard.won .bmore{color:var(--cu)}
 
 
 /* hero: greeting name accent + larger avatar */
@@ -546,7 +528,7 @@ body{overflow-x:clip}
 .skic.full{overflow:hidden}.skic.full img{width:100%;height:100%;border-radius:5px}
 .stepper{padding:5px 4px;min-width:74px}
 .stepper span{max-width:none;white-space:nowrap;font-size:.5625rem;letter-spacing:.02em}
-.sec>h2,.sec>.lede,.boards-head,.contact>h2,.contact>.lede,.mailrow,.elsewhere,footer .w>span,.row,.skcat{background:color-mix(in srgb,var(--bg) 80%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.sec>h2,.sec>.lede,.gen-info,.contact>h2,.contact>.lede,.mailrow,.elsewhere,footer .w>span,.row,.skcat{background:color-mix(in srgb,var(--bg) 80%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 .sec>h2,.sec>.lede,.contact>h2,.contact>.lede{width:fit-content;border-radius:16px;padding:4px 14px;margin-left:-14px;box-sizing:content-box}
 
 /* v21 compact skills */
@@ -1220,91 +1202,41 @@ dialog.lb{height:100vh;height:100dvh;max-height:100dvh}
   </div>
 </section>
 
-<section class="boards" id="boards" aria-labelledby="bd-h">
-  <div class="boards-pin">
-    <div class="w boards-head">
-      <h2 id="bd-h">Five generations of ROV boards</h2>
-      <p class="lede">Each one fixed what broke in the last, from a bare-copper backplane to a stack with no cables at all.</p>
-    </div>
-    <div class="w boards-body">
-      <figure class="stage" aria-label="The ROV board for the selected year">
-        <div class="stage-yr" id="stage-yr" aria-hidden="true">2023</div>
-        <div class="sg-wrap" id="sg-wrap">
-          <div class="sg on" data-i="0"><svg viewBox="0 0 400 280" aria-hidden="true"><rect x="20" y="28" width="360" height="224" rx="10" fill="#c58b4f" stroke="#9a6230" stroke-width="2"/>
-<path d="M40 70H150V122M40 210H120V168M360 84H262V140M360 226H300V200M150 236H210" stroke="#a96b33" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="38" cy="46" r="6" fill="#ead7b9" stroke="#9a6230" stroke-width="2"/><circle cx="362" cy="46" r="6" fill="#ead7b9" stroke="#9a6230" stroke-width="2"/><circle cx="38" cy="234" r="6" fill="#ead7b9" stroke="#9a6230" stroke-width="2"/><circle cx="362" cy="234" r="6" fill="#ead7b9" stroke="#9a6230" stroke-width="2"/>
-<rect x="56" y="58" width="196" height="98" rx="5" fill="#1d6f88"/><rect x="66" y="63" width="176" height="9" fill="#202020"/><rect x="66" y="142" width="176" height="9" fill="#202020"/><rect x="134.5" y="83" width="3" height="5" fill="#d0d3d8"/><rect x="134.5" y="130" width="3" height="5" fill="#d0d3d8"/><rect x="125" y="92.5" width="5" height="3" fill="#d0d3d8"/><rect x="172" y="92.5" width="5" height="3" fill="#d0d3d8"/><rect x="140.5" y="83" width="3" height="5" fill="#d0d3d8"/><rect x="140.5" y="130" width="3" height="5" fill="#d0d3d8"/><rect x="125" y="98.5" width="5" height="3" fill="#d0d3d8"/><rect x="172" y="98.5" width="5" height="3" fill="#d0d3d8"/><rect x="146.5" y="83" width="3" height="5" fill="#d0d3d8"/><rect x="146.5" y="130" width="3" height="5" fill="#d0d3d8"/><rect x="125" y="104.5" width="5" height="3" fill="#d0d3d8"/><rect x="172" y="104.5" width="5" height="3" fill="#d0d3d8"/><rect x="152.5" y="83" width="3" height="5" fill="#d0d3d8"/><rect x="152.5" y="130" width="3" height="5" fill="#d0d3d8"/><rect x="125" y="110.5" width="5" height="3" fill="#d0d3d8"/><rect x="172" y="110.5" width="5" height="3" fill="#d0d3d8"/><rect x="158.5" y="83" width="3" height="5" fill="#d0d3d8"/><rect x="158.5" y="130" width="3" height="5" fill="#d0d3d8"/><rect x="125" y="116.5" width="5" height="3" fill="#d0d3d8"/><rect x="172" y="116.5" width="5" height="3" fill="#d0d3d8"/><rect x="164.5" y="83" width="3" height="5" fill="#d0d3d8"/><rect x="164.5" y="130" width="3" height="5" fill="#d0d3d8"/><rect x="125" y="122.5" width="5" height="3" fill="#d0d3d8"/><rect x="172" y="122.5" width="5" height="3" fill="#d0d3d8"/><rect x="130" y="88" width="42" height="42" rx="3" fill="#1c1c1e"/>
-<rect x="266" y="104" width="96" height="124" rx="5" fill="#1d6f88"/><rect x="272" y="110" width="9" height="110" fill="#202020"/><rect x="292" y="168" width="52" height="15" rx="2" fill="#202020"/>
-<path d="M160 156C170 210 210 200 214 248" stroke="#e04a3a" stroke-width="3.5" fill="none"/><path d="M180 156C196 196 240 196 252 250" stroke="#f2c230" stroke-width="3.5" fill="none"/></svg></div>
-          <div class="sg" data-i="1"><svg viewBox="0 0 400 280" aria-hidden="true"><path d="M78 252V280M138 252V280M198 252V280M258 252V280" stroke="#3a3a3c" stroke-width="7"/>
-<rect x="20" y="28" width="360" height="224" rx="10" fill="#1f4fa0" stroke="#163a78" stroke-width="2"/>
-<path d="M44 60H170V96M44 120H120V200M380 70H300V120M240 210H340V170" stroke="#3a6fc9" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="38" cy="46" r="6" fill="#dfe3ea" stroke="#163a78" stroke-width="2"/><circle cx="362" cy="46" r="6" fill="#dfe3ea" stroke="#163a78" stroke-width="2"/><circle cx="38" cy="234" r="6" fill="#dfe3ea" stroke="#163a78" stroke-width="2"/><circle cx="362" cy="234" r="6" fill="#dfe3ea" stroke="#163a78" stroke-width="2"/>
-<rect x="54" y="66" width="92" height="72" rx="4" fill="#2a8a4a"/><rect x="85.07142857142857" y="81" width="3" height="5" fill="#c9ccd1"/><rect x="85.07142857142857" y="118" width="3" height="5" fill="#c9ccd1"/><rect x="77" y="89.07142857142857" width="5" height="3" fill="#c9ccd1"/><rect x="114" y="89.07142857142857" width="5" height="3" fill="#c9ccd1"/><rect x="89.64285714285714" y="81" width="3" height="5" fill="#c9ccd1"/><rect x="89.64285714285714" y="118" width="3" height="5" fill="#c9ccd1"/><rect x="77" y="93.64285714285714" width="5" height="3" fill="#c9ccd1"/><rect x="114" y="93.64285714285714" width="5" height="3" fill="#c9ccd1"/><rect x="94.21428571428571" y="81" width="3" height="5" fill="#c9ccd1"/><rect x="94.21428571428571" y="118" width="3" height="5" fill="#c9ccd1"/><rect x="77" y="98.21428571428571" width="5" height="3" fill="#c9ccd1"/><rect x="114" y="98.21428571428571" width="5" height="3" fill="#c9ccd1"/><rect x="98.78571428571428" y="81" width="3" height="5" fill="#c9ccd1"/><rect x="98.78571428571428" y="118" width="3" height="5" fill="#c9ccd1"/><rect x="77" y="102.78571428571428" width="5" height="3" fill="#c9ccd1"/><rect x="114" y="102.78571428571428" width="5" height="3" fill="#c9ccd1"/><rect x="103.35714285714286" y="81" width="3" height="5" fill="#c9ccd1"/><rect x="103.35714285714286" y="118" width="3" height="5" fill="#c9ccd1"/><rect x="77" y="107.35714285714286" width="5" height="3" fill="#c9ccd1"/><rect x="114" y="107.35714285714286" width="5" height="3" fill="#c9ccd1"/><rect x="107.92857142857143" y="81" width="3" height="5" fill="#c9ccd1"/><rect x="107.92857142857143" y="118" width="3" height="5" fill="#c9ccd1"/><rect x="77" y="111.92857142857143" width="5" height="3" fill="#c9ccd1"/><rect x="114" y="111.92857142857143" width="5" height="3" fill="#c9ccd1"/><rect x="82" y="86" width="32" height="32" rx="3" fill="#1c1c1e"/>
-<rect x="164" y="56" width="110" height="80" rx="4" fill="#1c1c1e"/><rect x="172" y="64" width="94" height="8" fill="#c9a33a"/><rect x="180" y="84" width="60" height="40" rx="3" fill="#2c2c2e"/>
-<rect x="190" y="68" width="74" height="56" rx="4" fill="#2a8a4a" opacity=".95"/><rect x="214.5" y="77" width="3" height="5" fill="#c9ccd1"/><rect x="214.5" y="110" width="3" height="5" fill="#c9ccd1"/><rect x="207" y="84.5" width="5" height="3" fill="#c9ccd1"/><rect x="240" y="84.5" width="5" height="3" fill="#c9ccd1"/><rect x="218.5" y="77" width="3" height="5" fill="#c9ccd1"/><rect x="218.5" y="110" width="3" height="5" fill="#c9ccd1"/><rect x="207" y="88.5" width="5" height="3" fill="#c9ccd1"/><rect x="240" y="88.5" width="5" height="3" fill="#c9ccd1"/><rect x="222.5" y="77" width="3" height="5" fill="#c9ccd1"/><rect x="222.5" y="110" width="3" height="5" fill="#c9ccd1"/><rect x="207" y="92.5" width="5" height="3" fill="#c9ccd1"/><rect x="240" y="92.5" width="5" height="3" fill="#c9ccd1"/><rect x="226.5" y="77" width="3" height="5" fill="#c9ccd1"/><rect x="226.5" y="110" width="3" height="5" fill="#c9ccd1"/><rect x="207" y="96.5" width="5" height="3" fill="#c9ccd1"/><rect x="240" y="96.5" width="5" height="3" fill="#c9ccd1"/><rect x="230.5" y="77" width="3" height="5" fill="#c9ccd1"/><rect x="230.5" y="110" width="3" height="5" fill="#c9ccd1"/><rect x="207" y="100.5" width="5" height="3" fill="#c9ccd1"/><rect x="240" y="100.5" width="5" height="3" fill="#c9ccd1"/><rect x="234.5" y="77" width="3" height="5" fill="#c9ccd1"/><rect x="234.5" y="110" width="3" height="5" fill="#c9ccd1"/><rect x="207" y="104.5" width="5" height="3" fill="#c9ccd1"/><rect x="240" y="104.5" width="5" height="3" fill="#c9ccd1"/><rect x="212" y="82" width="28" height="28" rx="3" fill="#1c1c1e"/>
-<rect x="292" y="140" width="70" height="56" rx="4" fill="#6a2fa0"/><rect x="314" y="158" width="24" height="20" rx="2" fill="#1c1c1e"/>
-<rect x="60" y="230" width="36" height="22" rx="2" fill="#c9ccd1"/><rect x="120" y="230" width="36" height="22" rx="2" fill="#c9ccd1"/><rect x="180" y="230" width="36" height="22" rx="2" fill="#c9ccd1"/><rect x="240" y="230" width="36" height="22" rx="2" fill="#c9ccd1"/></svg></div>
-          <div class="sg" data-i="2"><svg viewBox="0 0 400 280" aria-hidden="true"><rect x="18" y="22" width="150" height="120" rx="8" fill="#d6ae2a" stroke="#a8861d" stroke-width="2"/>
-<path d="M30 40H70V60M150 40H120M30 128H90V100M156 120H130" stroke="#b8901f" stroke-width="4" fill="none" stroke-linecap="round"/><rect x="75.07142857142857" y="53" width="3" height="5" fill="#c9ccd1"/><rect x="75.07142857142857" y="104" width="3" height="5" fill="#c9ccd1"/><rect x="65" y="63.07142857142857" width="5" height="3" fill="#c9ccd1"/><rect x="116" y="63.07142857142857" width="5" height="3" fill="#c9ccd1"/><rect x="81.64285714285714" y="53" width="3" height="5" fill="#c9ccd1"/><rect x="81.64285714285714" y="104" width="3" height="5" fill="#c9ccd1"/><rect x="65" y="69.64285714285714" width="5" height="3" fill="#c9ccd1"/><rect x="116" y="69.64285714285714" width="5" height="3" fill="#c9ccd1"/><rect x="88.21428571428572" y="53" width="3" height="5" fill="#c9ccd1"/><rect x="88.21428571428572" y="104" width="3" height="5" fill="#c9ccd1"/><rect x="65" y="76.21428571428572" width="5" height="3" fill="#c9ccd1"/><rect x="116" y="76.21428571428572" width="5" height="3" fill="#c9ccd1"/><rect x="94.78571428571428" y="53" width="3" height="5" fill="#c9ccd1"/><rect x="94.78571428571428" y="104" width="3" height="5" fill="#c9ccd1"/><rect x="65" y="82.78571428571428" width="5" height="3" fill="#c9ccd1"/><rect x="116" y="82.78571428571428" width="5" height="3" fill="#c9ccd1"/><rect x="101.35714285714286" y="53" width="3" height="5" fill="#c9ccd1"/><rect x="101.35714285714286" y="104" width="3" height="5" fill="#c9ccd1"/><rect x="65" y="89.35714285714286" width="5" height="3" fill="#c9ccd1"/><rect x="116" y="89.35714285714286" width="5" height="3" fill="#c9ccd1"/><rect x="107.92857142857143" y="53" width="3" height="5" fill="#c9ccd1"/><rect x="107.92857142857143" y="104" width="3" height="5" fill="#c9ccd1"/><rect x="65" y="95.92857142857143" width="5" height="3" fill="#c9ccd1"/><rect x="116" y="95.92857142857143" width="5" height="3" fill="#c9ccd1"/><rect x="70" y="58" width="46" height="46" rx="3" fill="#1c1c1e"/>
-<rect x="292" y="34" width="92" height="76" rx="7" fill="#d6ae2a" stroke="#a8861d" stroke-width="2"/><rect x="322" y="58" width="30" height="28" rx="3" fill="#1c1c1e"/>
-<rect x="18" y="156" width="366" height="104" rx="8" fill="#d6ae2a" stroke="#a8861d" stroke-width="2"/>
-<rect x="34" y="172" width="38" height="56" rx="3" fill="#2c2c2e"/><rect x="40" y="236" width="26" height="12" rx="2" fill="#b87333"/><rect x="84" y="172" width="38" height="56" rx="3" fill="#2c2c2e"/><rect x="90" y="236" width="26" height="12" rx="2" fill="#b87333"/><rect x="134" y="172" width="38" height="56" rx="3" fill="#2c2c2e"/><rect x="140" y="236" width="26" height="12" rx="2" fill="#b87333"/><rect x="184" y="172" width="38" height="56" rx="3" fill="#2c2c2e"/><rect x="190" y="236" width="26" height="12" rx="2" fill="#b87333"/><rect x="234" y="172" width="38" height="56" rx="3" fill="#2c2c2e"/><rect x="240" y="236" width="26" height="12" rx="2" fill="#b87333"/><rect x="284" y="172" width="38" height="56" rx="3" fill="#2c2c2e"/><rect x="290" y="236" width="26" height="12" rx="2" fill="#b87333"/><rect x="334" y="172" width="38" height="56" rx="3" fill="#2c2c2e"/><rect x="340" y="236" width="26" height="12" rx="2" fill="#b87333"/>
-<circle cx="200" cy="90" r="0"/></svg></div>
-          <div class="sg" data-i="3"><svg viewBox="0 0 400 280" aria-hidden="true"><rect x="18" y="16" width="364" height="150" rx="10" fill="#1f6e3a" stroke="#154f29" stroke-width="2"/>
-<rect x="36" y="26" width="206" height="16" rx="2" fill="#1c1c1e"/><circle cx="44.0" cy="34" r="2" fill="#d4b14a"/><circle cx="53.6" cy="34" r="2" fill="#d4b14a"/><circle cx="63.2" cy="34" r="2" fill="#d4b14a"/><circle cx="72.8" cy="34" r="2" fill="#d4b14a"/><circle cx="82.4" cy="34" r="2" fill="#d4b14a"/><circle cx="92.0" cy="34" r="2" fill="#d4b14a"/><circle cx="101.6" cy="34" r="2" fill="#d4b14a"/><circle cx="111.2" cy="34" r="2" fill="#d4b14a"/><circle cx="120.8" cy="34" r="2" fill="#d4b14a"/><circle cx="130.39999999999998" cy="34" r="2" fill="#d4b14a"/><circle cx="140.0" cy="34" r="2" fill="#d4b14a"/><circle cx="149.6" cy="34" r="2" fill="#d4b14a"/><circle cx="159.2" cy="34" r="2" fill="#d4b14a"/><circle cx="168.8" cy="34" r="2" fill="#d4b14a"/><circle cx="178.4" cy="34" r="2" fill="#d4b14a"/><circle cx="188.0" cy="34" r="2" fill="#d4b14a"/><circle cx="197.6" cy="34" r="2" fill="#d4b14a"/><circle cx="207.2" cy="34" r="2" fill="#d4b14a"/><circle cx="216.79999999999998" cy="34" r="2" fill="#d4b14a"/><circle cx="226.4" cy="34" r="2" fill="#d4b14a"/><circle cx="236.0" cy="34" r="2" fill="#d4b14a"/>
-<path d="M40 70H150V120M190 150H300V128M370 50H330" stroke="#2f8a50" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="34" cy="32" r="6" fill="#dfe6e0" stroke="#154f29" stroke-width="2"/><circle cx="366" cy="32" r="6" fill="#dfe6e0" stroke="#154f29" stroke-width="2"/><circle cx="34" cy="150" r="6" fill="#dfe6e0" stroke="#154f29" stroke-width="2"/><circle cx="366" cy="150" r="6" fill="#dfe6e0" stroke="#154f29" stroke-width="2"/>
-<rect x="181.35714285714286" y="65" width="3" height="5" fill="#c9ccd1"/><rect x="181.35714285714286" y="118" width="3" height="5" fill="#c9ccd1"/><rect x="171" y="75.35714285714286" width="5" height="3" fill="#c9ccd1"/><rect x="224" y="75.35714285714286" width="5" height="3" fill="#c9ccd1"/><rect x="188.21428571428572" y="65" width="3" height="5" fill="#c9ccd1"/><rect x="188.21428571428572" y="118" width="3" height="5" fill="#c9ccd1"/><rect x="171" y="82.21428571428571" width="5" height="3" fill="#c9ccd1"/><rect x="224" y="82.21428571428571" width="5" height="3" fill="#c9ccd1"/><rect x="195.07142857142856" y="65" width="3" height="5" fill="#c9ccd1"/><rect x="195.07142857142856" y="118" width="3" height="5" fill="#c9ccd1"/><rect x="171" y="89.07142857142857" width="5" height="3" fill="#c9ccd1"/><rect x="224" y="89.07142857142857" width="5" height="3" fill="#c9ccd1"/><rect x="201.92857142857142" y="65" width="3" height="5" fill="#c9ccd1"/><rect x="201.92857142857142" y="118" width="3" height="5" fill="#c9ccd1"/><rect x="171" y="95.92857142857143" width="5" height="3" fill="#c9ccd1"/><rect x="224" y="95.92857142857143" width="5" height="3" fill="#c9ccd1"/><rect x="208.78571428571428" y="65" width="3" height="5" fill="#c9ccd1"/><rect x="208.78571428571428" y="118" width="3" height="5" fill="#c9ccd1"/><rect x="171" y="102.78571428571428" width="5" height="3" fill="#c9ccd1"/><rect x="224" y="102.78571428571428" width="5" height="3" fill="#c9ccd1"/><rect x="215.64285714285714" y="65" width="3" height="5" fill="#c9ccd1"/><rect x="215.64285714285714" y="118" width="3" height="5" fill="#c9ccd1"/><rect x="171" y="109.64285714285714" width="5" height="3" fill="#c9ccd1"/><rect x="224" y="109.64285714285714" width="5" height="3" fill="#c9ccd1"/><rect x="176" y="70" width="48" height="48" rx="3" fill="#1c1c1e"/><rect x="250" y="88" width="30" height="18" rx="2" fill="#1c1c1e"/><rect x="296" y="56" width="62" height="50" rx="3" fill="#c9ccd1"/><rect x="304" y="64" width="46" height="34" rx="2" fill="#9ea2a8"/>
-<text x="58" y="148" font-family="ui-monospace,Menlo,monospace" font-size="12" fill="#e9f2ec" letter-spacing="2">KAMIKAZE</text>
-<path d="M24 184H376" stroke="#d48a45" stroke-width="2.5"/><path d="M24 191H376" stroke="#d48a45" stroke-width="2.5" opacity=".55"/>
-<rect x="22.0" y="200" width="44" height="64" rx="4" fill="#1f6e3a" stroke="#154f29" stroke-width="1.5"/><rect x="31.0" y="214" width="26" height="22" rx="2" fill="#1c1c1e"/><rect x="30.0" y="246" width="12" height="10" fill="#b87333"/><rect x="46.0" y="246" width="12" height="10" fill="#b87333"/><path d="M44.0 191V200" stroke="#d48a45" stroke-width="2"/><rect x="73.5" y="200" width="44" height="64" rx="4" fill="#1f6e3a" stroke="#154f29" stroke-width="1.5"/><rect x="82.5" y="214" width="26" height="22" rx="2" fill="#1c1c1e"/><rect x="81.5" y="246" width="12" height="10" fill="#b87333"/><rect x="97.5" y="246" width="12" height="10" fill="#b87333"/><path d="M95.5 191V200" stroke="#d48a45" stroke-width="2"/><rect x="125.0" y="200" width="44" height="64" rx="4" fill="#1f6e3a" stroke="#154f29" stroke-width="1.5"/><rect x="134.0" y="214" width="26" height="22" rx="2" fill="#1c1c1e"/><rect x="133.0" y="246" width="12" height="10" fill="#b87333"/><rect x="149.0" y="246" width="12" height="10" fill="#b87333"/><path d="M147.0 191V200" stroke="#d48a45" stroke-width="2"/><rect x="176.5" y="200" width="44" height="64" rx="4" fill="#1f6e3a" stroke="#154f29" stroke-width="1.5"/><rect x="185.5" y="214" width="26" height="22" rx="2" fill="#1c1c1e"/><rect x="184.5" y="246" width="12" height="10" fill="#b87333"/><rect x="200.5" y="246" width="12" height="10" fill="#b87333"/><path d="M198.5 191V200" stroke="#d48a45" stroke-width="2"/><rect x="228.0" y="200" width="44" height="64" rx="4" fill="#1f6e3a" stroke="#154f29" stroke-width="1.5"/><rect x="237.0" y="214" width="26" height="22" rx="2" fill="#1c1c1e"/><rect x="236.0" y="246" width="12" height="10" fill="#b87333"/><rect x="252.0" y="246" width="12" height="10" fill="#b87333"/><path d="M250.0 191V200" stroke="#d48a45" stroke-width="2"/><rect x="279.5" y="200" width="44" height="64" rx="4" fill="#1f6e3a" stroke="#154f29" stroke-width="1.5"/><rect x="288.5" y="214" width="26" height="22" rx="2" fill="#1c1c1e"/><rect x="287.5" y="246" width="12" height="10" fill="#b87333"/><rect x="303.5" y="246" width="12" height="10" fill="#b87333"/><path d="M301.5 191V200" stroke="#d48a45" stroke-width="2"/><rect x="331.0" y="200" width="44" height="64" rx="4" fill="#1f6e3a" stroke="#154f29" stroke-width="1.5"/><rect x="340.0" y="214" width="26" height="22" rx="2" fill="#1c1c1e"/><rect x="339.0" y="246" width="12" height="10" fill="#b87333"/><rect x="355.0" y="246" width="12" height="10" fill="#b87333"/><path d="M353.0 191V200" stroke="#d48a45" stroke-width="2"/></svg></div>
-          <div class="sg" data-i="4"><svg viewBox="0 0 400 280" aria-hidden="true"><defs><filter id="gl5" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="9"/></filter></defs>
-<rect x="44" y="232" width="312" height="20" rx="10" fill="#7fd0ff" opacity=".55" filter="url(#gl5)"/>
-<rect x="34" y="214" width="332" height="30" rx="8" fill="#145a2f" stroke="#0f4423" stroke-width="2"/>
-<rect x="30" y="28" width="340" height="196" rx="14" fill="#176a37" stroke="#11502a" stroke-width="2"/>
-<path d="M58 60H160V100M58 196H150V160M342 60H250V100M342 196H260V156" stroke="#2b8a50" stroke-width="3" fill="none" stroke-linecap="round"/>
-<rect x="148.0" y="74.3" width="5" height="9" rx="1" fill="#2b2b2b"/><rect x="289.2" y="65.9" width="5" height="9" rx="1" fill="#8a6b3f"/><rect x="66.6" y="116.2" width="9" height="5" rx="1" fill="#2b2b2b"/><rect x="212.5" y="60.7" width="5" height="9" rx="1" fill="#8a6b3f"/><rect x="235.1" y="138.3" width="9" height="5" rx="1" fill="#3b3b3b"/><rect x="70.1" y="84.7" width="5" height="9" rx="1" fill="#8a6b3f"/><rect x="138.2" y="73.3" width="9" height="5" rx="1" fill="#d9d9d9"/><rect x="215.1" y="152.9" width="9" height="5" rx="1" fill="#8a6b3f"/><rect x="161.8" y="133.1" width="9" height="5" rx="1" fill="#2b2b2b"/><rect x="231.8" y="125.5" width="5" height="9" rx="1" fill="#d9d9d9"/><rect x="188.2" y="188.7" width="9" height="5" rx="1" fill="#8a6b3f"/><rect x="281.6" y="155.5" width="9" height="5" rx="1" fill="#d9d9d9"/><rect x="205.2" y="181.5" width="5" height="9" rx="1" fill="#d9d9d9"/><rect x="228.9" y="62.8" width="5" height="9" rx="1" fill="#8a6b3f"/><rect x="271.0" y="74.5" width="9" height="5" rx="1" fill="#2b2b2b"/><rect x="329.2" y="63.5" width="5" height="9" rx="1" fill="#d9d9d9"/><rect x="152.6" y="103.8" width="9" height="5" rx="1" fill="#3b3b3b"/><rect x="75.5" y="65.9" width="9" height="5" rx="1" fill="#2b2b2b"/><rect x="73.2" y="155.8" width="5" height="9" rx="1" fill="#3b3b3b"/><rect x="136.8" y="109.1" width="5" height="9" rx="1" fill="#2b2b2b"/><rect x="323.1" y="104.6" width="5" height="9" rx="1" fill="#3b3b3b"/><rect x="72.7" y="165.7" width="9" height="5" rx="1" fill="#8a6b3f"/><rect x="169.0" y="187.7" width="9" height="5" rx="1" fill="#8a6b3f"/><rect x="183.6" y="133.3" width="5" height="9" rx="1" fill="#3b3b3b"/><rect x="301.4" y="93.2" width="9" height="5" rx="1" fill="#d9d9d9"/><rect x="249.9" y="108.3" width="9" height="5" rx="1" fill="#2b2b2b"/><rect x="106.0" y="86.3" width="9" height="5" rx="1" fill="#3b3b3b"/><rect x="292.0" y="79.0" width="9" height="5" rx="1" fill="#8a6b3f"/><rect x="175.0" y="106.6" width="5" height="9" rx="1" fill="#8a6b3f"/><rect x="252.1" y="128.3" width="5" height="9" rx="1" fill="#2b2b2b"/><rect x="185.7" y="180.9" width="5" height="9" rx="1" fill="#3b3b3b"/><rect x="169.1" y="110.3" width="9" height="5" rx="1" fill="#3b3b3b"/><rect x="73.7" y="62.0" width="9" height="5" rx="1" fill="#8a6b3f"/><rect x="87.2" y="140.9" width="9" height="5" rx="1" fill="#8a6b3f"/><rect x="208.4" y="192.4" width="5" height="9" rx="1" fill="#2b2b2b"/><rect x="304.3" y="142.9" width="9" height="5" rx="1" fill="#d9d9d9"/><rect x="327.4" y="141.1" width="9" height="5" rx="1" fill="#2b2b2b"/><rect x="297.1" y="199.0" width="9" height="5" rx="1" fill="#3b3b3b"/><rect x="144.6" y="73.3" width="5" height="9" rx="1" fill="#d9d9d9"/><rect x="191.9" y="154.4" width="5" height="9" rx="1" fill="#8a6b3f"/><rect x="326.1" y="130.2" width="9" height="5" rx="1" fill="#2b2b2b"/><rect x="271.3" y="96.1" width="5" height="9" rx="1" fill="#2b2b2b"/><rect x="253.7" y="90.6" width="9" height="5" rx="1" fill="#8a6b3f"/><rect x="157.0" y="85.0" width="5" height="9" rx="1" fill="#d9d9d9"/><rect x="236.7" y="142.8" width="5" height="9" rx="1" fill="#8a6b3f"/><rect x="284.9" y="173.1" width="5" height="9" rx="1" fill="#8a6b3f"/><rect x="112.8" y="124.9" width="5" height="9" rx="1" fill="#2b2b2b"/><rect x="280.4" y="121.9" width="9" height="5" rx="1" fill="#d9d9d9"/><rect x="183.0" y="190.7" width="5" height="9" rx="1" fill="#d9d9d9"/><rect x="78.9" y="67.1" width="9" height="5" rx="1" fill="#d9d9d9"/><rect x="114.0" y="144.4" width="5" height="9" rx="1" fill="#2b2b2b"/><rect x="192.2" y="148.6" width="5" height="9" rx="1" fill="#2b2b2b"/><rect x="293.0" y="69.7" width="9" height="5" rx="1" fill="#8a6b3f"/><rect x="191.8" y="78.4" width="5" height="9" rx="1" fill="#d9d9d9"/><rect x="80.6" y="192.0" width="5" height="9" rx="1" fill="#3b3b3b"/><rect x="170.0" y="192.1" width="5" height="9" rx="1" fill="#8a6b3f"/><rect x="338.0" y="56.1" width="5" height="9" rx="1" fill="#3b3b3b"/><rect x="285.0" y="73.6" width="5" height="9" rx="1" fill="#3b3b3b"/><rect x="242.7" y="103.9" width="5" height="9" rx="1" fill="#8a6b3f"/><rect x="62.1" y="170.3" width="5" height="9" rx="1" fill="#2b2b2b"/><rect x="205.5" y="190.2" width="9" height="5" rx="1" fill="#8a6b3f"/><rect x="290.6" y="83.2" width="9" height="5" rx="1" fill="#d9d9d9"/><rect x="198.3" y="165.0" width="9" height="5" rx="1" fill="#3b3b3b"/><rect x="292.9" y="61.0" width="5" height="9" rx="1" fill="#3b3b3b"/><rect x="244.1" y="172.6" width="5" height="9" rx="1" fill="#8a6b3f"/><rect x="207.0" y="129.5" width="9" height="5" rx="1" fill="#3b3b3b"/><rect x="276.5" y="142.1" width="5" height="9" rx="1" fill="#8a6b3f"/><rect x="104.9" y="122.1" width="5" height="9" rx="1" fill="#2b2b2b"/><rect x="148.6" y="128.7" width="5" height="9" rx="1" fill="#2b2b2b"/><rect x="306.8" y="60.4" width="9" height="5" rx="1" fill="#2b2b2b"/><rect x="181.64285714285714" y="93" width="3" height="5" fill="#c9ccd1"/><rect x="181.64285714285714" y="148" width="3" height="5" fill="#c9ccd1"/><rect x="171" y="103.64285714285714" width="5" height="3" fill="#c9ccd1"/><rect x="226" y="103.64285714285714" width="5" height="3" fill="#c9ccd1"/><rect x="188.78571428571428" y="93" width="3" height="5" fill="#c9ccd1"/><rect x="188.78571428571428" y="148" width="3" height="5" fill="#c9ccd1"/><rect x="171" y="110.78571428571429" width="5" height="3" fill="#c9ccd1"/><rect x="226" y="110.78571428571429" width="5" height="3" fill="#c9ccd1"/><rect x="195.92857142857144" y="93" width="3" height="5" fill="#c9ccd1"/><rect x="195.92857142857144" y="148" width="3" height="5" fill="#c9ccd1"/><rect x="171" y="117.92857142857143" width="5" height="3" fill="#c9ccd1"/><rect x="226" y="117.92857142857143" width="5" height="3" fill="#c9ccd1"/><rect x="203.07142857142858" y="93" width="3" height="5" fill="#c9ccd1"/><rect x="203.07142857142858" y="148" width="3" height="5" fill="#c9ccd1"/><rect x="171" y="125.07142857142857" width="5" height="3" fill="#c9ccd1"/><rect x="226" y="125.07142857142857" width="5" height="3" fill="#c9ccd1"/><rect x="210.21428571428572" y="93" width="3" height="5" fill="#c9ccd1"/><rect x="210.21428571428572" y="148" width="3" height="5" fill="#c9ccd1"/><rect x="171" y="132.21428571428572" width="5" height="3" fill="#c9ccd1"/><rect x="226" y="132.21428571428572" width="5" height="3" fill="#c9ccd1"/><rect x="217.35714285714286" y="93" width="3" height="5" fill="#c9ccd1"/><rect x="217.35714285714286" y="148" width="3" height="5" fill="#c9ccd1"/><rect x="171" y="139.35714285714286" width="5" height="3" fill="#c9ccd1"/><rect x="226" y="139.35714285714286" width="5" height="3" fill="#c9ccd1"/><rect x="176" y="98" width="50" height="50" rx="3" fill="#1c1c1e"/><rect x="96" y="112" width="34" height="22" rx="2" fill="#1c1c1e"/><rect x="270" y="112" width="34" height="22" rx="2" fill="#1c1c1e"/>
-<circle cx="52" cy="50" r="13" fill="#c99456" stroke="#8a5f2c" stroke-width="2"/><circle cx="52" cy="50" r="5" fill="#6b4a22"/><circle cx="348" cy="50" r="13" fill="#c99456" stroke="#8a5f2c" stroke-width="2"/><circle cx="348" cy="50" r="5" fill="#6b4a22"/><circle cx="52" cy="202" r="13" fill="#c99456" stroke="#8a5f2c" stroke-width="2"/><circle cx="52" cy="202" r="5" fill="#6b4a22"/><circle cx="348" cy="202" r="13" fill="#c99456" stroke="#8a5f2c" stroke-width="2"/><circle cx="348" cy="202" r="5" fill="#6b4a22"/>
-<path d="M65 50H150M335 50H250" stroke="#e39a55" stroke-width="2.5" stroke-dasharray="4 4"/></svg></div>
-          <span class="scan" id="scan" aria-hidden="true"></span>
-        </div>
-        <figcaption class="stage-cap" id="stage-cap">Illustration</figcaption>
-        <div class="slot">Board photos go in <b>photos/boards/</b> as transparent PNGs, listed under <b>boards</b> in config.js</div>
-      </figure>
-      <div class="track-clip">
-        <div class="boards-track" id="boards-track" tabindex="0" aria-label="Board generations. Scroll sideways to see all five.">
-      <article class="bcard" data-i="0" role="button" tabindex="0">
-        <p class="byr">2023</p>
-        <h3>Carrier board</h3>
-        <p class="bd">A locally made, bare-copper backplane for an Arduino Mega and Uno. Dev boards on a carrier, not real integration yet.</p>
-        <p class="bfix"><b>What broke:</b> the ESCs sat loose inside the canister. If a signal wire shook free, the hull had to be opened to find it.</p>
-      <p class="bmore">View this board’s gallery ›</p></article>
-      <article class="bcard" data-i="1" role="button" tabindex="0">
-        <p class="byr">2024</p>
-        <h3>First custom PCBs</h3>
-        <p class="bd">May 2024. Proper soldermask boards designed from scratch for the first time.</p>
-        <p class="bfix"><b>What broke:</b> every microcontroller still ran its own USB cable back to the computer, with modules stacked on modules.</p>
-      <p class="bmore">View this board’s gallery ›</p></article>
-      <article class="bcard" data-i="2" role="button" tabindex="0">
-        <p class="byr">2024</p>
-        <h3>Split by function</h3>
-        <p class="bd">October 2024. An STM32F411 controller, a separate power board and an IMU breakout. The ESCs finally lived on a board.</p>
-        <p class="bfix"><b>What broke:</b> all seven ESCs sat on one power board, so a single dead ESC meant reworking the whole system.</p>
-      <p class="bmore">View this board’s gallery ›</p></article>
-      <article class="bcard won" data-i="3" role="button" tabindex="0">
-        <p class="byr">2025</p>
-        <h3>CAN replaces USB</h3>
-        <p class="bd">A Raspberry Pi 5 carrier with the STM32 gateway and CAN transceiver on board, and one PCB per ESC. A dead ESC now swaps out alone.</p>
-        <p class="bfix"><b>Result:</b> Best Communication System at MATE ROV Egypt 2025, an award created for this system.</p>
-      <p class="bmore">View this board’s gallery ›</p></article>
-      <article class="bcard" data-i="4" role="button" tabindex="0">
-        <p class="byr">2026</p>
-        <h3>The cable-free stack</h3>
-        <p class="bd">Fabricated at JLCPCB. Every off-the-shelf module replaced with SMD parts on the board, and CAN routed through the metal standoffs that hold the stack together.</p>
-        <p class="bfix"><b>Now:</b> no external cables inside the hull, and LEDs on the control board light the power board beneath it.</p>
-      <p class="bmore">View this board’s gallery ›</p></article>
-        </div>
+<section class="sec gen-sec" id="boards" aria-labelledby="bd-h">
+  <h2 id="bd-h">Five generations of ROV boards</h2>
+  <p class="lede">Each one fixed what broke in the last, from a bare-copper backplane to a stack with no cables at all. Drag, swipe or use the arrows.</p>
+  <div class="gen" id="gen" role="region" aria-roledescription="carousel" aria-label="ROV board generations, 2023 to 2026">
+    <div class="gen-view" id="gen-view" tabindex="0" aria-label="Board generations. Use the left and right arrow keys.">
+      <div class="gen-track" id="gen-track">
+        <figure class="gen-slide" data-year="2023" role="group" aria-roledescription="slide" aria-label="1 of 5">
+          <div class="gen-more"><h3>Carrier board</h3><p class="bd">A locally made, bare-copper backplane for an Arduino Mega and Uno. Dev boards on a carrier, not real integration yet.</p><p class="bfix"><b>What broke:</b> the ESCs sat loose inside the canister. If a signal wire shook free, the hull had to be opened to find it.</p></div>
+        </figure>
+        <figure class="gen-slide" data-year="2024" role="group" aria-roledescription="slide" aria-label="2 of 5">
+          <div class="gen-more"><h3>First custom PCBs</h3><p class="bd">May 2024. Proper soldermask boards designed from scratch for the first time.</p><p class="bfix"><b>What broke:</b> every microcontroller still ran its own USB cable back to the computer, with modules stacked on modules.</p></div>
+        </figure>
+        <figure class="gen-slide" data-year="2024" role="group" aria-roledescription="slide" aria-label="3 of 5">
+          <div class="gen-more"><h3>Split by function</h3><p class="bd">October 2024. An STM32F411 controller, a separate power board and an IMU breakout. The ESCs finally lived on a board.</p><p class="bfix"><b>What broke:</b> all seven ESCs sat on one power board, so a single dead ESC meant reworking the whole system.</p></div>
+        </figure>
+        <figure class="gen-slide" data-year="2025" data-note="Won Best Communication System at MATE ROV Egypt 2025" role="group" aria-roledescription="slide" aria-label="4 of 5">
+          <div class="gen-more"><h3>CAN replaces USB</h3><p class="bd">A Raspberry Pi 5 carrier with the STM32 gateway and CAN transceiver on board, and one PCB per ESC. A dead ESC now swaps out alone.</p><p class="bfix"><b>Result:</b> Best Communication System at MATE ROV Egypt 2025, an award created for this system.</p></div>
+        </figure>
+        <figure class="gen-slide" data-year="2026" role="group" aria-roledescription="slide" aria-label="5 of 5">
+          <div class="gen-more"><h3>The cable-free stack</h3><p class="bd">Fabricated at JLCPCB. Every off-the-shelf module replaced with SMD parts on the board, and CAN routed through the metal standoffs that hold the stack together.</p><p class="bfix"><b>Now:</b> no external cables inside the hull, and LEDs on the control board light the power board beneath it.</p></div>
+        </figure>
       </div>
     </div>
-    <div class="w boards-meter" aria-hidden="true"><span><b id="bm-n">1</b> of 5</span><span class="bm-bar"><i id="bm-i"></i></span></div>
+    <div class="gen-info" aria-live="polite">
+      <p class="gen-when" id="gen-when"></p>
+      <p class="gen-cap" id="gen-cap"></p>
+      <p class="gen-note" id="gen-note"></p>
+      <button class="gen-open" id="gen-open" type="button">Gallery and details <span aria-hidden="true">&rsaquo;</span></button>
+    </div>
+    <div class="gen-ctl">
+      <button class="gen-arr" id="gen-prev" type="button" aria-label="Previous generation"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg></button>
+      <div class="gen-line" id="gen-line"><span class="gen-fill" id="gen-fill" aria-hidden="true"></span></div>
+      <button class="gen-arr" id="gen-next" type="button" aria-label="Next generation"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg></button>
+    </div>
+    <div class="slot">Board photos go in <b>photos/boards/</b> as transparent images, listed under <b>boards</b> in config.js</div>
   </div>
 </section>
 
@@ -1658,18 +1590,133 @@ D.forEach(function(d,i){
     });
   })();
 
-  /* ---------- board cards open their own gallery + details ---------- */
-  var BDET=SITE.boardDetail||[];
-  $$('.bcard').forEach(function(c,i){
-    function openBoard(){
-      var yr=$('.byr',c).textContent, name=$('h3',c).textContent;
-      var html='<p>'+$('.bd',c).innerHTML+'</p><p>'+$('.bfix',c).innerHTML+'</p>';
-      openData({ title:yr+': '+name, org:'ROV board generation', html:html,
-        photos:(BDET[i]&&BDET[i].photos)||[], focus:c });
+  /* ---------- board generations slider ----------
+     Drag/swipe tracks 1:1 from where it was grabbed; release projects momentum (d = 0.998),
+     picks the nearest year to the projection and hands the release velocity to a spring.
+     Springs carry velocity when re-targeted, so arrows, keys and grabs interrupt cleanly. */
+  (function(){
+    var root=$('#gen'); if(!root) return;
+    var view=$('#gen-view'), track=$('#gen-track'), slides=$$('.gen-slide',root), N=slides.length,
+        whenEl=$('#gen-when'), capEl=$('#gen-cap'), noteEl=$('#gen-note'), info=$('.gen-info',root),
+        prev=$('#gen-prev'), next=$('#gen-next'), fill=$('#gen-fill'), line=$('#gen-line'),
+        BD=SITE.boards||[], BDET=SITE.boardDetail||[], dots=[];
+    var G=slides.map(function(s,i){
+      var more=$('.gen-more',s), name=$('h3',more).textContent, c=(BD[i]&&BD[i][1])||'', m=c.match(/^([^:]{3,20}):\s*(.+)$/);
+      var when=m?m[1]:s.dataset.year, cap=m?m[2]:name;
+      return {when:when, cap:cap.charAt(0).toUpperCase()+cap.slice(1), name:name, note:s.dataset.note||'', more:more};
+    });
+    slides.forEach(function(s,i){
+      var p=BD[i];
+      if(!p||!p[0]){ var ph=document.createElement('span'); ph.className='gen-ph'; ph.textContent=G[i].name; s.insertBefore(ph,s.firstChild); return; }
+      var im=new Image(); im.alt=G[i].when+': '+G[i].cap; im.decoding='async'; im.loading='lazy'; im.draggable=false;
+      s.insertBefore(im,s.firstChild); pic(im,p[0],'(max-width: 759px) 80vw, 640px');
+    });
+    G.forEach(function(g,i){
+      var b=document.createElement('button'), mo=g.when.match(/^([A-Za-z]{3})[a-z]* (\d{4})$/);
+      b.type='button'; b.setAttribute('aria-label','Show '+g.when);
+      b.innerHTML='<i></i><span>'+(mo?'<small>'+mo[1]+'</small> '+mo[2]:g.when)+'</span>';
+      b.addEventListener('click',function(){go(i)}); line.appendChild(b); dots.push(b);
+    });
+
+    var rm=reduce, step=1, x=0, v=0, cur=-1, anim=0;
+    if(rm) root.classList.add('rm');
+    function measure(){
+      var w=view.clientWidth, sw=Math.round(Math.min(w*(w<760?.8:.58),640,Math.max(260,innerHeight*.4)*10/7));
+      slides.forEach(function(s){s.style.width=sw+'px'}); step=sw; track.style.paddingLeft=Math.round((w-sw)/2)+'px';
     }
-    c.addEventListener('click',function(e){ if(e.target.closest('a,button')) return; openBoard(); });
-    c.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openBoard(); } });
-  });
+    function setCur(k){
+      if(k===cur) return; var first=cur<0; cur=k;
+      whenEl.textContent=G[k].when; capEl.textContent=G[k].cap; noteEl.textContent=G[k].note;
+      if(!rm&&!first&&info.animate) info.animate([{opacity:.4,transform:'translateY(3px)'},{opacity:1,transform:'none'}],{duration:220,easing:'cubic-bezier(.23,1,.32,1)'});
+      dots.forEach(function(b,i){b.classList.toggle('on',i===k);b.classList.toggle('past',i<k);if(i===k)b.setAttribute('aria-current','true');else b.removeAttribute('aria-current')});
+      slides.forEach(function(s,i){s.classList.toggle('on',i===k);s.setAttribute('aria-hidden',i===k?'false':'true')});
+      prev.setAttribute('aria-disabled',k===0?'true':'false'); next.setAttribute('aria-disabled',k===N-1?'true':'false');
+      if(rm) fill.style.transform='scaleX('+(k/(N-1))+')';
+    }
+    function render(){
+      if(rm) return;
+      var p=-x/step;
+      track.style.transform='translate3d('+x.toFixed(2)+'px,0,0)';
+      slides.forEach(function(s,i){
+        var d=Math.abs(i-p), n=Math.min(d,1);
+        s.style.transform='scale('+(1-.2*n).toFixed(4)+')';
+        s.style.opacity=Math.max(0,1-.55*n-.35*Math.max(0,d-1)).toFixed(3);
+      });
+      fill.style.transform='scaleX('+Math.max(0,Math.min(1,p/(N-1))).toFixed(4)+')';
+      setCur(Math.max(0,Math.min(N-1,Math.round(p))));
+    }
+    // spring defined by damping ratio and response (seconds), integrated from the live value and velocity
+    function springTo(target,zeta){
+      cancelAnimationFrame(anim);
+      var w=2*Math.PI/.4, K=w*w, C=2*zeta*w, last=performance.now();
+      function tick(now){
+        var dt=Math.min(.032,(now-last)/1000), h=dt/4; last=now;
+        for(var j=0;j<4;j++){ var a=-K*(x-target)-C*v; v+=a*h; x+=v*h; }
+        if(Math.abs(x-target)<.3&&Math.abs(v)<10){ x=target; v=0; render(); anim=0; return; }
+        render(); anim=requestAnimationFrame(tick);
+      }
+      anim=requestAnimationFrame(tick);
+    }
+    function go(i){
+      i=Math.max(0,Math.min(N-1,i));
+      if(rm){ setCur(i); return; }
+      springTo(-i*step,1);
+    }
+
+    var tr=tracker(), down=false, dragging=false, moved=false, sx=0, sy=0, x0=0, pid=null;
+    view.addEventListener('pointerdown',function(e){
+      if(down||(e.pointerType==='mouse'&&e.button!==0)) return;
+      down=true; dragging=false; moved=false; pid=e.pointerId; sx=e.clientX; sy=e.clientY;
+      if(anim){ cancelAnimationFrame(anim); anim=0; }
+      x0=x; tr.reset(); tr.add(x);
+    });
+    view.addEventListener('pointermove',function(e){
+      if(!down||e.pointerId!==pid) return;
+      var dx=e.clientX-sx, dy=e.clientY-sy;
+      if(!dragging){
+        if(Math.abs(dx)<8&&Math.abs(dy)<8) return;
+        if(Math.abs(dy)>Math.abs(dx)){ down=false; settle(); return; }
+        dragging=moved=true; try{view.setPointerCapture(pid)}catch(_){}
+        view.classList.add('drag'); sx=e.clientX; dx=0; x0=x;
+      }
+      if(rm) return;
+      var raw=x0+dx, min=-(N-1)*step, W=view.clientWidth;
+      if(raw>0) raw=rubberband(raw,W); else if(raw<min) raw=min-rubberband(min-raw,W);
+      x=raw; tr.add(x); render();
+    });
+    function settle(){ if(!rm&&!anim&&x!==-cur*step) springTo(-Math.round(-x/step)*step,1); }
+    function up(e){
+      if(!down||e.pointerId!==pid) return;
+      down=false; view.classList.remove('drag');
+      if(!dragging){ settle(); return; }
+      dragging=false;
+      if(rm){ var dx=e.clientX-sx; if(Math.abs(dx)>40) go(cur+(dx<0?1:-1)); return; }
+      v=tr.vel()*1000;
+      var proj=x+(v/1000)*.998/(1-.998), k=Math.max(0,Math.min(N-1,Math.round(-proj/step)));
+      springTo(-k*step,Math.abs(v)>500?.8:1);
+    }
+    view.addEventListener('pointerup',up); view.addEventListener('pointercancel',up);
+    view.addEventListener('click',function(e){
+      if(moved){ moved=false; return; }
+      var s=e.target.closest('.gen-slide'); if(!s) return;
+      var i=slides.indexOf(s); if(i===cur) openGen(i); else go(i);
+    });
+    view.addEventListener('keydown',function(e){
+      var k={ArrowLeft:cur-1,ArrowRight:cur+1,Home:0,End:N-1}[e.key];
+      if(k===undefined) return; e.preventDefault(); go(k);
+    });
+    prev.addEventListener('click',function(){ if(cur>0) go(cur-1) });
+    next.addEventListener('click',function(){ if(cur<N-1) go(cur+1) });
+    function openGen(i){
+      var g=G[i];
+      openData({ title:g.when+': '+g.name, org:'ROV board generation',
+        html:'<p>'+$('.bd',g.more).innerHTML+'</p><p>'+$('.bfix',g.more).innerHTML+'</p>',
+        photos:(BDET[i]&&BDET[i].photos)||[], focus:$('#gen-open') });
+    }
+    $('#gen-open').addEventListener('click',function(){ openGen(cur) });
+    var rw=0; window.addEventListener('resize',function(){ if(view.clientWidth===rw) return; rw=view.clientWidth; cancelAnimationFrame(anim); anim=0; v=0; measure(); x=-cur*step; render(); });
+    measure(); rw=view.clientWidth; setCur(0); render();
+  })();
 
   /* ---------- featured band button opens the ROV story ---------- */
   var featBtn=$('#feat-open'), rovTile=$('.tile[data-id="rov"]');
@@ -1844,39 +1891,15 @@ D.forEach(function(d,i){
     function idx(){ var k=0; for(var i=0;i<S.length;i++){ if(S[i].el.getBoundingClientRect().top<=innerHeight*.4) k=i } if(innerHeight+scrollY>=document.documentElement.scrollHeight-4) k=S.length-1; return k }
     function upd(){ var k=idx(); up.disabled=k===0&&scrollY<40; dn.disabled=k===S.length-1; lbl.textContent=S[k].name; }
     function jump(k){
-      if(k<0||k>=S.length) return; var el=S[k].el, off=S[k].id==='boards'?0:58;
+      if(k<0||k>=S.length) return; var el=S[k].el, off=58;
       var y=el.getBoundingClientRect().top+scrollY-off; if(S[k].id==='top') y=0;
       window.scrollTo({top:Math.max(0,y),behavior:'instant'});
     }
-    up.addEventListener('click',function(){ var k=idx(), el=S[k].el; var top=el.getBoundingClientRect().top; jump(top<-60&&S[k].id!=='boards'?k:k-1) });
+    up.addEventListener('click',function(){ var k=idx(), el=S[k].el; var top=el.getBoundingClientRect().top; jump(top<-60?k:k-1) });
     dn.addEventListener('click',function(){ jump(idx()+1) });
     var tk=0; window.addEventListener('scroll',function(){ if(tk) return; tk=requestAnimationFrame(function(){tk=0;upd()}) },{passive:true});
     window.addEventListener('resize',upd); upd();
   })();
-
-  /* ---------- board stage: one image per generation, swapped by scroll ---------- */
-  var BD=SITE.boards||[], sgs=$$('.sg'), track=$('#boards-track'), cards=$$('.bcard'), bmN=$('#bm-n'), bmI=$('#bm-i');
-  var yrEl=$('#stage-yr'), capEl=$('#stage-cap'), years=cards.map(function(c){return $('.byr',c).textContent}), cur=-1;
-  var rT=0; function refresh(){ if(!window.ScrollTrigger) return; clearTimeout(rT); rT=setTimeout(function(){ScrollTrigger.refresh()},150); }
-  function capFor(i){ var g=sgs[i]; return g&&g.dataset.photo ? (g.dataset.cap||'') : 'Illustration'; }
-  sgs.forEach(function(g,i){
-    var p=BD[i]; if(!p||!p[0]) return;
-    var im=new Image(); im.alt=p[1]||years[i]+' board'; im.decoding='async';
-    im.onload=function(){ g.innerHTML=''; g.appendChild(im); g.dataset.photo='1'; g.dataset.cap=p[1]||''; if(i===cur) capEl.textContent=capFor(i); };
-    im.src=p[0];
-  });
-  function setBoard(prog){
-    var idx=Math.max(0,Math.min(cards.length-1,Math.round(prog*(cards.length-1))));
-    bmI.style.transform='scaleX('+(.2+.8*prog)+')';
-    if(idx===cur) return; cur=idx;
-    bmN.textContent=idx+1;
-    cards.forEach(function(c,i){c.classList.toggle('on',i===idx)});
-    sgs.forEach(function(g,i){g.classList.toggle('on',i===idx)});
-    capEl.textContent=capFor(idx);
-    yrEl.classList.add('swap'); setTimeout(function(){ yrEl.textContent=years[idx]; yrEl.classList.remove('swap'); },140);
-  }
-  track.addEventListener('scroll',function(){ if($('.boards').classList.contains('pinned')) return; var m=track.scrollWidth-track.clientWidth; if(m>0) setBoard(track.scrollLeft/m); },{passive:true});
-  setBoard(0);
 
   /* ---------- scroll choreography (GSAP ScrollTrigger) ---------- */
   function countUp(el,delay){
@@ -1897,10 +1920,10 @@ D.forEach(function(d,i){
       gsap.to('.hero-grid',{y:-50,opacity:.3,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
 
       // headings rise out of a mask
-      $$('.sec > h2, .boards-head h2, .contact h2').forEach(function(h){
+      $$('.sec > h2, .contact h2').forEach(function(h){
         gsap.fromTo(h,{clipPath:'inset(0% 0% 100% 0%)',y:48},{clipPath:'inset(0% 0% -20% 0%)',y:0,duration:1.1,ease:'power4.out',clearProps:'clipPath,transform',scrollTrigger:{trigger:h,start:'top 90%',once:true}});
       });
-      $$('.sec > .lede, .boards-head .lede, .contact .lede').forEach(function(l){
+      $$('.sec > .lede, .contact .lede').forEach(function(l){
         gsap.from(l,{y:28,autoAlpha:0,duration:1,delay:.12,ease:'power3.out',clearProps:'all',scrollTrigger:{trigger:l,start:'top 92%',once:true}});
       });
 
@@ -1933,35 +1956,6 @@ D.forEach(function(d,i){
       gsap.from('.award-lead',{scale:.92,y:50,autoAlpha:0,duration:1.2,ease:'power3.out',clearProps:'all',scrollTrigger:{trigger:'.award-lead',start:'top 85%',once:true}});
       gsap.from('.contact .mailrow, .contact .elsewhere a',{y:30,autoAlpha:0,duration:.9,ease:'power3.out',stagger:.07,clearProps:'all',scrollTrigger:{trigger:'.contact .mailrow',start:'top 92%',once:true}});
 
-      // board history: pin, then each step slides the cards and wipes the stage to the next board
-      if(c.tall){
-        var sec=$('.boards'), pinEl=$('.boards-pin'), wrap=$('#sg-wrap'), scan=$('#scan'), N=cards.length;
-        sec.classList.add('pinned');
-        if(pinEl.scrollHeight>pinEl.clientHeight+2){ sec.classList.remove('pinned'); return; }
-        cur=-1; setBoard(0);
-        gsap.set(sgs[0],{clipPath:'inset(-40% -40% -40% -40%)'});
-        gsap.set(sgs.slice(1),{clipPath:'inset(-40% 100% -40% -40%)'});
-        gsap.set(scan,{opacity:0,x:0});
-        var tl=gsap.timeline({defaults:{ease:'none'},scrollTrigger:{
-          trigger:pinEl,pin:true,start:'top top',end:function(){return '+='+Math.round(innerHeight*.85*(N-1))},
-          scrub:.6,invalidateOnRefresh:true,
-          snap:{snapTo:1/(N-1),inertia:false,duration:{min:.25,max:.6},delay:.1,ease:'power2.inOut'},
-          onUpdate:function(self){setBoard(self.progress)}
-        }});
-        for(var k=1;k<N;k++){
-          (function(k){
-            var t=k-1;
-            tl.to(track,{x:function(){return -cards[k].offsetLeft},duration:1},t);
-            tl.fromTo(sgs[k],{clipPath:'inset(-40% 100% -40% -40%)',scale:1.05},{clipPath:'inset(-40% -40% -40% -40%)',scale:1,duration:.75,immediateRender:false},t+.12);
-            tl.to(sgs[k-1],{opacity:0,scale:.9,duration:.75},t+.12);
-            tl.fromTo(scan,{x:0,opacity:1},{x:function(){return wrap.clientWidth},duration:.75,immediateRender:false},t+.12);
-            tl.set(scan,{opacity:0},t+.87);
-          })(k);
-        }
-        gsap.from('.bcard',{x:120,autoAlpha:0,duration:1,ease:'power3.out',stagger:.08,clearProps:'all',onStart:function(){cards.forEach(function(c){c.style.transition='none'})},scrollTrigger:{trigger:'.boards',start:'top 70%',once:true}});
-        gsap.from('.stage',{y:60,autoAlpha:0,duration:1.1,ease:'power3.out',clearProps:'all',scrollTrigger:{trigger:'.boards',start:'top 70%',once:true}});
-        return function(){ sec.classList.remove('pinned'); gsap.set([track,scan].concat(sgs),{clearProps:'all'}); cur=-1; setBoard(0); };
-      }
     });
   }
 
