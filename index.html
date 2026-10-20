@@ -322,6 +322,11 @@ dialog.lb[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto}
 .featured p{color:var(--bg);opacity:.74;font-size:1rem;line-height:1.5;max-width:34em}
 .featured .btn{margin-top:20px}
 .featured .ota{box-shadow:0 20px 40px rgba(0,0,0,.28);padding:clamp(18px,2.4vw,32px)}
+.for-industry #pgrid>.featured{grid-column:1/-1;margin:0}
+.for-industry #work{padding-top:clamp(64px,9vw,112px)!important}
+.for-industry #experience{padding-top:clamp(24px,4vw,48px)}
+/* GSAP reveals move these with transforms; Chrome's scroll anchoring would chase that motion and pull the page after a jump */
+#pgrid,.rows,.skl,.award-lead,.contact,.sec>h2,.sec>.lede{overflow-anchor:none}
 .featured .ota-cap{font-size:.9375rem;line-height:1.5}
 .featured .ota-read{font-size:.9375rem}
 .featured .ota-read .state{font-size:.875rem}
@@ -1910,7 +1915,7 @@ D.forEach(function(d,i){
     var S=[['top','.hero','Top'],['work','#work','Projects'],['boards','#boards','Boards'],['experience','#experience','Experience'],['education','#education','Education'],['awards','#awards','Awards'],['skills','#skills','Skills'],['contact','#contact','Contact']]
       .map(function(s){return {id:s[0],el:$(s[1]),name:s[2]}}).filter(function(s){return s.el});
     var up=$('#st-up'), dn=$('#st-dn'), lbl=$('#st-lbl'); if(!up||!dn) return;
-    function idx(){ var k=0; for(var i=0;i<S.length;i++){ if(S[i].el.getBoundingClientRect().top<=innerHeight*.4) k=i } if(innerHeight+scrollY>=document.documentElement.scrollHeight-4) k=S.length-1; return k }
+    function idx(){ S.sort(function(a,b){ return a.el.compareDocumentPosition(b.el)&4?-1:1 }); var k=0; for(var i=0;i<S.length;i++){ if(S[i].el.getBoundingClientRect().top<=innerHeight*.4) k=i } if(innerHeight+scrollY>=document.documentElement.scrollHeight-4) k=S.length-1; return k }
     function upd(){ var k=idx(); up.disabled=k===0&&scrollY<40; dn.disabled=k===S.length-1; lbl.textContent=S[k].name; }
     function jump(k){
       if(k<0||k>=S.length) return; var el=S[k].el, off=58;
@@ -2189,6 +2194,26 @@ addEventListener('scroll',req,{passive:true});addEventListener('resize',req);upd
 </style>
 <script>
 (function(){try{var q=new URLSearchParams(location.search);if(q.get('r')==='lab'){var n=document.getElementById('labnote');if(n){n.hidden=false;n.querySelectorAll('[data-open]').forEach(function(b){b.addEventListener('click',function(){var t=document.querySelector('.tile[data-id="'+b.dataset.open+'"]');if(t)t.click()})})}document.documentElement.classList.add('for-lab')}}catch(e){}})();
+/* ?r=industry: same page, reordered for companies. Experience moves above Projects with
+   P&G, LEONI and Nissan first; the project grid opens with the AGV, Nissan and LEONI. */
+(function(){try{
+  if(new URLSearchParams(location.search).get('r')!=='industry') return;
+  document.documentElement.classList.add('for-industry');
+  var exp=document.getElementById('experience'), work=document.getElementById('work'), grid=document.getElementById('pgrid');
+  if(exp&&work) work.parentNode.insertBefore(exp,work);
+  var rows=exp&&exp.querySelector('.rows');
+  if(rows) ['nissan','leoni','pg'].forEach(function(k){ var r=rows.querySelector('.xrow[data-exp="'+k+'"]'); if(r) rows.insertBefore(r,rows.firstChild) });
+  if(grid){
+    var first=grid.firstElementChild;
+    // two c6 tiles, then three c4 tiles, so every grid row stays full; the ROV OTA band follows them
+    ['agv','nissan','leoni','siemens','nav2'].forEach(function(id){ var t=grid.querySelector('.tile[data-id="'+id+'"]'); if(t) grid.insertBefore(t,first) });
+    var feat=document.getElementById('featured'); if(feat) grid.insertBefore(feat,first);
+  }
+  [document.querySelector('.nav nav'),document.querySelector('.rail')].forEach(function(n){ var a=n&&n.querySelector('a[href="#experience"]'); if(a) n.insertBefore(a,n.firstElementChild) });
+  if(window.ScrollTrigger) ScrollTrigger.refresh();
+}catch(e){}})();
+/* a note for anyone who opens DevTools */
+try{console.log('%cHi. This page is plain HTML, CSS and JavaScript: no framework, no build step.\nIf you build robots that have to run without you, I would like to hear about it: A.LoayElattar@gmail.com','font:14px/1.5 system-ui,sans-serif')}catch(e){}
 </script>
 
 </body>
