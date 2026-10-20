@@ -157,7 +157,7 @@ window.SITE = {
     nav2: [
       ["photos/nav2/nav2-robot.webp", "The Pioneer 3-DX I brought back to life in ROS 2 for RoboCup@Home Egypt 2026"],
       ["photos/nav2/nav2-team.webp", "With a teammate and the robot at the competition"],
-      ["photos/nav2/nav2-cert.webp", "RoboCup Egypt 2026 — AASTMT, New Alamein, April 2026"],
+      ["photos/nav2/nav2-cert.webp", "RoboCup Egypt 2026, AASTMT, New Alamein, April 2026"],
       ["photos/nav2/nav2-map.webp", "The live SLAM map and planned path in RViz"],
       ["photos/nav2/nav2-build.webp", "Bringing up the robot's electronics"],
       ["photos/nav2/nav2-rviz.webp", "Testing the ZED stereo depth map on a person"],
