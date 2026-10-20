@@ -107,9 +107,25 @@ img{display:block}
 .o-t.sm{font-size:13px}
 .o-route{fill:none;stroke:none}
 @media (max-width:520px){.o-t{font-size:15px}.o-s{font-size:13px}.o-m{font-size:12px}.o-lab{font-size:13px}}
-.ota-read{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:baseline;gap:12px;white-space:nowrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--hair);font-size:0.8125rem;color:var(--ink2)}
+.ota-read{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:baseline;gap:4px 12px;white-space:nowrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--hair);font-size:0.8125rem;color:var(--ink2)}
 .ota-read .state{text-align:right;overflow:hidden;text-overflow:ellipsis;font-family:var(--fm);font-size:0.7812rem;color:var(--ink);letter-spacing:0;min-height:1.4em}
 .ota-read .state.ok{color:var(--ok)}
+.ota-step{grid-column:1/-1;white-space:normal;color:var(--ink);line-height:1.4;min-height:2.8em}
+.ota-step.ok{color:var(--ok)}
+.ota-ctl{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px}
+.ota-pick{flex:1 1 15rem;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;padding:3px;border-radius:980px;background:var(--surf2)}
+.ota-pick button{min-height:44px;padding:0 10px;border:0;border-radius:980px;background:transparent;color:var(--ink2);font:inherit;font-size:.9375rem;font-weight:600;letter-spacing:-.01em;cursor:pointer;transition:background-color .2s ease,color .2s ease,box-shadow .2s ease,transform 160ms var(--ease-out)}
+.ota-pick button[aria-checked="true"]{background:var(--bg);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.14)}
+.ota-pick button:active{transform:scale(.97)}
+.ota-pick button:focus-visible,.ota .ota-go:focus-visible{outline:2px solid var(--link);outline-offset:2px}
+.featured .ota .ota-go{margin-top:0;min-height:44px;flex:0 0 auto}
+.ota.run .ota-pick{opacity:.55}
+.ota.run .ota-pick button,.ota.run .ota-go{cursor:default}
+.ota.run .ota-go{filter:saturate(.6);opacity:.8}
+.o-box.sel{stroke:var(--link);stroke-width:1.4;stroke-dasharray:5 4}
+[id^="b-n"]{cursor:pointer}
+.ota svg text{pointer-events:none}
+@media (max-width:520px){.featured .ota .ota-go{flex:1 1 100%;justify-content:center}}
 .ota-cap{font-size:0.8125rem;color:var(--ink3);margin-top:6px;line-height:1.45}
 
 /* section heads */
@@ -766,7 +782,7 @@ dialog.lb{height:100vh;height:100dvh;max-height:100dvh}
     <div class="featured-txt">
       <p class="feyebrow">Featured &middot; MATE ROV</p>
       <h3>Firmware updates without opening the hull</h3>
-      <p>The system behind our Best Communication System award: new firmware travels from the station PC to the gateway and out over the CAN bus to any sealed board, live. This replays the real bootloader.</p>
+      <p>The system behind our Best Communication System award: new firmware travels from the station PC to the gateway and out over the CAN bus to any sealed board, live. Pick a board and flash it: each step follows the gateway and bootloader code.</p>
       <button class="btn" id="feat-open" type="button">See the full ROV story</button>
     </div>
       <figure class="ota" aria-labelledby="ota-cap" style="margin:0">
@@ -811,21 +827,30 @@ dialog.lb{height:100vh;height:100dvh;max-height:100dvh}
       <rect class="o-box" id="b-n0" x="14" y="330" width="124" height="80" rx="14"/>
       <text class="o-t" x="76" y="354" text-anchor="middle">Thrusters</text>
       <text class="o-s" x="76" y="372" text-anchor="middle">7× T200, PWM</text>
-      <text class="o-m" id="s-n0" x="76" y="396" text-anchor="middle">fw 1.4</text>
+      <text class="o-m" id="s-n0" x="76" y="396" text-anchor="middle">app running</text>
+      <rect class="o-track" id="nt0" x="34" y="391" width="84" height="5" rx="2.5" opacity="0"/><rect class="o-fill" id="nf0" x="34" y="391" width="0" height="5" rx="2.5"/>
 
       <rect class="o-box" id="b-n1" x="148" y="330" width="124" height="80" rx="14"/>
       <text class="o-t" x="210" y="354" text-anchor="middle">Power</text>
       <text class="o-s" x="210" y="372" text-anchor="middle">current sensing</text>
-      <text class="o-m" id="s-n1" x="210" y="396" text-anchor="middle">fw 2.1</text>
+      <text class="o-m" id="s-n1" x="210" y="396" text-anchor="middle">app running</text>
+      <rect class="o-track" id="nt1" x="168" y="391" width="84" height="5" rx="2.5" opacity="0"/><rect class="o-fill" id="nf1" x="168" y="391" width="0" height="5" rx="2.5"/>
 
       <rect class="o-box" id="b-n2" x="282" y="330" width="124" height="80" rx="14"/>
       <text class="o-t" x="344" y="354" text-anchor="middle">Pressure</text>
       <text class="o-s" x="344" y="372" text-anchor="middle">compensation</text>
-      <text class="o-m" id="s-n2" x="344" y="396" text-anchor="middle">fw 1.0</text>
-      <circle class="o-pkt" id="pkt" r="5" cx="210" cy="62" opacity="0"/>
+      <text class="o-m" id="s-n2" x="344" y="396" text-anchor="middle">app running</text>
+      <rect class="o-track" id="nt2" x="302" y="391" width="84" height="5" rx="2.5" opacity="0"/><rect class="o-fill" id="nf2" x="302" y="391" width="0" height="5" rx="2.5"/>
+      <g id="pkts"></g>
     </svg>
-    <div class="ota-read"><span>Firmware update, live</span><span class="state" id="ota-state" aria-live="off">IDLE</span></div>
-    <figcaption class="ota-cap" id="ota-cap">How the ROV I built for MATE ROV Egypt updates a board inside its sealed hull. Firmware goes from the station PC straight to the gateway over Ethernet, alongside the gateway's micro-ROS traffic, then over CAN to the target. This replays the real bootloader steps.</figcaption>
+    <div class="ota-ctl">
+      <div class="ota-pick" role="radiogroup" aria-label="Board to update">
+        <button type="button" role="radio" aria-checked="true" tabindex="0" data-n="0">Thrusters</button><button type="button" role="radio" aria-checked="false" tabindex="-1" data-n="1">Power</button><button type="button" role="radio" aria-checked="false" tabindex="-1" data-n="2">Pressure</button>
+      </div>
+      <button class="btn ota-go" id="ota-go" type="button">Flash firmware</button>
+    </div>
+    <div class="ota-read"><span>Gateway</span><span class="state" id="ota-state">STATE_IDLE</span><div class="ota-step" id="ota-step" aria-live="polite">Pick a board, then flash it.</div></div>
+    <figcaption class="ota-cap" id="ota-cap">How the ROV I built for MATE ROV Egypt updates a board inside its sealed hull. Firmware goes from the station PC to the gateway over Ethernet, sharing the link with the gateway's micro-ROS traffic. The gateway stages the whole image in its SPI flash before it touches the CAN bus, and the board only runs the new firmware after a CRC-32 match.</figcaption>
   </figure>
   </div>
 
@@ -1940,47 +1965,102 @@ D.forEach(function(d,i){
     });
   }
 
-  /* ---------- OTA animation ---------- */
-  var pkt=$('#pkt'), st=$('#ota-state'), flash=$('#flash'), flashT=$('#flash-t');
-  var nodes=[{v:[1,4]},{v:[2,1]},{v:[1,0]}];
-  function ver(i){return 'fw '+nodes[i].v[0]+'.'+nodes[i].v[1]}
-  function boxClass(id,c){var b=$('#'+id);b.classList.remove('on','ok');if(c)b.classList.add(c)}
-  function label(i,txt,c){var s=$('#s-n'+i);s.textContent=txt;s.classList.remove('on','ok');if(c)s.classList.add(c)}
-  function setState(txt,ok){st.textContent=txt;st.classList.toggle('ok',!!ok)}
-  function at(path,f){var p=$(path),L=p.getTotalLength(),pt=p.getPointAtLength(L*Math.max(0,Math.min(1,f)));pkt.setAttribute('cx',pt.x);pkt.setAttribute('cy',pt.y)}
-  var ease=function(x){return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2};
-
-  if(reduce){ label(0,'fw 1.5 updated','ok'); boxClass('b-n0','ok'); setState('SUCCESS, CRC-32 match',true); return; }
-
-  // phases: [name, duration ms]
-  var P=[['send',900],['stage',1300],['route',900],['boot',450],['erase',700],['rx',2200],['verify',650],['done',1700],['reset',500]];
-  var total=P.reduce(function(a,p){return a+p[1]},0), target=0, t0=null, running=false, raf=0, lastPhase='';
-  function frame(ts){
-    if(t0===null) t0=ts;
-    var t=ts-t0; if(t>=total){t0=ts;t=0;target=(target+1)%3}
-    var acc=0,ph,f;
-    for(var k=0;k<P.length;k++){ if(t<acc+P[k][1]){ph=P[k][0];f=(t-acc)/P[k][1];break} acc+=P[k][1]; }
-    var n='#r-n'+target, nb='b-n'+target, entering=ph!==lastPhase; lastPhase=ph;
-    if(ph==='send'){ if(entering){boxClass('b-pc','on');boxClass('b-sw','on');boxClass('b-gw');flash.setAttribute('width',0);flashT.textContent='SPI flash';setState('TCP from the station PC')}
-      pkt.setAttribute('opacity',1); at('#r-eth',ease(f)); }
-    else if(ph==='stage'){ if(entering){boxClass('b-pc');boxClass('b-sw');boxClass('b-gw','on');pkt.setAttribute('opacity',0);setState('Staging image to SPI flash')}
-      flash.setAttribute('width',180*ease(f)); flashT.textContent='SPI flash '+Math.round(100*ease(f))+'%'; }
-    else if(ph==='route'){ if(entering){flashT.textContent='SPI flash, image ready';setState('CAN, node '+(target+1))}
-      pkt.setAttribute('opacity',1); at(n,ease(f)); }
-    else if(ph==='boot'){ if(entering){pkt.setAttribute('opacity',0);boxClass('b-gw');boxClass(nb,'on');label(target,'AWAIT_BOOT','on');setState('AWAIT_BOOT')} }
-    else if(ph==='erase'){ if(entering){label(target,'ERASING','on');setState('ERASING')} }
-    else if(ph==='rx'){ var pc=Math.round(100*f); label(target,'RX '+pc+'%','on'); setState('RECEIVING '+pc+'%');
-      var g=(f*9)%1; pkt.setAttribute('opacity',g<.85?1:0); at(n,.3+.7*g); }
-    else if(ph==='verify'){ if(entering){pkt.setAttribute('opacity',0);label(target,'VERIFY','on');setState('VERIFY, CRC-32')} }
-    else if(ph==='done'){ if(entering){nodes[target].v[1]++;boxClass(nb,'ok');label(target,ver(target),'ok');setState('SUCCESS, CRC-32 match',true)} }
-    else if(ph==='reset'){ if(entering){boxClass(nb);label(target,ver(target));flash.setAttribute('width',0);flashT.textContent='SPI flash';setState('IDLE')} }
-    raf=requestAnimationFrame(frame);
-  }
-  function start(){ if(running) return; running=true; t0=null; lastPhase=''; pkt.setAttribute('opacity',0); ['b-pc','b-sw','b-pi','b-gw','b-n0','b-n1','b-n2'].forEach(function(b){boxClass(b)}); [0,1,2].forEach(function(i){label(i,ver(i))}); flash.setAttribute('width',0); flashT.textContent='SPI flash'; setState('IDLE'); raf=requestAnimationFrame(frame); }
-  function stop(){ running=false; cancelAnimationFrame(raf); }
-  var panel=$('.ota');
-  if('IntersectionObserver' in window){ new IntersectionObserver(function(es){ es[0].isIntersecting?start():stop(); },{threshold:.25}).observe(panel); } else start();
-  document.addEventListener('visibilitychange',function(){ if(document.hidden){stop();return} var r=panel.getBoundingClientRect(); if(r.bottom>0&&r.top<innerHeight) start(); });
+  /* ---------- OTA demo: pick a board, press Flash firmware ----------
+     Steps follow firmware_gateway.cpp (gateway states) and the node's CAN bootloader.
+     Timings here are visual only; no real sizes, speeds or percentages are shown. */
+  (function(){
+    var fig=$('.ota'); if(!fig) return;
+    var NS='http://www.w3.org/2000/svg', layer=$('#pkts'), stEl=$('#ota-state'), stepEl=$('#ota-step'),
+        flash=$('#flash'), flashT=$('#flash-t'), goBtn=$('#ota-go'), picks=$$('.ota-pick button');
+    var pool=[]; for(var i=0;i<6;i++){ var c=document.createElementNS(NS,'circle'); c.setAttribute('r',4.5); c.setAttribute('opacity',0); layer.appendChild(c); pool.push(c); }
+    var S=[
+      {g:'STATE_RECEIVING',      d:'TCP upload from the station PC. The gateway writes it to SPI flash as it arrives.', ms:1900, node:'app running'},
+      {g:'STATE_RECEIVING',      d:'Upload closed. Target, size and CRC-32 are saved as metadata.',                    ms:800,  node:'app running'},
+      {g:'STATE_FLASHING_START', d:'Metadata checks out. ENTER_BOOTLOADER (0x55) goes to the board over CAN.',          ms:900,  node:'app running'},
+      {g:'STATE_FLASHING_SEND',  d:'The board sets a RAM flag and resets into its bootloader.',                         ms:900,  node:'bootloader'},
+      {g:'STATE_FLASHING_SEND',  d:'The bootloader erases the application sectors.',                                   ms:900,  node:'erasing'},
+      {g:'STATE_FLASHING_SEND',  d:'The image streams from SPI flash in 8-byte CAN frames.',                           ms:2400, node:''},
+      {g:'STATE_FLASHING_DONE',  d:'FW_DONE (0x57) goes out with the CRC-32.',                                          ms:800,  node:'CRC-32 check'},
+      {g:'STATE_IDLE',           d:'CRC-32 match, so the board resets into the new firmware.',                         ms:0,    node:'new firmware'}
+    ];
+    var target=0, running=false, raf=0, t0=0, k=-1, timer=0;
+    var ease=function(x){return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2};
+    function box(id,c){var b=$('#'+id);b.classList.remove('on','ok','sel');if(c)b.classList.add(c)}
+    function nodeTxt(i,txt,c){var s=$('#s-n'+i);s.textContent=txt;s.classList.remove('on','ok');if(c)s.classList.add(c)}
+    function nodeBar(i,f){var on=f!==null;$('#nt'+i).setAttribute('opacity',on?1:0);$('#nf'+i).setAttribute('width',on?84*f:0);$('#s-n'+i).setAttribute('opacity',on?0:1)}
+    function put(c,path,f,cls){var p=$(path),L=p.getTotalLength(),pt=p.getPointAtLength(L*Math.max(0,Math.min(1,f)));c.setAttribute('cx',pt.x);c.setAttribute('cy',pt.y);c.setAttribute('class',cls);c.setAttribute('opacity',1)}
+    function hideAll(){pool.forEach(function(c){c.setAttribute('opacity',0)})}
+    function idle(){
+      ['b-pc','b-sw','b-pi','b-gw','b-n0','b-n1','b-n2'].forEach(function(b){box(b)});
+      [0,1,2].forEach(function(i){nodeTxt(i,'app running');nodeBar(i,null)});
+      box('b-n'+target,'sel'); hideAll();
+    }
+    function select(n,focus){
+      if(running) return; target=n;
+      picks.forEach(function(b,i){b.setAttribute('aria-checked',i===n?'true':'false');b.tabIndex=i===n?0:-1});
+      if(focus) picks[n].focus();
+      if(k===S.length-1){ k=-1; flash.setAttribute('width',0); flashT.textContent='SPI flash'; stEl.textContent='STATE_IDLE'; stEl.classList.remove('ok'); stepEl.classList.remove('ok'); stepEl.textContent='Pick a board, then flash it.'; }
+      idle();
+    }
+    function enter(i){
+      var s=S[i], n=target, nb='b-n'+n;
+      stEl.textContent=s.g; stepEl.textContent=s.d; stepEl.classList.toggle('ok',i===S.length-1);
+      box('b-pc',i===0?'on':''); box('b-sw',i===0?'on':''); box('b-gw',(i<=2||i>=5)&&i<7?'on':'');
+      box(nb,i>=2&&i<7?'on':(i===7?'ok':''));
+      if(i===1){flash.setAttribute('width',180);flashT.textContent='SPI flash, image ready'}
+      if(i===0){flashT.textContent='SPI flash, staging'}
+      nodeBar(n,i===5?(reduce?1:0):null);
+      nodeTxt(n,s.node,i===7?'ok':(i>=3?'on':''));
+      hideAll();
+      if(i===S.length-1) finish();
+    }
+    function frame(ts){
+      if(!running) return;
+      var t=ts-t0, acc=0, i=0;
+      while(i<S.length-1&&t>=acc+S[i].ms){acc+=S[i].ms;i++}
+      if(i!==k){k=i;enter(i)}
+      if(!running) return;
+      var f=S[i].ms?(t-acc)/S[i].ms:1, n='#r-n'+target;
+      if(i===0){
+        flash.setAttribute('width',180*ease(f));
+        for(var j=0;j<3;j++) put(pool[j],'#r-eth',(f*2.4+j/3)%1,'o-pkt');
+        for(var m=0;m<2;m++) put(pool[3+m],'#r-eth',1-((f*1.3+m/2)%1),'o-ros');
+      } else if(i===2||i===6){
+        put(pool[0],n,ease(f),'o-pkt');
+      } else if(i===5){
+        $('#nf'+target).setAttribute('width',84*f);
+        for(var q=0;q<4;q++){ var g=(f*7+q*.09)%1; put(pool[q],n,g,'o-pkt'); }
+      }
+      raf=requestAnimationFrame(frame);
+    }
+    function finish(){
+      running=false; cancelAnimationFrame(raf); clearTimeout(timer); hideAll();
+      fig.classList.remove('run'); goBtn.textContent='Flash firmware'; goBtn.removeAttribute('aria-disabled');
+      picks.forEach(function(b){b.removeAttribute('aria-disabled')});
+    }
+    function run(){
+      if(running) return;
+      running=true; k=-1; fig.classList.add('run');
+      goBtn.textContent='Flashing\u2026'; goBtn.setAttribute('aria-disabled','true');
+      picks.forEach(function(b){b.setAttribute('aria-disabled','true')});
+      idle(); box('b-n'+target); flash.setAttribute('width',0); flashT.textContent='SPI flash'; stEl.classList.remove('ok');
+      if(reduce){ // no travelling packets: step through the states as still frames
+        var i=0; (function step(){ k=i; enter(i); if(i<S.length-1){ if(i===0){flash.setAttribute('width',180)} timer=setTimeout(step,Math.max(900,S[i].ms*.8)); i++; } })();
+        return;
+      }
+      t0=performance.now(); raf=requestAnimationFrame(frame);
+    }
+    goBtn.addEventListener('click',run);
+    picks.forEach(function(b,i){
+      b.addEventListener('click',function(){select(i)});
+      b.addEventListener('keydown',function(e){
+        var d=e.key==='ArrowRight'||e.key==='ArrowDown'?1:e.key==='ArrowLeft'||e.key==='ArrowUp'?-1:0;
+        if(d){e.preventDefault();select((i+d+3)%3,true)}
+      });
+    });
+    [0,1,2].forEach(function(i){$('#b-n'+i).addEventListener('click',function(){select(i)})});
+    idle();
+  })();
 })();
 </script>
 
